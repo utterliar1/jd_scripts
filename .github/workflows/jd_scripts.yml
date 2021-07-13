@@ -35,8 +35,7 @@ jobs:
         rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
-        #cp -rf ./curtinlv/*.py ./
-        for jsname in $(ls ./curtinlv | grep -oE ".*\py$"); do cp -rf ./curtinlv/$jsname ./$jsname; done
+        cp -rf ./curtinlv/jd_*.py ./
         rm -rf ./curtinlv
         echo "========= 开始下载raw ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
@@ -49,11 +48,11 @@ jobs:
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
-        echo "========= 开始安装依赖 ========="
+        echo "========= 开始复制依赖 ========="
         cp -f ./JDHelloWorld/package.json ./
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
-        echo "========= 开始转换JDHelloWorld的ts ========="
+        echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
         sudo npm install
         tsc ./jd_joy_park.ts
