@@ -56,11 +56,12 @@ var packets = [];
     tools = cookiesArr
     while (tools.length && packets.length) {
         var cookie = tools.pop()
-        requestApi('jinli_h5assist',cookie, {"redPacketId":packets[0]}).then(
+        var packet = packets[0]
+        requestApi('jinli_h5assist',cookie, {"redPacketId": packet}).then(
             function(data){
                 desc = data?.data?.result?.statusDesc
                 if(desc && desc.indexOf("助力已满")!=-1){
-                    packets.shift()
+                    if(packet==packets[0])packets.shift()
                     tools.unshift(cookie)
                 }else if(!desc){
                     tools.unshift(cookie)
