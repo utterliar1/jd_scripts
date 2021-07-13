@@ -35,7 +35,7 @@ jobs:
         rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
-        cp -rf ./curtinlv/jd_*.py ./
+        cp -rf ./curtinlv/*.py ./
         rm -rf ./curtinlv
         echo "========= 开始下载raw ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
@@ -48,10 +48,12 @@ jobs:
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
-
         cd ./JDHelloWorld
         echo "========= 开始安装依赖 ========="
         sudo npm install
+        cp -f ./package.json /
+        cp -f ./sendNotify.js /
+        cp -f ./jdCookie.js /
         echo "========= 开始转换JDHelloWorld的ts ========="
         tsc ./jd_joy_park.ts
         tsc ./jd_reward.ts
@@ -63,9 +65,6 @@ jobs:
         cd ..
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./activity
-        cp -f ./JDHelloWorld/package.json ./
-        cp -f ./JDHelloWorld/sendNotify.js ./
-        cp -f ./JDHelloWorld/jdCookie.js ./
         rm -rf ./JDHelloWorld
     - name: 'Commit Files'
       id: commit
