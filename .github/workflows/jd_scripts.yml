@@ -31,7 +31,7 @@ jobs:
         rm -rf ./Wenmoux
         echo "========= 开始下载JDDJ的脚本 ========="
         git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
-        cp -f ./JDDJ/jddj_*.js ./
+        cp -f ./JDDJ/jddj_*.js ./jd_dj_*.js
         rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
@@ -39,8 +39,8 @@ jobs:
         rm -rf ./curtinlv
         echo "========= 开始下载raw ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
-        wget -N https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
-        wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
+        wget -O ./jd_dd_fruit.js https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
+        wget -O ./JD_DailyBonus.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
         echo "========= 开始合并cron文件 ========="
