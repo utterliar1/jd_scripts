@@ -43,7 +43,7 @@ jobs:
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
-        echo "========= 开始合并定时 ========="
+        echo "========= 开始合并cron文件 ========="
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
@@ -52,9 +52,9 @@ jobs:
         cp -f ./JDHelloWorld/package.json ./
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
-        sudo npm install
         echo "========= 开始转换JDHelloWorld的ts ========="
         cd ./JDHelloWorld
+        sudo npm install
         tsc ./jd_joy_park.ts
         tsc ./jd_reward.ts
         tsc ./jd_wishingPool.ts
