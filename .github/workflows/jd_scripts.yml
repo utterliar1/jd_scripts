@@ -33,10 +33,10 @@ jobs:
         git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
         cp -f ./JDDJ/jddj_*.js ./
         rm -rf ./JDDJ
-        #echo "========= 开始下载didi的脚本 ========="
-        #git clone https://github.com/passerby-b/didi_fruit.git ./didi
-        #cp -f ./didi/dd_*.js ./
-        #rm -rf ./didi
+        echo "========= 开始下载curtinlv的脚本 ========="
+        git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
+        cp -f ./curtinlv/jd_*.js ./
+        rm -rf ./curtinlv
         echo "========= 开始下载raw ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
