@@ -28,6 +28,18 @@ jobs:
         mv ./Wenmoux/jd/chinnkarahoi_jd_bookshop.js ./jd_bookshopWenmoux.js
         cp -f ./Wenmoux/jd/*_*.js ./
         rm -rf ./Wenmoux
+        echo "========= 开始下载JDDJ的脚本 ========="
+        git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
+        cp -f ./JDDJ/jddj_*.js ./
+        rm -rf ./JDDJ
+        #echo "========= 开始下载didi的脚本 ========="
+        #git clone https://github.com/passerby-b/didi_fruit.git ./didi
+        #cp -f ./didi/dd_*.js ./
+        #rm -rf ./didi
+        echo "========= 开始下载raw ========="
+        weget https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
+        weget https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
+        weget https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
@@ -52,7 +64,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git diff --quiet && git diff --staged --quiet || git commit -am '.更新'
+        git diff --quiet && git diff --staged --quiet || git commit -am 'update'
     - name: Push Dust
       uses: ad-m/github-push-action@master
       with:
