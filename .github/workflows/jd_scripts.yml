@@ -12,7 +12,7 @@ jobs:
     - name: Install build dependencies
       run: |
         sudo npm install -g typescript
-        sudo yum -y install weget
+        sudo apt-get install wget
     - name: down
       run: |
         echo "========= 开始下载smiek2221的脚本 ========="
