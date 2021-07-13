@@ -1,4 +1,4 @@
-name: jd
+name: all-in-one
 on:
   schedule:
     - cron: 5 */2 * * *
@@ -12,6 +12,7 @@ jobs:
     - name: Install build dependencies
       run: |
         sudo npm install -g typescript
+        sudo npm install -g weget
     - name: down
       run: |
         echo "========= 开始下载smiek2221的脚本 ========="
