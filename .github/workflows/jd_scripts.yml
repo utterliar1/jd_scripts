@@ -43,7 +43,7 @@ jobs:
         wget https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv crontab_list.sh ./docker/
-        cat diy.sh >> crontab_list.sh
+        cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
