@@ -38,9 +38,9 @@ jobs:
         #cp -f ./didi/dd_*.js ./
         #rm -rf ./didi
         echo "========= 开始下载raw ========="
-        weget https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
-        weget https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
-        weget https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
+        wget https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
+        wget https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
+        wget https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
