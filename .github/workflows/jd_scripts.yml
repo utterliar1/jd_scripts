@@ -65,7 +65,7 @@ jobs:
         cp -f ./JDHelloWorld/*_*.ts ./activity
         cp -f ./JDHelloWorld/package.json ./
         cp -f ./JDHelloWorld/sendNotify.js ./
-        cp -f ./JDHelloWorld/jdCookie ./
+        cp -f ./JDHelloWorld/jdCookie.js ./
         rm -rf ./JDHelloWorld
     - name: 'Commit Files'
       id: commit
