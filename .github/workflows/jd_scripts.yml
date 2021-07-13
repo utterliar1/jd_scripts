@@ -38,10 +38,10 @@ jobs:
         #cp -f ./didi/dd_*.js ./
         #rm -rf ./didi
         echo "========= 开始下载raw ========="
-        wget https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
-        wget https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
-        wget https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
-        wget https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
+        wget -O https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
+        wget -O https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
+        wget -O https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
+        wget -O https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv crontab_list.sh ./docker/
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 开始下载JDHelloWorld的脚本 ========="
