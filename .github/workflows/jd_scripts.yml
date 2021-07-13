@@ -48,13 +48,13 @@ jobs:
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
-        cd ./JDHelloWorld
         echo "========= 开始安装依赖 ========="
+        cp -f ./JDHelloWorld/package.json ./
+        cp -f ./JDHelloWorld/sendNotify.js ./
+        cp -f ./JDHelloWorld/jdCookie.js ./
         sudo npm install
-        cp -f ./package.json /
-        cp -f ./sendNotify.js /
-        cp -f ./jdCookie.js /
         echo "========= 开始转换JDHelloWorld的ts ========="
+        cd ./JDHelloWorld
         tsc ./jd_joy_park.ts
         tsc ./jd_reward.ts
         tsc ./jd_wishingPool.ts
