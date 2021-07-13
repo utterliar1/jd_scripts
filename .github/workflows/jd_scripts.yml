@@ -44,7 +44,7 @@ jobs:
         tsc ./jd_cfd_loop.ts
         cd ..
         cp -f ./JDHelloWorld/*_*.js ./
-        cp -f ./JDHelloWorld/*_*.ts ./activity
+        cp -f ./JDHelloWorld/*_*.ts ./activity/
         rm -rf ./JDHelloWorld
     - name: 'Commit Files'
       id: commit
