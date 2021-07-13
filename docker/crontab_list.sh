@@ -155,3 +155,8 @@
 11 1 * * * node /scripts/jd_lotteryMachine.js >> /scripts/logs/jd_lotteryMachine.log 2>&1
 # 滴滴果园
 10 0,8,12,18 * * * node /scripts/dd_fruit.js >> /scripts/logs/dd_fruit.log 2>&1
+# 半点京豆雨
+30,31 16-23 * * * node /scripts/long_half_redrain.js >> /scripts/logs/long_half_redrain.log 2>&1
+&1
+# 整点京豆雨
+0,1 16-23 * * * node /scripts/long_super_redrain.js >> /scripts/logs/long_super_redrain.log 2>&1
