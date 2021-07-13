@@ -35,7 +35,8 @@ jobs:
         rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
-        cp -rf ./curtinlv/*.py ./
+        #cp -rf ./curtinlv/*.py ./
+        for jsname in $(ls ./curtinlv | grep -oE ".*\py$"); do cp -rf ./curtinlv/$jsname ./$jsname; done
         rm -rf ./curtinlv
         echo "========= 开始下载raw ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
