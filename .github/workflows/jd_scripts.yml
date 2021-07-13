@@ -50,6 +50,8 @@ jobs:
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
         cd ./JDHelloWorld
         echo "========= 开始安装依赖 ========="
+        cp -f ./JDHelloWorld/package.json ./
+        cp -f ./JDHelloWorld/sendNotify.js ./
         sudo npm install
         echo "========= 开始转换JDHelloWorld的ts ========="
         tsc ./jd_joy_park.ts
