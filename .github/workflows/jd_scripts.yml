@@ -1,0 +1,60 @@
+name: jd
+on:
+  schedule:
+    - cron: 5 */2 * * *
+  watch:
+    types: started
+jobs:
+  build:
+    runs-on: Ubuntu-20.04  
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install build dependencies
+      run: |
+        sudo npm install -g typescript
+    - name: down
+      run: |
+        echo "========= 开始下载smiek2221的脚本 ========="
+        git clone https://github.com/smiek2221/scripts.git  ./smiek2221
+        rm -r ./smiek2221/USER_AGENTS.js
+        cp -f ./smiek2221/*_*.js ./
+        rm -rf ./smiek2221
+        echo "========= 开始下载cdle的脚本 ========="
+        git clone https://github.com/cdle/jd_study.git  ./cdle
+        cp -f ./cdle/*_*.js ./
+        rm -rf ./cdle
+        echo "========= 开始下载Wenmoux的脚本 ========="
+        git clone -b wen https://github.com/Wenmoux/scripts.git ./Wenmoux
+        mv ./Wenmoux/jd/chinnkarahoi_jd_bookshop.js ./jd_bookshopWenmoux.js
+        cp -f ./Wenmoux/jd/*_*.js ./
+        rm -rf ./Wenmoux
+        echo "========= 开始下载JDHelloWorld的脚本 ========="
+        git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
+        mv ./JDHelloWorld/githubAction.md ./githubAction.md
+        cd ./JDHelloWorld
+        echo "========= 开始安装依赖 ========="
+        sudo npm install
+        echo "========= 开始转换JDHelloWorld的ts ========="
+        tsc ./jd_joy_park.ts
+        tsc ./jd_reward.ts
+        tsc ./jd_wishingPool.ts
+        tsc ./jd_jxmc.ts
+        tsc ./jd_qq_pasture.ts
+        tsc ./jd_cfd.ts
+        tsc ./jd_cfd_loop.ts
+        cd ..
+        cp -f ./JDHelloWorld/*_*.js ./
+        cp -f ./JDHelloWorld/*_*.ts ./activity
+        rm -rf ./JDHelloWorld
+    - name: 'Commit Files'
+      id: commit
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git diff --quiet && git diff --staged --quiet || git commit -am '.更新'
+    - name: Push Dust
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.PAT }}
+        branch: master
