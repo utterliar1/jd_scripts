@@ -1,6 +1,6 @@
 /*
 签到领现金兑换
-需要填写exchangeAccounts参数，兑换多少取决于app内显示，默认为所有账号兑换10红包，部分账号会出现参数错误的提示。指定账号+金额应这样填写(pt_pin1@2&pt_pin2@10)
+需要填写exchangeAccounts参数，兑换多少取决于app内显示，默认为所有账号兑换10红包，部分账号会出现参数错误的提示。指定账号+金额应这样填写 export exchangeAccounts="pt_pin1@2&pt_pin2@10"
 TG学习交流群https://t.me/cdles
 0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_cash_exchange.js
 */
