@@ -47,6 +47,7 @@ var dotenv = require("dotenv");
 var CryptoJS = require('crypto-js');
 var crypto = require('crypto');
 var fs = require('fs');
+var notify = require('./sendNotify');
 dotenv.config();
 var appId = 10028, fingerprint, token, enCryptMethodJD;
 var cookie = '', cookiesArr = [], res = '';
@@ -62,7 +63,7 @@ var UserName, index, isLogin, nickName;
                 return [4 /*yield*/, requireConfig()];
             case 2:
                 _b.sent();
-                filename = 'jd_cfd_loop.ts';
+                filename = __filename.split('/').pop();
                 stream = fs.createReadStream(filename);
                 fsHash = crypto.createHash('md5');
                 stream.on('data', function (d) {
@@ -71,6 +72,21 @@ var UserName, index, isLogin, nickName;
                 stream.on('end', function () {
                     var md5 = fsHash.digest('hex');
                     console.log(filename + "\u7684MD5\u662F:", md5);
+                    if (filename.indexOf('JDHelloWorld_jd_scripts_') > -1) {
+                        filename = filename.replace('JDHelloWorld_jd_scripts_', '');
+                    }
+                    axios_1["default"].get('https://api.sharecode.ga/api/md5?filename=' + filename)
+                        .then(function (res) {
+                        console.log('local: ', md5);
+                        console.log('remote:', res.data);
+                        if (md5 !== res.data) {
+                            notify.sendNotify("Warning", filename + "\nMD5\u6821\u9A8C\u5931\u8D25\uFF01\u4F60\u7684\u811A\u672C\u7591\u4F3C\u88AB\u7BE1\u6539\uFF01");
+                        }
+                        else {
+                            console.log('MD5校验通过！');
+                        }
+                    })["catch"](function (e) {
+                    });
                 });
                 _b.label = 3;
             case 3:
@@ -99,6 +115,7 @@ var UserName, index, isLogin, nickName;
                 return [4 /*yield*/, speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strZone')];
             case 7:
                 shell = _b.sent();
+                if (!shell.Data.hasOwnProperty('NormShell')) return [3 /*break*/, 14];
                 _i = 0, _a = shell.Data.NormShell;
                 _b.label = 8;
             case 8:
@@ -111,6 +128,8 @@ var UserName, index, isLogin, nickName;
                 return [4 /*yield*/, speedUp('_cfd_t,bizCode,dwEnv,dwType,ptag,source,strZone', s.dwType)];
             case 10:
                 res = _b.sent();
+                if (res.iRet !== 0)
+                    return [3 /*break*/, 13];
                 console.log('捡贝壳:', res.Data.strFirstDesc);
                 return [4 /*yield*/, wait(500)];
             case 11:

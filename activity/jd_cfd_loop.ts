@@ -11,7 +11,7 @@ import * as dotenv from 'dotenv'
 const CryptoJS = require('crypto-js')
 const crypto = require('crypto')
 const fs = require('fs')
-
+const notify = require('./sendNotify')
 dotenv.config()
 
 let appId: number = 10028, fingerprint: string | number, token: string, enCryptMethodJD: any;
@@ -23,7 +23,7 @@ let UserName: string, index: number, isLogin: boolean, nickName: string
   await requestAlgo();
   await requireConfig();
 
-  let filename: string = 'jd_cfd_loop.ts'
+  let filename: string = __filename.split('/').pop()!
   let stream = fs.createReadStream(filename);
   let fsHash = crypto.createHash('md5');
 
@@ -34,6 +34,21 @@ let UserName: string, index: number, isLogin: boolean, nickName: string
   stream.on('end', () => {
     let md5 = fsHash.digest('hex');
     console.log(`${filename}的MD5是:`, md5);
+    if (filename.indexOf('JDHelloWorld_jd_scripts_') > -1) {
+      filename = filename.replace('JDHelloWorld_jd_scripts_', '')
+    }
+    axios.get('https://api.sharecode.ga/api/md5?filename=' + filename)
+      .then(res => {
+        console.log('local: ', md5)
+        console.log('remote:', res.data)
+        if (md5 !== res.data) {
+          notify.sendNotify("Warning", `${filename}\nMD5校验失败！你的脚本疑似被篡改！`)
+        } else {
+          console.log('MD5校验通过！')
+        }
+      }).catch(e => {
+
+    })
   });
 
   while (1) {
@@ -53,11 +68,15 @@ let UserName: string, index: number, isLogin: boolean, nickName: string
         }
         console.log('今日热气球:', res.dwTodaySpeedPeople, '/', 20)
         let shell: any = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strZone')
-        for (let s of shell.Data.NormShell) {
-          for (let j = 0; j < s.dwNum; j++) {
-            res = await speedUp('_cfd_t,bizCode,dwEnv,dwType,ptag,source,strZone', s.dwType)
-            console.log('捡贝壳:', res.Data.strFirstDesc)
-            await wait(500)
+        if (shell.Data.hasOwnProperty('NormShell')) {
+          for (let s of shell.Data.NormShell) {
+            for (let j = 0; j < s.dwNum; j++) {
+              res = await speedUp('_cfd_t,bizCode,dwEnv,dwType,ptag,source,strZone', s.dwType)
+              if (res.iRet !== 0)
+                break
+              console.log('捡贝壳:', res.Data.strFirstDesc)
+              await wait(500)
+            }
           }
         }
       }

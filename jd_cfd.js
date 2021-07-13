@@ -105,12 +105,16 @@ var UserName, index, isLogin, nickName;
                 return [4 /*yield*/, api('story/helpdraw', '_cfd_t,bizCode,dwEnv,dwUserId,ptag,source,strZone', { dwUserId: dwUserId })];
             case 9:
                 res = _k.sent();
+                console.log('助力奖励:', res);
                 dwUserId++;
                 if (res.iRet === 0) {
                     console.log('助力奖励领取成功', res.Data.ddwCoin);
                 }
-                else if (res.iRet === 1000)
+                else if (res.iRet === 1000) {
                     return [3 /*break*/, 11];
+                }
+                else if (res.iRet === 2203) {
+                }
                 else {
                     console.log('助力奖励领取其他错误:', res);
                     return [3 /*break*/, 11];
