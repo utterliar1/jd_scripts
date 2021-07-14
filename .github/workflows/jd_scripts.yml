@@ -35,12 +35,19 @@ jobs:
         #rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
-        cp -rf ./curtinlv/jd_*.py ./
+        find ./curtinlv/ -name "*py" -type -f -exec cp {} ./ \;
+        #cp -rf ./curtinlv/jd_*.py ./
         rm -rf ./curtinlv
+        #wget -N https://github.com/curtinlv/JD-Script/raw/main/getFollowGifts/jd_getFollowGift.py
+        #wget -N https://github.com/curtinlv/JD-Script/raw/main/OpenCard/jd_OpenCard.py
+        #wget -N https://github.com/curtinlv/JD-Script/raw/main/BlueCoin/jd_blueCoin.py
         echo "========= 开始下载raw ========="
+        wget -N https://github.com/curtinlv/JD-Script/raw/main/getFollowGifts/jd_getFollowGift.py
+        wget -N https://github.com/curtinlv/JD-Script/raw/main/OpenCard/jd_OpenCard.py
+        wget -N https://github.com/curtinlv/JD-Script/raw/main/BlueCoin/jd_blueCoin.py
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
-        wget -O ./jd_dd_fruit.js https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
         wget -O ./jd_DailyBonus.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
+        wget -O ./jd_dd_fruit.js https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
         wget -O ./jd_dj_fruit_collectWater.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit_collectWater.js
         wget -O ./jd_dj_fruit.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit.js
         wget -O ./jd_dj_bean.js https://github.com/passerby-b/JDDJ/raw/main/jddj_bean.js
