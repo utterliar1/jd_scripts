@@ -1,3 +1,6 @@
+# 利用github action整合各个库并维护crontab.list
+> 主库是[@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)，自动转换ts脚本为js脚本   
+>> v4用户使用前请务必先删除scripts文件夹
 # V4容器docker-compoes.yml添加变量
 > `environment:`  
 >> `- JD_SCRIPTS_URL=https://github.com/utterliar1/jd_scripts.git`  
