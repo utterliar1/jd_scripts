@@ -32,7 +32,7 @@ jobs:
         rm -rf ./Wenmoux
         #echo "========= 开始下载JDDJ的脚本 ========="
         git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
-        rename 's/jdddj/jd_dj/' ./JDDJ/jddj_*.js
+        rename 's/jddj/jd_dj/' ./JDDJ/jddj_*.js
         cp -f ./JDDJ/jd_dj_*.js ./
         rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
