@@ -35,7 +35,7 @@ jobs:
         #rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
-        find ./curtinlv/ -name "*py" -type -f -exec cp {} ./ \;
+        find ./curtinlv/ -name "*py" -type f -exec cp {} ./ \;
         #cp -rf ./curtinlv/jd_*.py ./
         rm -rf ./curtinlv
         #wget -N https://github.com/curtinlv/JD-Script/raw/main/getFollowGifts/jd_getFollowGift.py
