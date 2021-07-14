@@ -53,10 +53,21 @@ function getUrlData(url, name) {
     }
 }
 class jxAlgo {
-    constructor() {
+    constructor(params = {}) {
         this.appId = 10001
         this.result = {}
         this.timestamp = Date.now();
+        for (let i in params) {
+            this[i] = params[i]
+        }
+    }
+    set(params = {}) {
+        for (let i in params) {
+            this[i] = params[i]
+        }
+    }
+    get(key) {
+        return this[key]
     }
     async dec(url) {
         if (!this.token) {
