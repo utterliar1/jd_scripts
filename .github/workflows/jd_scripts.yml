@@ -45,6 +45,7 @@ jobs:
         echo "========= 开始下载airacg的依赖 ========="
         git clone https://github.com/airacg/jd_task.git ./airacg
         cp -r ./airacg/utils ./
+        cp -f ./airacg/jd_*.js ./
         rm -rf ./airacg
         echo "========= 开始下载raw ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
