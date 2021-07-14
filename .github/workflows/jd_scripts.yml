@@ -13,6 +13,7 @@ jobs:
       run: |
         sudo npm install -g typescript
         sudo apt-get install wget
+        #sudo apt install rename
     - name: down
       run: |
         echo "========= 开始下载smiek2221的脚本 ========="
@@ -31,7 +32,8 @@ jobs:
         rm -rf ./Wenmoux
         #echo "========= 开始下载JDDJ的脚本 ========="
         #git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
-        #cp -f ./JDDJ/jddj_*.js ./jd_dj_*.js
+        #rename 's/jdddj/jd_dj/' ./JDDJ/jddj_*.js
+        #cp -f ./JDDJ/jd_dj_*.js ./
         #rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
@@ -44,8 +46,8 @@ jobs:
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -O ./jd_DailyBonus.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget -O ./jd_dd_fruit.js https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
-        wget -O ./jd_dj_fruit_collectWater.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit_collectWater.js
         wget -O ./jd_dj_fruit.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit.js
+        wget -O ./jd_dj_fruit_collectWater.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit_collectWater.js
         wget -O ./jd_dj_bean.js https://github.com/passerby-b/JDDJ/raw/main/jddj_bean.js
         wget -O ./jd_dj_plantBeans.js https://github.com/passerby-b/JDDJ/raw/main/jddj_plantBeans.js
         wget -O ./jd_dj_getPoints.js https://github.com/passerby-b/JDDJ/raw/main/jddj_getPoints.js
