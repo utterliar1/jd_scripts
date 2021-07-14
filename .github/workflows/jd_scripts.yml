@@ -17,7 +17,7 @@ jobs:
     - name: down
       run: |
         #echo "========= 开始清空脚本 ========="
-        #rm -rf !(utils|docker|activity|jd_task_pigPet.js)
+        #rm -rf !(utils|docker|activity)
         echo "========= 开始下载smiek2221的脚本 ========="
         git clone https://github.com/smiek2221/scripts.git  ./smiek2221
         rm -r ./smiek2221/USER_AGENTS.js
@@ -48,6 +48,7 @@ jobs:
         wget -O ./jd_task_pigPet.js https://github.com/airacg/jd_task/raw/main/jr_task_pigPet.js
         wget -O ./jd_shop_sign.js https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         echo "========= 开始合并cron文件 ========="
+        mv -f ./docker/crontab_list.sh ./docker/crontab_list.sh.bak
         wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
