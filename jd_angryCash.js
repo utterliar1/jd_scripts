@@ -1,6 +1,6 @@
 /*
 愤怒的现金
-更新时间：2021-7-13
+更新时间：2021-7-14
 备注：极速助力，打击黑产盗取现金的犯罪行为。默认向前助力9个账号，若要指定被助力账号，需cashHelpPins环境变量中填入需要助力的pt_pin，有多个请用@符号连接。
 0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_angryCash.js
 */
@@ -32,7 +32,7 @@ var tools = [];
             tools.push({success: 0, shareDate:"", cookie: cookie, key: i})
         }
     }
-    while(tools.length>0 && helps.length>0) {
+    while(tools.length && helps.length) {
         var tool = tools.pop()
         var cookie = tool.cookie
         if(!tool.shareDate){
@@ -54,7 +54,7 @@ var tools = [];
         }
         await $.wait(20)
     }
-    await $.wait(10000)
+    await $.wait(2000)
     
 })().catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -86,6 +86,13 @@ function help(tool){
                 tool.success = 3
                 break
             case 206: //今日已为Ta助力过啦~
+                if(!tool.helps){
+                    tool.helps = []
+                }else{
+                    if(tool.helps.indexOf(key)!=-1)
+                    if(helps[0]?.inviteCode==inviteCode)helps.shift()
+                }
+                tool.helps.push(key)
                 break;
             case 207: //啊哦~今日助力次数用完啦
                 tool.success = 3
@@ -502,7 +509,7 @@ function Env(t, e) {
         done(t = {}) {
             const e = (new Date).getTime(),
                 s = (e - this.startTime) / 1e3;
-            this.log("", `🔔${this.name}, 结束! 🕛 ${s-10} 秒`), this.log(), (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t)
+            this.log("", `🔔${this.name}, 结束! 🕛 ${s-2} 秒`), this.log(), (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t)
         }
     }(t, e)
 }
