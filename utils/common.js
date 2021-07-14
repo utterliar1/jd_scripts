@@ -211,6 +211,27 @@ class env {
         }
         return path.basename(file).replace(".js", rename);
     }
+    rand(n, m) {
+        var random = Math.floor(Math.random() * (m - n + 1) + n);
+        return random;
+    }
+    random(arr, num) {
+        var temp_array = new Array();
+        for (var index in arr) {
+            temp_array.push(arr[index]);
+        }
+        var return_array = new Array();
+        for (var i = 0; i < num; i++) {
+            if (temp_array.length > 0) {
+                var arrIndex = Math.floor(Math.random() * temp_array.length);
+                return_array[i] = temp_array[arrIndex];
+                temp_array.splice(arrIndex, 1);
+            } else {
+                break;
+            }
+        }
+        return return_array;
+    }
 }
 module.exports = {
     env,
