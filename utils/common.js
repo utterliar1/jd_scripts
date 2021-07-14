@@ -6,6 +6,7 @@ let path = require('path');
 let notify = require('./sendNotify');
 let eval = require("./eval");
 let assert = require('assert');
+let jxAlgo = require("./jxAlgo");
 class env {
     constructor(name) {
         this.name = name;
@@ -215,4 +216,5 @@ module.exports = {
     env,
     eval,
     assert,
+    jxAlgo,
 }
