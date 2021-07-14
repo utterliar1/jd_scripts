@@ -13,7 +13,7 @@ jobs:
       run: |
         sudo npm install -g typescript
         sudo apt-get install wget
-        sudo apt install rename
+        #sudo apt install rename
     - name: down
       run: |
         #echo "========= 开始清空脚本 ========="
@@ -33,12 +33,11 @@ jobs:
         cp -f ./Wenmoux/jd/*_*.js ./
         rm -rf ./Wenmoux
         echo "========= 开始下载JDDJ的脚本 ========="
-        git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
-        #rename 's/^((?!ck|cookie).)*jddj((?!ck|cookie).)*$/jd_dj/' ./JDDJ/jddj_*.js
-        #rename 's/jddj/jd_dj/' ./JDDJ/jddj_*.js
-        for i in `ls ./JDDJ/ | grep -e ^jddj | grep -vE cookie | grep -vE ck` ; do rename 's/jddj/jd_dj/' i ; done
-        cp -f ./JDDJ/jd_dj_*.js ./
-        rm -rf ./JDDJ
+        wget -O ./jd_dj_fruit.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit.js
+        wget -O ./jd_dj_fruit_collectWater.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit_collectWater.js
+        wget -O ./jd_dj_bean.js https://github.com/passerby-b/JDDJ/raw/main/jddj_bean.js
+        wget -O ./jd_dj_plantBeans.js https://github.com/passerby-b/JDDJ/raw/main/jddj_plantBeans.js
+        wget -O ./jd_dj_getPoints.js https://github.com/passerby-b/JDDJ/raw/main/jddj_getPoints.js
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
         find ./curtinlv/ -name "*py" -type f -exec cp {} ./ \;
