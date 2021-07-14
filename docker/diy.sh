@@ -19,5 +19,7 @@
 &1
 # 整点京豆雨
 0,1 16-23 * * * node /scripts/jd_super_redrain.js >> /scripts/logs/jd_super_redrain.log 2>&1
-#京东金融养猪猪(ak)
+# 京东金融养猪猪(ak)
 12 0-23/6 * * * node /scripts/jd_task_pigPet.js >> /scripts/logs/jd_task_pigPet.log 2>&1
+# 财富大陆)
+18 0-23/2 * * * node /scripts/jd_gua_wealth_island.js >> /scripts/logs/jd_gua_wealth_island.log 2>&1
