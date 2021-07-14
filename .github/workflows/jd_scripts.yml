@@ -42,6 +42,10 @@ jobs:
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
         find ./curtinlv/ -name "*py" -type f -exec cp {} ./ \;
         rm -rf ./curtinlv
+        echo "========= 开始下载airacg的依赖 ========="
+        git clone https://github.com/airacg/jd_task.git ./airacg
+        cp -r ./airacg/utils ./utils
+        rm -rf ./airacg
         echo "========= 开始下载raw ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -O ./jd_DailyBonus.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
