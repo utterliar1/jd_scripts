@@ -13,7 +13,7 @@ jobs:
       run: |
         sudo npm install -g typescript
         sudo apt-get install wget
-        #sudo apt install rename
+        sudo apt install rename
     - name: down
       run: |
         #echo "========= 开始清空脚本 ========="
