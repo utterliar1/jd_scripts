@@ -45,11 +45,6 @@ jobs:
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -O ./jd_DailyBonus.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget -O ./jd_dd_fruit.js https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
-        #wget -O ./jd_dj_fruit.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit.js
-        #wget -O ./jd_dj_fruit_collectWater.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit_collectWater.js
-        #wget -O ./jd_dj_bean.js https://github.com/passerby-b/JDDJ/raw/main/jddj_bean.js
-        #wget -O ./jd_dj_plantBeans.js https://github.com/passerby-b/JDDJ/raw/main/jddj_plantBeans.js
-        #wget -O ./jd_dj_getPoints.js https://github.com/passerby-b/JDDJ/raw/main/jddj_getPoints.js
         echo "========= 开始合并cron文件 ========="
         wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
