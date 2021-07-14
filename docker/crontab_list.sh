@@ -166,3 +166,5 @@
 #18 0-23/2 * * * node /scripts/jd_gua_wealth_island.js >> /scripts/logs/jd_gua_wealth_island.log 2>&1
 # 店铺签到（jiulan）
 #10 1,9 * * * node /scripts/jd_shop_sign.js >> /scripts/logs/jd_shop_sign.log 2>&1
+# 女装盲盒（jiulan）
+35 1,23 * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
