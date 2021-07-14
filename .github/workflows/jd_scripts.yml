@@ -34,7 +34,9 @@ jobs:
         rm -rf ./Wenmoux
         echo "========= 开始下载JDDJ的脚本 ========="
         git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
-        rename 's/^((?!ck|cookie).)*jddj((?!ck|cookie).)*$/jd_dj/' ./JDDJ/jddj_*.js
+        #rename 's/^((?!ck|cookie).)*jddj((?!ck|cookie).)*$/jd_dj/' ./JDDJ/jddj_*.js
+        #rename 's/jddj/jd_dj/' ./JDDJ/jddj_*.js
+        for i in `ls ./JDDJ/ | grep -e ^jddj | grep -vE cookie | grep -vE ck` ; do rename 's/jddj/jd_dj/' i ; done
         cp -f ./JDDJ/jd_dj_*.js ./
         rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
