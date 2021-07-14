@@ -1,0 +1,92 @@
+name: all-in-one
+on:
+  schedule:
+    - cron: 5 */2 * * *
+  watch:
+    types: started
+jobs:
+  build:
+    runs-on: Ubuntu-20.04  
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install build dependencies
+      run: |
+        sudo npm install -g typescript
+        sudo apt-get install wget
+    - name: down
+      run: |
+        echo "========= 开始下载smiek2221的脚本 ========="
+        git clone https://github.com/smiek2221/scripts.git  ./smiek2221
+        rm -r ./smiek2221/USER_AGENTS.js
+        cp -f ./smiek2221/*_*.js ./
+        rm -rf ./smiek2221
+        echo "========= 开始下载cdle的脚本 ========="
+        git clone https://github.com/cdle/jd_study.git  ./cdle
+        cp -f ./cdle/*_*.js ./
+        rm -rf ./cdle
+        echo "========= 开始下载Wenmoux的脚本 ========="
+        git clone -b wen https://github.com/Wenmoux/scripts.git ./Wenmoux
+        mv ./Wenmoux/jd/chinnkarahoi_jd_bookshop.js ./jd_bookshopWenmoux.js
+        cp -f ./Wenmoux/jd/*_*.js ./
+        rm -rf ./Wenmoux
+        #echo "========= 开始下载JDDJ的脚本 ========="
+        #git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
+        #cp -f ./JDDJ/jddj_*.js ./jd_dj_*.js
+        #rm -rf ./JDDJ
+        echo "========= 开始下载curtinlv的脚本 ========="
+        git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
+        find ./curtinlv/ -name "*py" -type f -exec cp {} ./ \;
+        #cp -rf ./curtinlv/jd_*.py ./
+        rm -rf ./curtinlv
+        #wget -N https://github.com/curtinlv/JD-Script/raw/main/getFollowGifts/jd_getFollowGift.py
+        #wget -N https://github.com/curtinlv/JD-Script/raw/main/OpenCard/jd_OpenCard.py
+        #wget -N https://github.com/curtinlv/JD-Script/raw/main/BlueCoin/jd_blueCoin.py
+        echo "========= 开始下载raw ========="
+        wget -N https://github.com/curtinlv/JD-Script/raw/main/getFollowGifts/jd_getFollowGift.py
+        wget -N https://github.com/curtinlv/JD-Script/raw/main/OpenCard/jd_OpenCard.py
+        wget -N https://github.com/curtinlv/JD-Script/raw/main/BlueCoin/jd_blueCoin.py
+        wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
+        wget -O ./jd_DailyBonus.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
+        wget -O ./jd_dd_fruit.js https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
+        wget -O ./jd_dj_fruit_collectWater.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit_collectWater.js
+        wget -O ./jd_dj_fruit.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit.js
+        wget -O ./jd_dj_bean.js https://github.com/passerby-b/JDDJ/raw/main/jddj_bean.js
+        wget -O ./jd_dj_plantBeans.js https://github.com/passerby-b/JDDJ/raw/main/jddj_plantBeans.js
+        wget -O ./jd_dj_getPoints.js https://github.com/passerby-b/JDDJ/raw/main/jddj_getPoints.js
+        echo "========= 开始合并cron文件 ========="
+        wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
+        mv -f crontab_list.sh ./docker/crontab_list.sh
+        cat ./docker/diy.sh >> ./docker/crontab_list.sh
+        echo "========= 开始下载JDHelloWorld的脚本 ========="
+        git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
+        mv ./JDHelloWorld/githubAction.md ./githubAction.md
+        echo "========= 开始复制依赖 ========="
+        cp -f ./JDHelloWorld/package.json ./
+        cp -f ./JDHelloWorld/sendNotify.js ./
+        cp -f ./JDHelloWorld/jdCookie.js ./
+        echo "========= 开始转换JDHelloWorld的ts脚本 ========="
+        cd ./JDHelloWorld
+        sudo npm install
+        tsc ./jd_joy_park.ts
+        tsc ./jd_reward.ts
+        tsc ./jd_wishingPool.ts
+        tsc ./jd_jxmc.ts
+        tsc ./jd_qq_pasture.ts
+        tsc ./jd_cfd.ts
+        tsc ./jd_cfd_loop.ts
+        cd ..
+        cp -f ./JDHelloWorld/*_*.js ./
+        cp -f ./JDHelloWorld/*_*.ts ./activity
+        rm -rf ./JDHelloWorld
+    - name: 'Commit Files'
+      id: commit
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git diff --quiet && git diff --staged --quiet || git commit -am 'update'
+    - name: Push Dust
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.PAT }}
+        branch: master
