@@ -1,8 +1,8 @@
-#V4
->environment: 
->      - JD_SCRIPTS_URL=https://github.com/utterliar1/jd_scripts.git
-#QL
->ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "activity|cookie|tools" "^jd[^_]|USER"
+# V4
+> environment: 
+      - JD_SCRIPTS_URL=https://github.com/utterliar1/jd_scripts.git
+# QL
+> ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "activity|cookie|tools" "^jd[^_]|USER"
 References:
 - https://github.com/gossh520/jd-v4.git
 - https://github.com/JDHelloWorld/jd_scripts.git
