@@ -36,11 +36,7 @@ jobs:
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
         find ./curtinlv/ -name "*py" -type f -exec cp {} ./ \;
-        #cp -rf ./curtinlv/jd_*.py ./
         rm -rf ./curtinlv
-        #wget -N https://github.com/curtinlv/JD-Script/raw/main/getFollowGifts/jd_getFollowGift.py
-        #wget -N https://github.com/curtinlv/JD-Script/raw/main/OpenCard/jd_OpenCard.py
-        #wget -N https://github.com/curtinlv/JD-Script/raw/main/BlueCoin/jd_blueCoin.py
         echo "========= 开始下载raw ========="
         wget -N https://github.com/curtinlv/JD-Script/raw/main/getFollowGifts/jd_getFollowGift.py
         wget -N https://github.com/curtinlv/JD-Script/raw/main/OpenCard/jd_OpenCard.py
@@ -74,10 +70,13 @@ jobs:
         tsc ./jd_qq_pasture.ts
         tsc ./jd_cfd.ts
         tsc ./jd_cfd_loop.ts
+        echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ..
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./activity
         rm -rf ./JDHelloWorld
+        echo "========= 开始更改前缀 ========="
+        for i in `ls | grep -e ^gua` -e ^jd; do mv -f $i `echo "jd_"$i`; done
     - name: 'Commit Files'
       id: commit
       run: |
