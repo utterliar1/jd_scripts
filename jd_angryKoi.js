@@ -57,19 +57,17 @@ var packets = [];
     while (tools.length && packets.length) {
         var cookie = tools.pop()
         var packet = packets[0]
-        requestApi('jinli_h5assist',cookie, {"redPacketId": packet}).then(
-            function(data){
-                desc = data?.data?.result?.statusDesc
-                if(desc && desc.indexOf("助力已满")!=-1){
-                    if(packet==packets[0])packets.shift()
-                    tools.unshift(cookie)
-                }else if(!desc){
-                    tools.unshift(cookie)
-                }
-                console.log(desc)
-            }
-        )
-        await $.wait(50)        
+        data = await requestApi('jinli_h5assist', cookie, {
+            "redPacketId": packet
+        })
+        desc = data?.data?.result?.statusDesc
+        if (desc && desc.indexOf("助力已满") != -1) {
+            packets.shift()
+            tools.unshift(cookie)
+        } else if (!data) {
+            tools.unshift(cookie)
+        }
+        console.log(packet, desc)
     }
 })()  .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')

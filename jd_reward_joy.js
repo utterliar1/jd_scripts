@@ -1,6 +1,6 @@
 let common = require("./utils/common");
 let $ = new common.env('宠汪汪兑换京豆');
-let fs = require("fs"); 
+let fs = require("fs");
 $.setOptions({
     headers: {
         'content-type': 'application/json',
@@ -10,7 +10,7 @@ $.setOptions({
 });
 eval(common.eval.mainEval($));
 async function prepare() {
-    $.thread = 1; 
+    $.thread = 1;
     //await $.timer("00 00 */8",120)
 }
 async function main(id) {
@@ -18,7 +18,7 @@ async function main(id) {
     let lists = txt.split("\n");
     let validate = lists[id.index - 1];
     let params = {
-        'url': `https://jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE&validate=${validate}`,
+        'url': `https://jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F&validate=${validate}`,
         'cookie': id.cookie
     }
     try {
@@ -30,10 +30,10 @@ async function main(id) {
             config = $.source.data['beanConfigs8']
         } else {
             config = $.source.data['beanConfigs16']
-        } 
+        }
         for (let i of config.reverse()) {
             params = {
-                'url': `https://jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE&validate=${validate}`,
+                'url': `https://jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F&validate=${validate}`,
                 'body': `{"buyParam":{"orderSource":"pet","saleInfoId":${i.id}},"deviceInfo":{}}`,
                 'cookie': id.cookie
             }
