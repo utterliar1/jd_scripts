@@ -13,7 +13,7 @@ jobs:
       run: |
         sudo npm install -g typescript
         sudo apt-get install wget
-        #sudo apt install rename
+        sudo apt install rename
     - name: down
       run: |
         #echo "========= 开始清空脚本 ========="
@@ -81,13 +81,14 @@ jobs:
         rm -rf ./JDHelloWorld
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
-        #rename 's/^jr_/jd_/' *
-        #rename 's/^jx_/jd_/' *
+        rename 's/^jr_/jd_/' *
+        rename 's/^jx_/jd_/' *
+        rename 's/^gua_/jd_/' *
         #rename 's/^jddj/jd_dj_/' *
         #mv -f $files `echo $files | tr jddj_  jd_dj_`
-        mv -f $files `echo $files | tr jr_  jd_`
-        mv -f $files `echo $files | tr jx_  jd_`
-        mv -f $files `echo $files | tr gua_  jd_`
+        #mv -f $files `echo $files | tr jr_  jd_`
+        #mv -f $files `echo $files | tr jx_  jd_`
+        #mv -f $files `echo $files | tr gua_  jd_`
     - name: 'Commit Files'
       id: commit
       run: |
