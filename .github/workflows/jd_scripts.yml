@@ -58,8 +58,8 @@ jobs:
         log_time=$(date "+%Y-%m-%d-%H-%M-%S")
         cp -r ./docker/crontab_list.sh ./docker/bak/crontab_list_$log_time.sh
         cp -r ./.github/workflows/jd_scripts.yml ./.github/workflows/bak/jd_scripts_$log_time.yml
-        find ./docker/bak/ -type f -mtime +7 | xargs rm -rv
-        find ./.github/workflows/bak/ -type f -mtime +7 | xargs rm -rv
+        find ./docker/bak/ -type f -mtime +7 | xargs rm -rvf
+        find ./.github/workflows/bak/ -type f -mtime +7 | xargs rm -rvf
         wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
