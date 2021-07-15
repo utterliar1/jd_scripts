@@ -84,10 +84,10 @@ jobs:
         #rename 's/^jr_/jd_/' *
         #rename 's/^jx_/jd_/' *
         #rename 's/^jddj/jd_dj_/' *
-        #mv -rf $files `echo $files | tr jddj_  jd_dj_`
-        mv -rf $files `echo $files | tr jr_  jd_`
-        mv -rf $files `echo $files | tr jx_  jd_`
-        mv -rf $files `echo $files | tr gua_  jd_`
+        #mv -f $files `echo $files | tr jddj_  jd_dj_`
+        mv -f $files `echo $files | tr jr_  jd_`
+        mv -f $files `echo $files | tr jx_  jd_`
+        mv -f $files `echo $files | tr gua_  jd_`
     - name: 'Commit Files'
       id: commit
       run: |
