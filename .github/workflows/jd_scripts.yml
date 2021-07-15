@@ -55,7 +55,7 @@ jobs:
         wget -O ./jd_task_pigPet.js https://github.com/airacg/jd_task/raw/main/jr_task_pigPet.js
         wget -O ./jd_shop_sign.js https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         echo "========= 开始合并cron定时文件 ========="
-        cp ./docker/$file_crontab_list ./docker/bak/crontab_list_$log_time.sh
+        cp -r ./docker/$file_crontab_list ./docker/bak/crontab_list_$log_time.sh
         wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
