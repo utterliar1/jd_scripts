@@ -69,14 +69,7 @@ jobs:
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
         sudo npm install
-        tsc ./jd_joy_park.ts
-        tsc ./jd_reward.ts
-        tsc ./jd_wishingPool.ts
-        tsc ./jd_jxmc.ts
-        tsc ./jd_qq_pasture.ts
-        tsc ./jd_cfd.ts
-        tsc ./jd_cfd_loop.ts
-        tsc ./jd_foodRunning.ts
+        tsc *_*.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ..
         cp -f ./JDHelloWorld/*_*.js ./
