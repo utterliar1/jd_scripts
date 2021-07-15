@@ -76,6 +76,7 @@ jobs:
         tsc ./jd_qq_pasture.ts
         tsc ./jd_cfd.ts
         tsc ./jd_cfd_loop.ts
+        tsc ./jd_foodRunning.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ..
         cp -f ./JDHelloWorld/*_*.js ./
