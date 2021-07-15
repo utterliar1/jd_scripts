@@ -22,7 +22,7 @@
 # 京东金融养猪猪（ak）
 12 0-23/6 * * * node /scripts/jd_task_pigPet.js >> /scripts/logs/jd_task_pigPet.log 2>&1
 # 财富大陆（smiek）
-#18 0-23/2 * * * node /scripts/jd_gua_wealth_island.js >> /scripts/logs/jd_gua_wealth_island.log 2>&1
+#18 0-23/2 * * * node /scripts/jd_wealth_island.js >> /scripts/logs/jd_wealth_island.log 2>&1
 # 店铺签到（jiulan）
 #10 1,9 * * * node /scripts/jd_shop_sign.js >> /scripts/logs/jd_shop_sign.log 2>&1
 # 女装盲盒（jiulan）
