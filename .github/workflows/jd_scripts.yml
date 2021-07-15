@@ -39,6 +39,7 @@ jobs:
         wget -O ./jd_dj_plantBeans.js https://github.com/passerby-b/JDDJ/raw/main/jddj_plantBeans.js
         wget -O ./jd_dj_getPoints.js https://github.com/passerby-b/JDDJ/raw/main/jddj_getPoints.js
         wget -O ./jd_dd_fruit.js https://raw.githubusercontents.com/passerby-b/didi_fruit/main/dd_fruit.js
+        wget -O ./jd_ks_fruit.js https://github.com/passerby-b/ks_fruit/raw/main/ks_fruit.js
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
         find ./curtinlv/ -name "*py" -type f -exec cp {} ./ \;
