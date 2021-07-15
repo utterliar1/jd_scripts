@@ -79,6 +79,7 @@ jobs:
         cd ..
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
+        cp -f ./JDHelloWorld/*ShareCodes.js ./
         rm -rf ./JDHelloWorld
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
