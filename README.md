@@ -12,6 +12,7 @@ ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "backUp|utils" "^jd[^
 ```
 extra.sh添加
 ```text
+cp -f /ql/repo/utterliar1_jd_scripts/package.json /ql/scripts/package.json && cd scripts && npm install
 cp -r /ql/repo/utterliar1_jd_scripts/utils /ql/scripts/
 ```
 # References:
