@@ -71,6 +71,7 @@ jobs:
         cp -f ./JDHelloWorld/package.json ./
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
+        cp -f ./JDHelloWorld/*ShareCodes.js ./
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
         sudo npm install
@@ -79,18 +80,13 @@ jobs:
         cd ..
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
-        cp -f ./JDHelloWorld/*ShareCodes.js ./
         rm -rf ./JDHelloWorld
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^jr_/jd_/' *
         rename -f 's/^jx_/jd_/' *
         rename -f 's/^gua_/jd_/' *
-        #rename 's/^jddj/jd_dj_/' *
-        #mv -f $files `echo $files | tr jddj_  jd_dj_`
-        #mv -f $files `echo $files | tr jr_  jd_`
-        #mv -f $files `echo $files | tr jx_  jd_`
-        #mv -f $files `echo $files | tr gua_  jd_`
+        #rename -f 's/^jddj/jd_dj_/' *
     - name: 'Commit Files'
       id: commit
       run: |
