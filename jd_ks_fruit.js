@@ -1,5 +1,8 @@
 /*
-v.004
+v1.1
+快手果园任务脚本,支持qx,loon,shadowrocket,surge,nodejs
+手机设备在boxjs里填写cookie
+boxjs订阅地址:https://gitee.com/passerby-b/javascript/raw/master/JD/passerby-b.boxjs.json
 
 [task_local]
 30 8,12,17 * * * https://raw.githubusercontent.com/passerby-b/ks_fruit/main/ks_fruit.js
@@ -11,8 +14,8 @@ cron "30 8,12,17 * * *" script-path=https://raw.githubusercontent.com/passerby-b
 
 const $ = new API();
 
-let cookies = [];
-let notify, thisck = '', treeid = '';
+let cookies = [];//环境变量:KS_COOKIE
+var notify, thisck = '', treeid = '';
 !(async () => {
 
     // 判断环境变量里面是否有cookie
@@ -47,6 +50,48 @@ let notify, thisck = '', treeid = '';
         await $.wait(1000);
 
         await sign();
+        await $.wait(1000);
+
+        await myFriends();
+        await $.wait(1000);
+
+        await recycleBottle();
+        await $.wait(1000);
+
+        await threeWater();
+        await $.wait(1000);
+
+        let w_taskList = await waterTaskList();
+        w_taskList.data.missionInfo.forEach(async item => {
+            if (item.missionStatus == 'IN_PROCESS') {
+                if (item.taskId == '22') {
+                    await helpWatering();
+                    await $.wait(1000);
+                }
+            }
+        });
+
+        let f_taskList = await fertilizerTaskList();
+        f_taskList.data.missionInfo.forEach(async item => {
+            if (item.missionStatus == 'IN_PROCESS') {
+                if (item.taskId == '10') {
+                    await fertilizerTask();
+                    await $.wait(1000);
+                }
+                if (item.taskId == '11') {
+                    await searchKey();
+                    await $.wait(1000);
+                }
+            }
+        });
+
+        await fertilizerHelp();
+        await $.wait(1000);
+
+        await waterHelp();
+        await $.wait(1000);
+
+        await stealWater();
         await $.wait(1000);
 
         await giftcard();
@@ -86,7 +131,236 @@ async function sign() {
                 resolve();
             })
         } catch (error) {
-            console.log('\n【浇水】:' + error);
+            console.log('\n【签到】:' + error);
+            resolve();
+        }
+    })
+}
+
+//打卡领化肥
+async function fertilizerTask() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/fertilizerTask/action', '');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                //console.log(response.body);
+                if (data.result == 1) console.log('\n【打卡领化肥】:' + data.data.toast);
+                else console.log('\n【打卡领化肥】:' + data.error_msg);
+                resolve();
+            })
+        } catch (error) {
+            console.log('\n【打卡领化肥】:' + error);
+            resolve();
+        }
+    })
+}
+
+//领瓶子水滴
+async function recycleBottle() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/recycleBottle/recycle', '');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                //console.log(response.body);
+                if (data.result == 1) console.log('\n【领瓶子水滴】:' + data.data.popupEventList[0].tips[0]);
+                else console.log('\n【领瓶子水滴】:' + data.error_msg);
+                resolve();
+            })
+        } catch (error) {
+            console.log('\n【领瓶子水滴】:' + error);
+            resolve();
+        }
+    })
+}
+
+//水滴任务列表
+async function waterTaskList() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/mission/query', '{"boardTypeStr":"WATER_TYPE","stageStr":"NO_OP"}');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                resolve(data);
+            })
+        } catch (error) {
+            console.log('\n【水滴任务列表】:' + error);
+            resolve({});
+        }
+    })
+}
+
+//化肥任务列表
+async function fertilizerTaskList() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/mission/query', '{"boardTypeStr":"FERTILIZER","stageStr":"NO_OP"}');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                resolve(data);
+            })
+        } catch (error) {
+            console.log('\n【化肥任务列表】:' + error);
+            resolve({});
+        }
+    })
+}
+
+//领三餐水滴
+async function threeWater() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/gift/three/action', '');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                if (data.result == 1) console.log('\n【领三餐水滴】:' + (!data.data.toast ? "时间未到" : data.data.toast));
+                else console.log('\n【领三餐水滴】:' + data.error_msg);
+                resolve();
+            })
+        } catch (error) {
+            console.log('\n【领三餐水滴】:' + error);
+            resolve();
+        }
+    })
+}
+
+//搜索果园
+async function searchKey() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/overview', '{"layoutType":"4","hyId":"orchard","enableWK":"1","source":"SEARCH_RESULT"}');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                //console.log(response.body);
+                if (data.result == 1) console.log('\n【搜索果园】:' + data.data.response.resultCodeDesc);
+                else console.log('\n【搜索果园】:' + data.error_msg);
+                resolve();
+            })
+        } catch (error) {
+            console.log('\n【搜索果园】:' + error);
+            resolve();
+        }
+    })
+}
+
+//化肥助力
+async function fertilizerHelp() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/overview', '{"fid":"1693210678","cc":"share_wxms","followRefer":"151","shareMethod":"TOKEN","sharePosition":"MANURE_AID_POSITION_INVITE","kpn":"NEBULA","subBiz":"OD_MANURE_SHARE","shareId":"16282765673263","source":"PASSPHRASE_BACK","shareMode":"APP","originShareId":"16282765673263","enableWK":"1","layoutType":"4","shareObjectId":"3xafybkcd32ukbc","shareUrlOpened":"0","hyId":"orchard","timestamp":"' + Math.round(new Date().getTime()) + '"}');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                //console.log(response.body);
+                //if (data.result == 1) console.log('\n【化肥助力】:' + data.data.popupEventList[0].tips[0]);
+                //else console.log('\n【化肥助力】:' + data.error_msg);
+            })
+
+            option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/overview', '{"fid":"1694627735","cc":"share_wxms","followRefer":"151","shareMethod":"TOKEN","sharePosition":"MANURE_AID_POSITION_INVITE","kpn":"NEBULA","subBiz":"OD_MANURE_SHARE","shareId":"16282715288528","source":"PASSPHRASE_BACK","shareMode":"APP","originShareId":"16282715288528","enableWK":"1","layoutType":"4","shareObjectId":"3xswjcei7czyy36","shareUrlOpened":"0","hyId":"orchard","timestamp":"' + Math.round(new Date().getTime()) + '"}');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                //console.log(response.body);
+                //if (data.result == 1) console.log('\n【化肥助力】:' + data.data.popupEventList[0].tips[0]);
+                //else console.log('\n【化肥助力】:' + data.error_msg);
+            })
+            resolve();
+        } catch (error) {
+            console.log('\n【化肥助力】:' + error);
+            resolve();
+        }
+    })
+}
+
+//水滴助力
+async function waterHelp() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/overview', '{"fid":"1693210678","cc":"share_wxms","followRefer":"151","shareMethod":"TOKEN","sharePosition":"WATER_AID_INVITE_BUTTON","kpn":"NEBULA","subBiz":"OD_WATER_SHARE","shareId":"16282645686348","source":"PASSPHRASE_BACK","shareMode":"APP","originShareId":"16282645686348","enableWK":"1","layoutType":"4","shareObjectId":"3xafybkcd32ukbc","shareUrlOpened":"0","hyId":"orchard","timestamp":"' + Math.round(new Date().getTime()) + '"}');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                //console.log(response.body);
+                //if (data.result == 1) console.log('\n【水滴助力】:' + data.data.popupEventList[0].tips[0]);
+                //else console.log('\n【水滴助力】:' + data.error_msg);
+            })
+
+            option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/overview', '{"fid":"1694627735","cc":"share_wxms","followRefer":"151","shareMethod":"TOKEN","sharePosition":"WATER_AID_INVITE_BUTTON","kpn":"NEBULA","subBiz":"OD_WATER_SHARE","shareId":"16282632307386","source":"PASSPHRASE_BACK","shareMode":"APP","originShareId":"16282632307386","enableWK":"1","layoutType":"4","shareObjectId":"3xswjcei7czyy36","shareUrlOpened":"0","hyId":"orchard","timestamp":"' + Math.round(new Date().getTime()) + '"}');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                //console.log(response.body);
+                //if (data.result == 1) console.log('\n【水滴助力】:' + data.data.popupEventList[0].tips[0]);
+                //else console.log('\n【水滴助力】:' + data.error_msg);
+            })
+            resolve();
+        } catch (error) {
+            console.log('\n【水滴助力】:' + error);
+            resolve();
+        }
+    })
+}
+
+//好友列表
+let myFriendsList = [];
+async function myFriends() {
+    return new Promise(async resolve => {
+        try {
+            let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/friends/myFriends', '{"offsetId":0}');
+            await $.http.post(option).then(async response => {
+                let data = JSON.parse(response.body);
+                //console.log(response.body);
+                if (data.result == 1) myFriendsList = data.data.friendList;
+                resolve();
+            })
+        } catch (error) {
+            console.log('\n【好友列表】:' + error);
+            resolve();
+        }
+    })
+}
+
+//偷水滴
+async function stealWater() {
+    return new Promise(async resolve => {
+        try {
+            myFriendsList.forEach(async item => {
+                if (item.orchardStatus == 'CAN_STEAL') {
+                    let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/water/stealWater', '{"stolenUserId":"' + item.friendUserId + '"}');
+                    await $.http.post(option).then(async response => {
+                        let data = JSON.parse(response.body);
+                        //console.log(response.body);
+                        if (data.result == 1) console.log('\n【偷水滴】:偷好友(' + item.nickName + ')' + data.data.stealAmount + '滴水!');
+                        else console.log('\n【偷水滴】:' + data.error_msg);
+                        await $.wait(1000);
+                    })
+                }
+            });
+            resolve();
+        } catch (error) {
+            console.log('\n【偷水滴】:' + error);
+            resolve();
+        }
+    })
+}
+
+//帮好友浇水
+async function helpWatering() {
+    return new Promise(async resolve => {
+        try {
+            let count = myFriendsList.length < 5 ? myFriendsList.length : 5;
+            for (let index = 0; index < count; index++) {
+                let option = urlTask('https://ug-fission.kuaishou.com/rest/n/darwin/orchard/water/helpWatering', '{"friendUserId":"' + myFriendsList[index].friendUserId + '"}');
+                await $.http.post(option).then(async response => {
+                    let data = JSON.parse(response.body);
+                    console.log(response.body);
+                    if (data.result == 1) {
+                        console.log('\n【帮好友浇水】:帮好友(' + myFriendsList[index].nickName + ')浇水成功!');
+                    }
+                    else console.log('\n【帮好友浇水】:' + data.error_msg);
+                    await $.wait(1000);
+                })
+            }
+            resolve();
+        } catch (error) {
+            console.log('\n【帮好友浇水】:' + error);
             resolve();
         }
     })
@@ -183,8 +457,8 @@ async function treeInfo(i, index) {
                 let data = JSON.parse(response.body);
                 if (data.result == 1) {
                     treeid = data.data.treeInfo.treeId;
-                    console.log('\n【果树信息】:' + data.data.treeInfo.progressText + ',当前阶段进度:' + (data.data.treeInfo.percent) * 100 + '%');
-                    if ($.env.isNode && index == 1) await notify.sendNotify('第' + (i + 1) + '个账号果树信息', data.data.treeInfo.progressText + ',当前阶段进度:' + (data.data.treeInfo.percent.toFixed(2)) * 100 + '%');
+                    console.log('\n【果树信息】:' + data.data.treeInfo.progressText + ',当前阶段进度:' + (data.data.treeInfo.percent * 100).toFixed(2) + '%');
+                    if ($.env.isNode && index == 1) await notify.sendNotify('第' + (i + 1) + '个账号果树信息', data.data.treeInfo.progressText + ',当前阶段进度:' + (data.data.treeInfo.percent * 100).toFixed(2) + '%');
                 }
                 else console.log('\n【果树信息】:' + data.error_msg);
                 resolve();
@@ -195,7 +469,6 @@ async function treeInfo(i, index) {
         }
     })
 }
-
 
 function urlTask(url, body) {
     let option = {

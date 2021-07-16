@@ -10,64 +10,48 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 var kois = process.env.kois ?? ""
 let cookiesArr = []
-var packets = [];
-
+var helps = [];
+var tools= []
 !(async () => {
     if(!kois){
         console.log("请在环境变量中填写需要助力的账号")
     }
     requireConfig()
-    len = cookiesArr.length
-    for (let i = 0; i < len; i++) {
+    for (let i in cookiesArr) {
         cookie = cookiesArr[i]
-        if(!kois){
-            if(i != 0) {
-                break
+        if(kois.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])!=-1){
+            var data = await requestApi('h5launch',cookie);
+            switch (data?.data?.result.status) {
+                case 1://火爆
+                    continue;
+                case 2://已经发起过
+                    break;
+                default:
+                    if(data?.data?.result?.redPacketId){
+                        helps.push({redPacketId: data.data.result.redPacketId, success: false, id: i, cookie: cookie})
+                    }
+                    continue;
+            }   
+            data = await requestApi('h5activityIndex',cookie);
+            switch (data?.data?.code) {
+                case 20002://已达拆红包数量限制
+                    break;
+                case 10002://活动正在进行，火爆号
+                    break;
+                case 20001://红包活动正在进行，可拆
+                    helps.push({redPacketId: data.data.result.redpacketInfo.id, success: false, id: i, cookie: cookie})
+                    break;
+                default:
+                    break;
             }
-            console.log(`默认给账号${i+1}助力`)
-        }else if(kois.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])==-1)continue
-        data = await requestApi('h5launch',cookie);
-        switch (data?.data?.result.status) {
-            case 1://火爆
-                continue;
-            case 2://已经发起过
-                break;
-            default:
-                if(data?.data?.result?.redPacketId){
-                    packets.push(data.data.result.redPacketId)
-                }
-                continue;
-        }   
-        data = await requestApi('h5activityIndex',cookie);
-        // console.log(data)
-        switch (data?.data?.code) {
-            case 20002://已达拆红包数量限制
-                break;
-            case 10002://活动正在进行，火爆号
-                break;
-            case 20001://红包活动正在进行，可拆
-                packets.push(data.data.result.redpacketInfo.id)
-                break;
-            default:
-                break;
-        }   
-    }
-
-    tools = cookiesArr
-    while (tools.length && packets.length) {
-        var cookie = tools.pop()
-        var packet = packets[0]
-        data = await requestApi('jinli_h5assist', cookie, {
-            "redPacketId": packet
-        })
-        desc = data?.data?.result?.statusDesc
-        if (desc && desc.indexOf("助力已满") != -1) {
-            packets.shift()
-            tools.unshift(cookie)
-        } else if (!data) {
-            tools.unshift(cookie)
         }
-        console.log(packet, desc)
+        tools.push({id: i, cookie: cookie})   
+    }
+    for(let help of helps){
+        open(help)
+    }
+    while (tools.length) {
+        await $.wait(10000)
     }
 })()  .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -75,6 +59,25 @@ var packets = [];
   .finally(() => {
     $.done();
   })
+
+function open(help){
+    var tool = tools.pop()
+    if(!tool)return
+    if(help.success)return
+    requestApi('jinli_h5assist', tool.cookie, {
+        "redPacketId": help.redPacketId
+    }).then(function(data){
+        desc = data?.data?.result?.statusDesc
+        if (desc && desc.indexOf("助力已满") != -1) {
+            tools.unshift(help)
+            help.success=true
+        } else if (!data) {
+            tools.unshift(help)
+        }
+        console.log(`${tool.id}->${help.id}`, desc)   
+        open(help)         
+    })   
+}
 
 function requestApi(functionId, cookie, body = {}) {
     return new Promise(resolve => {
