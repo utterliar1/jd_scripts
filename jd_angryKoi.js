@@ -69,10 +69,10 @@ function open(help){
     }).then(function(data){
         desc = data?.data?.result?.statusDesc
         if (desc && desc.indexOf("助力已满") != -1) {
-            tools.unshift(help)
+            tools.unshift(tool)
             help.success=true
         } else if (!data) {
-            tools.unshift(help)
+            tools.unshift(tool)
         }
         console.log(`${tool.id}->${help.id}`, desc)   
         open(help)         
