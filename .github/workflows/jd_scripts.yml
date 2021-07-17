@@ -88,7 +88,7 @@ jobs:
         rename -f 's/^gua_/jd_/' *
         #rename -f 's/^jddj/jd_dj_/' *
         echo "========= 临时屏蔽的脚本 ========="
-        sed -i '/jd_live_redrain\|jd_validate_Worker\|jd_reward\|jd_sign_graphics\|jd_joy.js\|jd_joy_steal/d' ./docker/crontab_list.sh
+        sed -i '/jd_live_redrain\|jd_validate_Worker\|jd_reward\|jd_sign_graphics\|jd_joy.js\|jd_joy_steal\|necklace/d' ./docker/crontab_list.sh
     - name: 'Commit Files'
       id: commit
       run: |
