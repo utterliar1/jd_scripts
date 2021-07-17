@@ -29,7 +29,7 @@ jobs:
         rm -rf ./cdle
         echo "========= 开始下载Wenmoux的脚本 ========="
         git clone -b wen https://github.com/Wenmoux/scripts.git ./Wenmoux
-        mv ./Wenmoux/jd/chinnkarahoi_jd_bookshop.js ./jd_bookshopWenmoux.js
+        mv ./Wenmoux/jd/chinnkarahoi_jd_bookshop.js ./jd_bookshop.js
         cp -f ./Wenmoux/jd/*_*.js ./
         rm -rf ./Wenmoux
         echo "========= 开始下载passby的脚本 ========="
@@ -49,12 +49,6 @@ jobs:
         cp -r ./airacg/utils ./
         cp -f ./airacg/*_*.js ./
         rm -rf ./airacg
-        echo "========= 开始下载单文件脚本 ========="
-        #wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_nzmh.js
-        wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
-        wget -O ./jd_DailyBonus.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
-        wget -O ./jd_task_pigPet.js https://github.com/airacg/jd_task/raw/main/jr_task_pigPet.js
-        wget -O ./jd_shop_sign.js https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
@@ -69,9 +63,16 @@ jobs:
         tsc *_*.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ..
+        rm -rf ./JDHelloWorld/jd_bookshop.js
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
         rm -rf ./JDHelloWorld
+        echo "========= 开始下载单文件脚本 ========="
+        #wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_nzmh.js
+        wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
+        wget -O ./jd_bean_sign.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
+        wget -O ./jd_task_pigPet.js https://github.com/airacg/jd_task/raw/main/jr_task_pigPet.js
+        wget -O ./jd_shop_sign.js https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^jr_/jd_/' *
@@ -79,17 +80,19 @@ jobs:
         rename -f 's/^gua_/jd_/' *
         #rename -f 's/^jddj/jd_dj_/' *
         echo "========= 开始合并cron定时文件 ========="
-        wget -N https://github.com/Aaron-lv/sync/raw/jd_scripts/docker/crontab_list.sh
+        wget -N https://raw.githubusercontent.com/gossh520/jd-v4/master/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
-        echo "========= 临时屏蔽的脚本 ========="
-        sed -i 's/jd_joy_reward/jd_reward/g' ./docker/crontab_list.sh
-        sed -i '/jd_live_redrain\|jd_validate_Worker\|jd_reward\|jd_sign_graphics\|jd_joy.js\|jd_joy_steal\|feedPets\|jd_joy_run\|nzmh/d' ./docker/crontab_list.sh
+        echo "========= 修改cron后缀及临时屏蔽 ========="
+        sed -i 's/wenmoux//g' ./docker/crontab_list.sh
+        sed -i 's/Sccdle//g' ./docker/crontab_list.sh
+        sed -i 's/smiek2221//g' ./docker/crontab_list.sh
+        sed -i '/jd_live_redrain\|nzmh/d' ./docker/crontab_list.sh
         echo "========= 备份cron及yml文件 ========="
         log_time=$(date "+%Y-%m-%d-%H-%M-%S")
         diff ./docker/crontab_list.sh ./backup/cron/crontab_list.sh | tee ./backup/cron/env.diff
         if [ ! -s ./backup/cron/env.diff ]; then
-            echo -e "定时文件没有变化...\n"
+            echo "定时文件没有变化...\n"
         elif [ -s ./backup/cron/env.diff ] ; then
             cp -f ./docker/crontab_list.sh ./backup/cron/crontab_list_$log_time.sh
         fi
