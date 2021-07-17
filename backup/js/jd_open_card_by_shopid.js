@@ -19,6 +19,8 @@ let shopId="",venderId="",giftInfo="";
 let venderCardName="",openCardStatus="",giftBean="",activityId="";
 //入会豆子条件大于等于该值才去入会
 let beanGECnt=20
+//入会信息是否打印过
+let giftPrinted=""
 
 if (process.env.OPEN_CARD_SHOP_ID && process.env.OPEN_CARD_SHOP_ID != "") {
   shopId = process.env.OPEN_CARD_SHOP_ID;
@@ -30,6 +32,19 @@ if (process.env.BEAN_GE_CNT && process.env.BEAN_GE_CNT != "") {
   beanGECnt = process.env.BEAN_GE_CNT;
 }
 
+var args = process.argv.splice(2);
+if (args.length > 0) {
+  for (let i = 0; i < args.length; i++) {
+    if (i == 0) {
+      shopId = args[0];
+      console.log(`店铺ID：${shopId}`);
+    }
+    if (i == 1) {
+      venderId = args[1];
+      console.log(`VenderId：${venderId}`);
+    }
+  }
+}
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -62,14 +77,14 @@ if ($.isNode()) {
       $.isLogin = false;
       $.nickName = '';
       await totalBean();
-      if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
-
-        if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        }
-        continue
-      }
+      //if (!$.isLogin) {
+      //  $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+      //
+      //  if ($.isNode()) {
+      //    await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+      //  }
+      //  continue
+      //}
       // console.log(`\n***********开始【账号${$.index}】${$.nickName || $.UserName}********\n`);
 
       if (!shopId){
@@ -79,20 +94,24 @@ if ($.isNode()) {
       if (!venderId){
         await getVenderId()
       }
-      
+      if (venderId === 0){
+        console.log(`弄啥嘞，整个假的店铺ID你让我跑个啥子嘛。`)
+        break;
+      }
       await getOpenCardGift()
-      // console.log(giftInfo)
       if (openCardStatus==1){
-        console.log(`【账号${$.index}】（${$.nickName || $.UserName}） 已经是【${venderCardName}】家会员了。`)
-        // giftInfo=""
+        console.log(`【账号${$.index}:${$.nickName || $.UserName}】已经是【${venderCardName}】家会员了。`)
         continue;
       }else{
         if (giftBean<1){
-          console.log(`情报有误，【${venderCardName}】家豆子已经么有了，下次学学香港记者跑快点🏃。`)
-          return;
+          console.log(`【账号${$.index}:${$.nickName || $.UserName}】👀看不见【${venderCardName}】店里有豆子。`)
+          continue
         }
-        console.log(`【${venderCardName}】入会送（${giftBean}京豆）；开卡活动ID：${activityId}`)
-        if (giftBean<beanGECnt){
+        if(!giftPrinted){
+          console.log(`【${venderCardName}】入会送（${giftBean}京豆）；activityId：${activityId}`)
+          giftPrinted="yes"
+        }
+        if (giftBean<Number(beanGECnt)){
           console.log(`豆子也忒少了，少于${beanGECnt}豆的情报不要发给我😡。`)
           return;
         } 
@@ -129,7 +148,7 @@ async function openCard(){
         'Accept-Language': "zh-cn"
       }
     }
-    console.log(opt)
+    //console.log(opt)
     $.get(opt, async (err, resp, data) => {
       try{
         if (err) {
@@ -141,9 +160,9 @@ async function openCard(){
             // console.log(data)
             data = JSON.parse(data);
             if (data.busiCode == "0"){
-              console.log(`【账号${$.index}】${$.nickName || $.UserName} 开卡成功。`)
+              console.log(`【账号${$.index}:${$.nickName || $.UserName}】开卡成功。`)
             }
-            console.log(data)
+            //console.log(data)
           }else{
             console.log(`服务器返回空数据`)
           }
@@ -244,7 +263,11 @@ async function getVenderId() {
         } else {
           // console.log(data)
           var matchReg = /shopId=\d+&id=(\d+)"/;
-          venderId = data.match(matchReg)[1];
+          if (data.match(matchReg)){
+            venderId = data.match(matchReg)[1];
+          }else{
+            venderId = 0
+          }
         }
       } catch (e) {
         $.logErr(e, resp);
