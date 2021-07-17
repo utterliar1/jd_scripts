@@ -79,7 +79,7 @@ jobs:
         rename -f 's/^gua_/jd_/' *
         #rename -f 's/^jddj/jd_dj_/' *
         echo "========= 开始合并cron定时文件 ========="
-        wget -N https://github.com/Aaron-lv/sync/raw/jd_scripts/docker/crontab_list.sh
+        wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 临时屏蔽的脚本 ========="
