@@ -85,7 +85,7 @@ jobs:
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 修改cron后缀及临时屏蔽 ========="
         sed -i 's/wenmoux//g' ./docker/crontab_list.sh
-        sed -i 's/Sccdle//g' ./docker/crontab_list.sh
+        sed -i 's/cdle//g' ./docker/crontab_list.sh
         sed -i 's/smiek2221//g' ./docker/crontab_list.sh
         sed -i '/jd_live_redrain\|nzmh/d' ./docker/crontab_list.sh
         echo "========= 备份cron及yml文件 ========="
