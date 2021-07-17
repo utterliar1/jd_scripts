@@ -55,15 +55,6 @@ jobs:
         wget -O ./jd_DailyBonus.js https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget -O ./jd_task_pigPet.js https://github.com/airacg/jd_task/raw/main/jr_task_pigPet.js
         wget -O ./jd_shop_sign.js https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
-        echo "========= 开始备份及合并cron定时文件 ========="
-        log_time=$(date "+%Y-%m-%d-%H-%M-%S")
-        #cp -r ./docker/crontab_list.sh ./backup/cron/crontab_list_$log_time.sh
-        #cp -r ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts_$log_time.yml
-        #find ./backup/cron/ -type f -mtime +1 -exec rm -f {} \;
-        #find ./backup/yml/ -type f -mtime +1 -exec rm -f {} \;
-        wget -N https://github.com/gossh520/jd-v4/raw/master/docker/crontab_list.sh
-        mv -f crontab_list.sh ./docker/crontab_list.sh
-        cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
@@ -87,8 +78,31 @@ jobs:
         rename -f 's/^jx_/jd_/' *
         rename -f 's/^gua_/jd_/' *
         #rename -f 's/^jddj/jd_dj_/' *
+        echo "========= 开始合并cron定时文件 ========="
+        wget -N https://github.com/Aaron-lv/sync/raw/jd_scripts/docker/crontab_list.sh
+        mv -f crontab_list.sh ./docker/crontab_list.sh
+        cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 临时屏蔽的脚本 ========="
         sed -i '/jd_live_redrain\|jd_validate_Worker\|jd_reward\|jd_sign_graphics\|jd_joy.js\|jd_joy_steal\|necklace/d' ./docker/crontab_list.sh
+        echo "========= 备份cron及yml文件 ========="
+        log_time=$(date "+%Y-%m-%d-%H-%M-%S")
+        diff ./docker/crontab_list.sh ./backup/cron/crontab_list.sh | tee ./backup/cron/env.diff
+        if [ ! -s ./backup/cron/env.diff ]; then
+            echo -e "定时文件没有变化...\n"
+        elif [ -s ./backup/cron/env.diff ] ; then
+            cp -f ./docker/crontab_list.sh ./backup/cron/crontab_list_$log_time.sh
+        fi
+        diff ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts.yml | tee ./backup/yml/env.diff
+        if [ ! -s ./backup/yml/env.diff ]; then
+            echo -e "yml文件没有变化...\n"
+        elif [ -s ./backup/yml/env.diff ] ; then
+            cp -f ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts_$log_time.yml
+        fi
+        echo "========= 删除对比缓存及复制文件下次对比 ========="
+        rm -rf ./backup/yml/env.diff
+        rm -rf ./backup/cron/env.diff
+        cp -f ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts.yml
+        cp -f ./docker/crontab_list.sh ./backup/cron/crontab_list.sh
     - name: 'Commit Files'
       id: commit
       run: |
