@@ -66,6 +66,7 @@ jobs:
         cd ..
         rm -rf ./JDHelloWorld/jd_bookshop.js
         cp -f ./JDHelloWorld/*_*.js ./
+        cp -f ./JDHelloWorld/jdJxToken.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
         rm -rf ./JDHelloWorld
         echo "========= 开始下载单文件脚本 ========="
