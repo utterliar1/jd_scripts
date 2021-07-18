@@ -16,8 +16,8 @@ jobs:
         sudo apt install rename
     - name: down
       run: |
-        #echo "========= 开始清空脚本 ========="
-        #rm -rf !(utils|docker|backup|tools|redrain)
+        echo "========= 开始清空脚本 ========="
+        rm -rf !(utils|docker|backup|tools|redrain)
         echo "========= 开始下载smiek2221的脚本 ========="
         git clone https://github.com/smiek2221/scripts.git  ./smiek2221
         rm -r ./smiek2221/USER_AGENTS.js
@@ -75,6 +75,8 @@ jobs:
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget -O ./jd_task_pigPet.js https://github.com/airacg/jd_task/raw/main/jr_task_pigPet.js
         wget -O ./jd_shop_sign.js https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
+        wget -O ./jd_joy_reward_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_joy_reward.js
+        wget -O ./jd_blueCoin_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_blueCoin.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^jr_/jd_/' *
