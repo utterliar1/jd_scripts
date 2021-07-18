@@ -30,4 +30,9 @@
 # 京喜签到（zero205）
 5 0 * * * node /scripts/jd_jxqd.js >> /scripts/logs/jd_jxqd.log 2>&1
 # 京喜财富岛提现（HW）
-0,1 0 * * * node /scripts/jd_cfd_cashOut.js >> /scripts/logs/jd_cfd_cashOut.log 2>&1
+30 2-8 * * * node /scripts/jd_cfd_cashOut.js >> /scripts/logs/jd_cfd_cashOut.log 2>&1
+# 超市兑换（小小）
+59 23 * * * node /scripts/jd_blueCoin_Aaron.js >> /scripts/logs/jd_blueCoin_Aaron.log 2>&1
+# 宠汪汪兑换（小小）
+59 7,16,23 * * * node /scripts/jd_joy_reward_Aaron.js >> /scripts/logs/jd_joy_reward_Aaron.log 2>&1
+
