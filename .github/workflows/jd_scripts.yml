@@ -29,7 +29,7 @@ jobs:
         rm -rf ./cdle
         echo "========= 开始下载Wenmoux的脚本 ========="
         git clone -b wen https://github.com/Wenmoux/scripts.git ./Wenmoux
-        mv ./Wenmoux/jd/chinnkarahoi_jd_bookshop.js ./jd_bookshop.js
+        mv ./Wenmoux/jd/chinnkarahoi_jd_bookshop.js ./jd_bookshopWenmoux.js
         cp -f ./Wenmoux/jd/*_*.js ./
         rm -rf ./Wenmoux
         echo "========= 开始下载passby的脚本 ========="
@@ -64,7 +64,6 @@ jobs:
         tsc *_*.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ..
-        rm -rf ./JDHelloWorld/jd_bookshop.js
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/jdJxToken.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
