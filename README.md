@@ -1,6 +1,6 @@
 # 利用github action整合各个库并维护crontab.list
 - 主库是[@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)，自动转换ts脚本为js脚本   
-- v4用户使用前请务必先删除scripts文件夹
+- 初衷是方便v4自用，青龙用户建议直接拉HW的库，v4用户使用前请务必先删除scripts文件夹
 # V4容器docker-compoes.yml添加变量
 ```text
 environment: 
@@ -8,7 +8,7 @@ environment:
 ```
 # 青龙容器添加repo命令
 ```text
-ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "backup|utils" "^jd[^_]|USER|package|tools"
+ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "backup|utils|jd_jxmc_token" "^jd[^_]|USER|package|tools|jd_jxmc_token"
 ```
 extra.sh添加
 ```text
