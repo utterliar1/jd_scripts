@@ -29,3 +29,5 @@
 12 7-14 * * * node /scripts/jd_summer_movement_help.js >> /scripts/logs/jd_summer_movement_help.log 2>&1
 # 京喜签到（zero205）
 5 0 * * * node /scripts/jd_jxqd.js >> /scripts/logs/jd_jxqd.log 2>&1
+# 京喜财富岛提现（HW）
+0,1 0 * * * node /scripts/jd_cfd_cashOut.js >> /scripts/logs/jd_cfd_cashOut.log 2>&1
