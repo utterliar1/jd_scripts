@@ -107,7 +107,6 @@
 #东东萌宠
 15 6-18/6 * * * node /scripts/jd_pet.js >> /scripts/logs/jd_pet.log 2>&1
 #京东金融养猪猪
-12 0-23/6 * * * node /scripts/jd_pigPet.js >> /scripts/logs/jd_pigPet.log 2>&1
 #京东种豆得豆
 1 7-21/2 * * * node /scripts/jd_plantBean.js >> /scripts/logs/jd_plantBean.log 2>&1
 #京东保价
@@ -177,7 +176,7 @@
 59 23 * * * node /scripts/jd_blueCoin_Aaron.js >> /scripts/logs/jd_blueCoin_Aaron.log 2>&1
 # 宠汪汪兑换（小小）
 59 7,16,23 * * * node /scripts/jd_joy_reward_Aaron.js >> /scripts/logs/jd_joy_reward_Aaron.log 2>&1
-# 伊利养牛（柠檬）
-0 12 * * * node /scripts/jd_ylyn.js >> /scripts/logs/jd_ylyn.log 2>&1
+# 伊利养牛
+0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1
 
 
