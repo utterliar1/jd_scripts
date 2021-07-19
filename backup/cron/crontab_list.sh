@@ -42,7 +42,7 @@
 #发财大赢家助力
 0 0 * * * node /scripts/jd_dyj_help.js >> /scripts/logs/jd_dyj_help.log 2>&1
 #预存validate
-58 7,15,23 * * * node /scripts/jd_validate_Worker.js >> /scripts/logs/jd_validate_Worker.log 2>&1
+59 7,15,23 * * * node /scripts/jd_validate_Worker.js >> /scripts/logs/jd_validate_Worker.log 2>&1
 #宠汪汪兑换京豆
 0 8,16,0 * * * node /scripts/jd_joy_reward.js >> /scripts/logs/jd_joy_reward.log 2>&1
 #省钱大赢家之翻翻乐
