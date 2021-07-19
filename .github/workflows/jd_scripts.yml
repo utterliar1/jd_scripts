@@ -19,6 +19,7 @@ jobs:
         echo "========= 开始清空脚本 ========="
         shopt -s extglob
         rm -rf !(utils|docker|backup|tools|redrain)
+        shopt -u extglob
         echo "========= 开始下载smiek2221的脚本 ========="
         git clone https://github.com/smiek2221/scripts.git  ./smiek2221
         rm -r ./smiek2221/USER_AGENTS.js
