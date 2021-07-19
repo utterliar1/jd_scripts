@@ -8,7 +8,7 @@ environment:
 ```
 # 青龙容器添加repo命令
 ```text
-ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "utils|backup|tools|jxmcToken" "^jd[^_]|USER|package|jxmcToken"
+ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "utils|backup|tools" "^jd[^_]|USER|package|tools"
 ```
 extra.sh添加
 ```text
