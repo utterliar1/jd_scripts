@@ -61,7 +61,7 @@
 # 京东汽车(签到满500赛点可兑换500京豆)
 10 7 * * * node /scripts/jd_car.js >> /scripts/logs/jd_car.log 2>&1
 # 京东汽车旅程赛点兑换金豆
-0 0 * * * node /scripts/jd_car_reward.js >> /scripts/logs/jd_car_reward.log 2>&1
+0 0 * * * node /scripts/jd_car_exchange.js >> /scripts/logs/jd_car_exchange.log 2>&1
 # 签到领现金
 2 0-23/4 * * * node /scripts/jd_cash.js >> /scripts/logs/jd_cash.log 2>&1
 #京喜财富岛
@@ -71,7 +71,6 @@
 #天天提鹅
 10 * * * * node /scripts/jd_daily_egg.js >> /scripts/logs/jd_daily_egg.log 2>&1
 # 删除优惠券(默认注释，如需要自己开启，如有误删，已删除的券可以在回收站中还原，慎用)
-#20 9 * * 6 node /scripts/jd_delCoupon.js >> /scripts/logs/jd_delCoupon.log 2>&1
 #京喜工厂
 10 * * * * node /scripts/jd_dreamFactory.js >> /scripts/logs/jd_dreamFactory.log 2>&1
 #京东家庭号
@@ -137,7 +136,6 @@
 # 京东排行榜
 21 9 * * * node /scripts/jd_rankingList.js >> /scripts/logs/jd_rankingList.log 2>&1
 #东东电竞经理
-0 0-23/2 * * * node /scripts/jd_EsportsManager.js >> /scripts/logs/jd_EsportsManager.log 2>&1
 #环境测试
 0 12 * * * node /scripts/jd_api_test.js >> /scripts/logs/jd_api_test.log 2>&1
 #京喜牧场
