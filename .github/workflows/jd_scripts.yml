@@ -17,6 +17,7 @@ jobs:
     - name: down
       run: |
         echo "========= 开始清空脚本 ========="
+        shopt -s extglob
         rm -rf !(utils|docker|backup|tools|redrain)
         echo "========= 开始下载smiek2221的脚本 ========="
         git clone https://github.com/smiek2221/scripts.git  ./smiek2221
