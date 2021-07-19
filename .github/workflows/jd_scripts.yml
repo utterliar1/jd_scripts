@@ -66,6 +66,7 @@ jobs:
         tsc *_*.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ..
+        rm -rf ./JDHelloWorld/jd_update.js
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/jdJxToken.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
