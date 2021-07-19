@@ -21,7 +21,6 @@
 #京东签到图形验证
 14 10 * * * node /scripts/jd_sign_graphics.js >> /scripts/logs/jd_sign_graphics.log 2>&1
 #点点券
-20 0,20 * * * node /scripts/jd_necklace.js >> /scripts/logs/jd_necklace.log 2>&1
 #京东宠汪汪
 15 0-23/2 * * * node /scripts/jd_joy.js >> /scripts/logs/jd_joy.log 2>&1
 #宠汪汪偷好友积分与狗粮
@@ -62,17 +61,13 @@
 # 京东汽车(签到满500赛点可兑换500京豆)
 10 7 * * * node /scripts/jd_car.js >> /scripts/logs/jd_car.log 2>&1
 # 京东汽车旅程赛点兑换金豆
-0 0 * * * node /scripts/jd_car_exchange.js >> /scripts/logs/jd_car_exchange.log 2>&1
+0 0 * * * node /scripts/jd_car_reward.js >> /scripts/logs/jd_car_reward.log 2>&1
 # 签到领现金
 2 0-23/4 * * * node /scripts/jd_cash.js >> /scripts/logs/jd_cash.log 2>&1
 #京喜财富岛
 5 */1 * * * node /scripts/jd_cfd.js >> /scripts/logs/jd_cfd.log 2>&1
 #摇京豆
 5 0,23 * * * node /scripts/jd_club_lottery.js >> /scripts/logs/jd_club_lottery.log 2>&1
-#crazyJoy任务
-10 9 * * * node /scripts/jd_crazy_joy.js >> /scripts/logs/jd_crazy_joy.log 2>&1
-#监控crazyJoy分红
-10 12 * * * node /scripts/jd_crazy_joy_bonus.js >> /scripts/logs/jd_crazy_joy_bonus.log 2>&1
 #天天提鹅
 10 * * * * node /scripts/jd_daily_egg.js >> /scripts/logs/jd_daily_egg.log 2>&1
 # 删除优惠券(默认注释，如需要自己开启，如有误删，已删除的券可以在回收站中还原，慎用)
@@ -125,7 +120,6 @@
 #进店领豆
 10 0 * * * node /scripts/jd_shop.js >> /scripts/logs/jd_shop.log 2>&1
 #东东小窝
-16 22 * * * node /scripts/jd_small_home.js >> /scripts/logs/jd_small_home.log 2>&1
 #天天加速
 8 0-23/3 * * * node /scripts/jd_speed.js >> /scripts/logs/jd_speed.log 2>&1
 #京东极速版红包
