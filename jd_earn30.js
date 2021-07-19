@@ -26,22 +26,24 @@ var tools = [];
                var data = await requestApi('createSplitRedPacket', cookie, {
                     scene: 3
                });
-               if (data.code === 0 && data.SplitRedPacketInfo) {
-                    helps.push({
-                         redPacketId: data.SplitRedPacketInfo.redPacketId,
-                         shareCode: data.SplitRedPacketInfo.shareCode,
-                         id: i,
-                         cookie: cookie
-                    })
-               } else if (data.code === 1) {
-                    data = await requestApi('getSplitRedPacket', cookie);
-                    if (data.code === '0' && data.SplitRedPacketInfo ) {//&& data.SplitRedPacketInfo.finishedMoney != data.SplitRedPacketInfo.totalMoney
+               if(data){
+                    if (data.code === 0 && data.SplitRedPacketInfo) {
                          helps.push({
                               redPacketId: data.SplitRedPacketInfo.redPacketId,
                               shareCode: data.SplitRedPacketInfo.shareCode,
                               id: i,
                               cookie: cookie
                          })
+                    } else if (data.code === 1) {
+                         data = await requestApi('getSplitRedPacket', cookie);
+                         if (data && data.code === '0' && data.SplitRedPacketInfo ) {//&& data.SplitRedPacketInfo.finishedMoney != data.SplitRedPacketInfo.totalMoney
+                              helps.push({
+                                   redPacketId: data.SplitRedPacketInfo.redPacketId,
+                                   shareCode: data.SplitRedPacketInfo.shareCode,
+                                   id: i,
+                                   cookie: cookie
+                              })
+                         }
                     }
                }
                data = await requestApi('fpSign', cookie);
