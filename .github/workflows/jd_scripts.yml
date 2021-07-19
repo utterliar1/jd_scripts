@@ -76,6 +76,7 @@ jobs:
         wget -N https://github.com/zero205/JD_tencent_scf/raw/main/jd_jxqd.js
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
+        wget -N https://github.com/panghu999/panghu/raw/master/jd_ylyn.js
         wget -O ./jd_task_pigPet.js https://github.com/airacg/jd_task/raw/main/jr_task_pigPet.js
         wget -O ./jd_shop_sign.js https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         wget -O ./jd_joy_reward_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_joy_reward.js
