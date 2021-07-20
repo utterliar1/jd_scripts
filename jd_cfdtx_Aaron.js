@@ -36,7 +36,7 @@ $.showLog = $.getdata("cfd_showLog") ? $.getdata("cfd_showLog") === "true" : fal
 $.notifyTime = $.getdata("cfd_notifyTime");
 $.result = [];
 $.shareCodes = [];
-let cookiesArr = [], cookie = '', token;
+let cookiesArr = [], cookie = '', token, nowTimes;
 let allMessage = '', message = ''
 
 if ($.isNode()) {
@@ -103,8 +103,9 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 async function cfd() {
   try {
-    if ((new Date().getHours() === 11 || new Date().getHours() === 23) && new Date().getMinutes() === 59) {
-      let nowtime = new Date().Format("ss")
+    nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000)
+    if ((nowTimes.getHours() === 11 || nowTimes.getHours() === 23) && nowTimes.getMinutes() === 59) {
+      let nowtime = new Date().Format("s.S")
       let starttime = process.env.CFD_STARTTIME ? process.env.CFD_STARTTIME : 60;
       if(nowtime < 59) {
         let sleeptime = (starttime - nowtime) * 1000;
@@ -168,9 +169,10 @@ async function userCashOutState(type = true) {
           if (type) {
             if (data.dwTodayIsCashOut !== 1) {
               if (data.ddwUsrTodayGetRich >= data.ddwTodayTargetUnLockRich) {
-                if (new Date().getHours() >= 0 && new Date().getHours() < 12) {
+                nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000)
+                if (nowTimes.getHours() >= 0 && nowTimes.getHours() < 12) {
                   data.UsrCurrCashList = data.UsrCurrCashList.filter((x) => x.ddwMoney / 100 >= 1)
-                } else if (new Date().getHours() === 12 && new Date().getMinutes() <= 10) {
+                } else if (nowTimes.getHours() === 12 && nowTimes.getMinutes() <= 10) {
                   data.UsrCurrCashList = data.UsrCurrCashList.filter((x) => x.ddwMoney / 100 >= 0.5)
                 }
                 for (let key of Object.keys(data.UsrCurrCashList).reverse()) {
