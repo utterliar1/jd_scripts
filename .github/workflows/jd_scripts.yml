@@ -18,7 +18,7 @@ jobs:
       run: |
         echo "========= 开始清空脚本 ========="
         shopt -s extglob
-        rm -rf !(utils|docker|backup|tools|Loon|QuantumultX|README.md|jd_half_redrain.js|jd_super_redrain.js)
+        rm -rf !(utils|docker|backup|tools|Loon|QuantumultX|README.md|jd_half_redrain.js|jd_super_redrain.js|jd_jump.js)
         shopt -u extglob
         rm -rf ./tools/*
         echo "========= 开始下载smiek2221的脚本 ========="
