@@ -110,7 +110,6 @@
 #京东种豆得豆
 1 7-21/2 * * * node /scripts/jd_plantBean.js >> /scripts/logs/jd_plantBean.log 2>&1
 #京东保价
-#41 0,23 * * * node /scripts/jd_price.js >> /scripts/logs/jd_price.log 2>&1
 #京东全民开红包
 1 1,2,23 * * * node /scripts/jd_redPacket.js >> /scripts/logs/jd_redPacket.log 2>&1
 #闪购盲盒
