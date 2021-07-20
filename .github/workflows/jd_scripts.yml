@@ -68,7 +68,7 @@ jobs:
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ..
         rm -rf ./JDHelloWorld/jd_update.js
-        cp -rf ./JDHelloWorld/backUp ./backup/js/
+        cp -rf ./JDHelloWorld/backUp/* ./backup/js/
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*Token.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
