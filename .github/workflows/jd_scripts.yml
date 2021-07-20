@@ -70,7 +70,7 @@ jobs:
         rm -rf ./JDHelloWorld/jd_update.js
         cp -rf ./JDHelloWorld/backUp/* ./backup/js/
         cp -f ./JDHelloWorld/*_*.js ./
-        cp -f ./JDHelloWorld/*Token.js ./
+        #cp -f ./JDHelloWorld/*Token.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
         rm -rf ./JDHelloWorld
         echo "========= 开始下载单文件脚本 ========="
