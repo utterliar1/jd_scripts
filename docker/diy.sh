@@ -29,8 +29,8 @@
 #12 7-14 * * * node /scripts/jd_summer_movement_help.js >> /scripts/logs/jd_summer_movement_help.log 2>&1
 # 京喜签到（zero205）
 5 0 * * * node /scripts/jd_jxqd.js >> /scripts/logs/jd_jxqd.log 2>&1
-# 京喜财富岛提现（HW）
-30 2-8 * * * node /scripts/jd_cfd_cashOut.js >> /scripts/logs/jd_cfd_cashOut.log 2>&1
+# 京喜财富岛提现（小小）
+59 11,12,23 * * * node /scripts/jd_cfdtx.js >> /scripts/logs/jd_cfdtx.log 2>&1
 # 超市兑换（小小）
 59 23 * * * node /scripts/jd_blueCoin_Aaron.js >> /scripts/logs/jd_blueCoin_Aaron.log 2>&1
 # 宠汪汪兑换（小小）
