@@ -1,6 +1,7 @@
 # 利用github action整合各个库并维护crontab.list
 - 主库是[@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)，自动转换ts脚本为js脚本   
 - 初衷是方便v4自用，青龙用户建议直接拉HW的库，v4用户使用前请务必先删除scripts文件夹
+- 如果发现脚本还没有同步过来，可以点亮/取消后点亮star激活action运行获取更新
 # V4容器docker-compoes.yml添加变量
 ```text
 environment: 
