@@ -14,7 +14,6 @@ jobs:
         sudo npm install -g typescript
         sudo apt-get install wget
         sudo apt install rename
-        sudo apt-get install subversion
     - name: down
       run: |
         echo "========= 开始清空脚本 ========="
@@ -54,12 +53,14 @@ jobs:
         cp -f ./airacg/*_*.js ./
         rm -rf ./airacg
         echo "========= 开始下载小小的脚本及依赖 ========="
-        wget -O ./jd_joy_reward_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_joy_reward.js
-        wget -O ./jd_blueCoin_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_blueCoin.js
-        wget -O ./jd_cfdtx_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_cfdtx.js
-        wget -O ./jd_cfd_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_cfd.js
-        wget -N https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_jump.js
-        svn checkout https://github.com/shufflewzc/fAaron-lv/sync/utils ./
+        git clone https://github.com/Aaron-lv/sync.git ./Aaron
+        cp -f ./Aaron/jd_joy_reward.js ./jd_joy_reward_Aaron.js
+        cp -f ./Aaron/jd_blueCoin.js ./jd_blueCoin_Aaron.js
+        cp -f ./Aaron/jd_cfdtx.js ./jd_cfdtx_Aaron.js
+        cp -f ./Aaron/jd_joy_reward.js ./jd_cfd_Aaron.js
+        cp -f ./Aaron/jd_jump.js ./
+        cp -rf ./Aaron/utils ./
+        rm -rf ./Aaron
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
