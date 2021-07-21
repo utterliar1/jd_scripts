@@ -59,7 +59,7 @@ jobs:
         wget -O ./jd_cfdtx_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_cfdtx.js
         wget -O ./jd_cfd_Aaron.js https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_cfd.js
         wget -N https://github.com/Aaron-lv/sync/raw/jd_scripts/jd_jump.js
-        svn checkout https://github.com/Aaron-lv/sync/tree/jd_scripts/utils ./
+        svn checkout https://github.com/shufflewzc/fAaron-lv/sync/utils ./
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
