@@ -63,7 +63,7 @@ jobs:
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
         echo "========= 开始下载JDHelloWorld的脚本 ========="
-        git clone -b main https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
+        git clone https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
         echo "========= 开始复制依赖 ========="
         cp -rf ./JDHelloWorld/tools ./
