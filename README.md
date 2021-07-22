@@ -27,3 +27,4 @@ cp -f /ql/repo/utterliar1_jd_scripts/package.json /ql/scripts/package.json && cd
 - [@yangtingxiao](https://github.com/yangtingxiao/QuantumultX.git)
 - [@jiulan](https://github.com/jiulan/platypus.git)
 - [@Aaron-lv](https://github.com/Aaron-lv/sync.git)
+- [@curtinlv](https://github.com/curtinlv/JD-Script.git)
