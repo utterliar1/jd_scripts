@@ -39,5 +39,9 @@
 1 0,11,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 #京喜财富岛
 #5 */1 * * * node /scripts/jd_cfd_Aaron.js >> /scripts/logs/jd_cfd_Aaron.log 2>&1
+#升级赚京豆（smiek）
+21 9 * * * node /scripts/jd_MMdou.js >> /scripts/logs/jd_MMdou.log 2>&1
+#京豆盒子（HW）
+23 9 * * * node /scripts/jd_bean_box.js >> /scripts/logs/jd_bean_box.log 2>&1
 
 
