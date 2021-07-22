@@ -163,8 +163,6 @@
 12 0-23/6 * * * node /scripts/jd_task_pigPet.js >> /scripts/logs/jd_task_pigPet.log 2>&1
 # 店铺签到（jiulan）
 #10 1,9 * * * node /scripts/jd_shop_sign.js >> /scripts/logs/jd_shop_sign.log 2>&1
-# 财富大陆（smiek）
-#18 0-23/2 * * * node /scripts/jd_wealth_island.js >> /scripts/logs/jd_wealth_island.log 2>&1
 # 燃动夏季（smiek）
 # 燃动夏季_SH助力（smiek）
 # 京喜签到（zero205）
@@ -179,8 +177,6 @@
 0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1
 # 跳跳乐瓜分京豆（lxk）
 1 0,11,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
-# 京喜财富岛提现（HW）
-59 11,12,23 * * * node /scripts/jd_cfd_cashOut.js >> /scripts/logs/jd_cfd_cashOut.log 2>&1
 #京喜财富岛
 #5 */1 * * * node /scripts/jd_cfd_Aaron.js >> /scripts/logs/jd_cfd_Aaron.log 2>&1
 
