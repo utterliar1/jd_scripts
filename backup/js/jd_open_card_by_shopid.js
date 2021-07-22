@@ -1,6 +1,7 @@
 
 /**
  * 照着 @curtinlv 大佬的python开卡脚本改了一份根据shopid开查询并开卡的脚本
+ * @lof
  * 需要两个环境变量，如果提供两个ID最好，不行提供一个OPEN_CARD_SHOP_ID也行
  * OPEN_CARD_SHOP_ID
  * OPEN_CARD_VENDER_ID
@@ -76,7 +77,7 @@ if ($.isNode()) {
       $.index = i + 1;
       $.isLogin = false;
       $.nickName = '';
-      await totalBean();
+      await setNickName();
       //if (!$.isLogin) {
       //  $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
       //
@@ -292,23 +293,23 @@ function randomString(e) {
   return n
 }
 
-function totalBean() {
+function setNickName() {
   return new Promise((resolve) => {
     const options = {
-      url: `https://wq.jd.com/user/info/QueryJDUserInfo?sceneval=2`,
+      url: `https://wq.jd.com/user_new/info/GetJDUserInfoUnion?orgFlag=JD_PinGou_New&callSource=mainorder&channel=4&isHomewhite=0&sceneval=2&sceneval=2&g_login_type=1g_ty=ls`,
       headers: {
-        Accept: 'application/json,text/plain, */*',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Accept-Language': 'zh-cn',
-        Connection: 'keep-alive',
+        Accept: "*/*",
+        Connection: "keep-alive",
+        Host: "wq.jd.com",
+        "Accept-Language": "zh-cn",
         Cookie: $.cookie,
-        Referer: 'https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2',
-        'User-Agent':
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
+        "Accept-Encoding": "gzip, deflate, br",
+        Referer: "https://home.m.jd.com/myJd/home.action",
+        "User-Agent":
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 14_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.1 Mobile/15E148 Safari/604.1",
       },
     };
-    $.post(options, (err, resp, data) => {
+    $.get(options, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`);
@@ -316,14 +317,15 @@ function totalBean() {
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === 13) {
+            userInfo = data.data.userInfo;
+            if (data["retcode"] === 13) {
               return;
             }
             $.isLogin = true;
-            if (data['retcode'] === 0) {
-              $.nickName = (data['base'] && data['base'].nickname) || $.UserName;
+            if (data["retcode"] === 0) {
+              $.nickName = userInfo.baseInfo.nickname || $.UserName;
             } else {
-              $.nickName = $.UserName
+              $.nickName = $.UserName;
             }
           } else {
             console.log(`京东服务器返回空数据`);
