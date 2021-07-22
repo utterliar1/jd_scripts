@@ -59,17 +59,28 @@ var tools = [];
           }
           tools.push({
                id: i,
-               cookie: cookie
+               cookie: cookie,
+               helps:[],
           })
      }
      for(let help of helps){
           while (tools.length) {
                var tool = tools.pop()
                var data = await requestApi('splitRedPacket', tool.cookie, {shareCode:help.shareCode,groupCode:help.redPacketId});
-               console.log(`${tool.id+1}->${help.id+1} ${data.text}`)
-               if(data.text == "我的红包已拆完啦"){
+               if(data){
+                    console.log(`${tool.id+1}->${help.id+1} ${data.text}`)
+                    if(tool.helps.indexOf(help.id) != -1){
+                         break
+                    }
+                    if(data.text == "我的红包已拆完啦"){
+                         tools.unshift(tool)
+                         break
+                    }
+                    if(data.text.indexOf("帮拆次数已达上限")!=-1){
+                         continue
+                    }
+                    tool.helps.push(tool.id)
                     tools.unshift(tool)
-                    break
                }
           }
      }
