@@ -1,3 +1,5 @@
+const { reverse } = require('dns');
+
 /*
 真·抢京豆
 更新时间：2021-7-22
@@ -54,6 +56,7 @@ var finished = [];
                cookie: cookie,
                helps: [],
                times: 0,
+               timeout: 0,
           })
      }
      for (let help of helps)
@@ -83,6 +86,7 @@ function open(help) {
           var helpToast = data?.data?.helpToast
           if(helpToast){
                tool.helps.push(help.id)
+               tool.timeout++
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if(helpToast.indexOf("助力成功")!=-1){ //助力成功
                     tool.times++
@@ -94,6 +98,9 @@ function open(help) {
                     tool.times = maxTimes
                }
                if(helpToast.indexOf("火爆")!=-1){ //活动太火爆啦~请稍后再试~
+                    tool.times = maxTimes
+               }
+               if(tool.timeout >= helps.length*2){
                     tool.times = maxTimes
                }
           }
@@ -126,13 +133,12 @@ function requestApi(functionId, cookie, body = {}) {
                     "User-Agent": ua,
                     "Host": "api.m.jd.com",
                },
+               timeout: 1000,
           }, (_, resp, data) => {
-               try {
-                    data = JSON.parse(data)
-               } catch (e) {
-                    $.logErr('Error: ', e, resp)
-               } finally {
-                    resolve(data)
+               if(data){
+                    resolve(JSON.parse(data))
+               }else{
+                    resolve(0)
                }
           })
      })
