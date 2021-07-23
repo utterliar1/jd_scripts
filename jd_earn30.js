@@ -14,6 +14,7 @@ var pins = process.env.earn30Pins ? process.env.earn30Pins : '';
 let cookiesArr = [];
 var helps = [];
 var tools = [];
+var timeout = 0;
 !(async () => {
      if (!pins) {
           console.log("未填写环境变量earn30Pins，默认所有账号")
@@ -61,15 +62,18 @@ var tools = [];
                id: i,
                cookie: cookie,
                helps:[],
+               times: 0,
           })
      }
+     timeout = helps.length*2
      for(let help of helps){
           while (tools.length) {
                var tool = tools.pop()
+               tool.times++
                var data = await requestApi('splitRedPacket', tool.cookie, {shareCode:help.shareCode,groupCode:help.redPacketId});
                if(data){
-                    if(tool.id == help.id){
-                         continue
+                    if(tool.times >= timeout){
+                         break
                     }
                     console.log(`${tool.id+1}->${help.id+1} ${data.text}`)
                     if(tool.helps.indexOf(help.id) != -1){
@@ -79,7 +83,7 @@ var tools = [];
                          tools.unshift(tool)
                          break
                     }
-                    if(data.text.indexOf("帮拆出错")!=-1){
+                    if(data.text.indexOf("帮拆出错")!=-1 && tool.id != help.id){
                          continue
                     }
                     if(data.text.indexOf("帮拆次数已达上限")!=-1){
