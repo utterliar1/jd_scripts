@@ -68,7 +68,7 @@
 # 京东汽车(签到满500赛点可兑换500京豆)
 10 7 * * * node /scripts/jd_car.js >> /scripts/logs/jd_car.log 2>&1
 # 京东汽车旅程赛点兑换金豆
-0 0 * * * node /scripts/jd_car_exchange.js >> /scripts/logs/jd_car_exchange.log 2>&1
+0 0 * * * node /scripts/jd_car_reward.js >> /scripts/logs/jd_car_reward.log 2>&1
 # 签到领现金
 2 0-23/4 * * * node /scripts/jd_cash.js >> /scripts/logs/jd_cash.log 2>&1
 #京喜财富岛
