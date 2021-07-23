@@ -1,5 +1,3 @@
-const { reverse } = require('dns');
-
 /*
 真·抢京豆
 更新时间：2021-7-22
@@ -15,6 +13,7 @@ var helps = [];
 var tools = [];
 var maxTimes = 3;
 var finished = [];
+var mode = process.env.angryBeanMode ?? "speed";
 !(async () => {
      if (!pins) {
           console.log("请在环境变量中填写需要助力的账号")
@@ -70,23 +69,17 @@ var finished = [];
           $.done();
      })
 
-function open(help) {
+async function open(help) {
      var tool = tools.pop()
      if (!tool) {
           finished.push(help.id)
           return
      }
-     requestApi('signGroupHelp', tool.cookie, {
-          activeType: 2,
-          groupCode: help.groupCode,
-          shareCode: help.shareCode,
-          activeId: help.activityId+"",
-          source: "guest",
-     }).then(function (data) {
+     function handle(data) {
           var helpToast = data?.data?.helpToast
+          tool.timeout++
           if(helpToast){
                tool.helps.push(help.id)
-               tool.timeout++
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if(helpToast.indexOf("助力成功")!=-1){ //助力成功
                     tool.times++
@@ -103,10 +96,10 @@ function open(help) {
                if(tool.timeout >= helps.length*2){
                     tool.times = maxTimes
                }
-          }
-          if(tool.times < maxTimes){
-               if(Array.from(new Set(tool.helps)).length != helps.length){
-                    tools.unshift(tool)
+               if(tool.times < maxTimes){
+                    if(Array.from(new Set(tool.helps)).length != helps.length){
+                         tools.unshift(tool)
+                    }
                }
           }
           if(!help.success){
@@ -114,7 +107,20 @@ function open(help) {
           }else{
                finished.push(help.id)
           }
-     })
+     }
+     var params = {
+          activeType: 2,
+          groupCode: help.groupCode,
+          shareCode: help.shareCode,
+          activeId: help.activityId+"",
+          source: "guest",
+     }
+     if(mode == "speed"){
+          data = await requestApi('signGroupHelp', tool.cookie, params)
+          handle(data)
+     }else{
+          requestApi('signGroupHelp', tool.cookie, params).then(handle)
+     }
 }
 
 function requestApi(functionId, cookie, body = {}) {
