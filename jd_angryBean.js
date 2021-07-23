@@ -1,28 +1,29 @@
 /*
 真·抢京豆
-更新时间：2021-7-22
-备注：高速并发抢京豆，专治偷助力。设置环境变量angryBeanPins为指定账号助力，默认不助力。
+更新时间：2021-7-23
+备注：高速并发抢京豆，专治偷助力。设置环境变量angryBeanPins为指定账号助力，默认不助力。环境变量angryBeanMode可选值priority和speed，默认speed模式。
 TG学习交流群：https://t.me/cdles
 0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_angryBean.js
 */
 const $ = new Env("真·抢京豆")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
-var pins = process.env.angryBeanPins ?? ""
-let cookiesArr = []
+var pins = $.isNode() ? (process.env.angryBeanPins ? process.env.angryBeanPins : "") : "";
+let cookiesArr = [];
 var helps = [];
 var tools = [];
 var maxTimes = 3;
 var finished = [];
-var mode = process.env.angryBeanMode ?? "speed";
+var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode : "speed" ) : "priority";
 !(async () => {
-     if (!pins) {
+     if ($.isNode() && !pins) {
           console.log("请在环境变量中填写需要助力的账号")
           return
      }
+     console.log(`开启${mode}模式`)
      requireConfig()
      for (let i in cookiesArr) {
           cookie = cookiesArr[i]
-          if (pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
+          if (!$.isNode() || pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
                await requestApi('signGroupHit', cookie, {
                     activeType: 2
                });
@@ -36,16 +37,13 @@ var mode = process.env.angryBeanMode ?? "speed";
                     jda: "-1",
                     monitor_source: "bean_m_bean_index"
                });
-               groupCode = data?.data?.groupCode
-               shareCode = data?.data?.shareCode
-               activityId = data?.data?.activityMsg?.activityId
-               if (shareCode) {
+               if (data && data.data && data.data.shareCode) {
                     helps.push({
                          id: +i,
                          cookie: cookie,
-                         groupCode: groupCode,
-                         shareCode: shareCode,
-                         activityId: activityId,
+                         groupCode: data.data.groupCode,
+                         shareCode: data.data.shareCode,
+                         activityId: data.data.activityMsg.activityId,
                          success: false,
                     })
                }
@@ -58,10 +56,11 @@ var mode = process.env.angryBeanMode ?? "speed";
                timeout: 0,
           })
      }
-     for (let help of helps)
-     open(help)
+     for (let help of helps) {
+          await open(help)
+     }
      while (finished.length != helps.length)
-     await $.wait(100)
+          await $.wait(100)
 })().catch((e) => {
           $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
      })
@@ -75,36 +74,40 @@ async function open(help) {
           finished.push(help.id)
           return
      }
-     function handle(data) {
-          var helpToast = data?.data?.helpToast
+     async function handle(data) {
+          var helpToast = undefined
+          if (data && data.data && data.data.helpToast) {
+               helpToast = data.data.helpToast
+          }
           tool.timeout++
-          if(helpToast){
+          if (helpToast) {
                tool.helps.push(help.id)
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
-               if(helpToast.indexOf("助力成功")!=-1){ //助力成功
+               if (helpToast.indexOf("助力成功") != -1) { //助力成功
                     tool.times++
                }
-               if(helpToast.indexOf("满")!=-1){ //该团已经满啦~去帮别人助力吧~
+               if (helpToast.indexOf("满") != -1) { //该团已经满啦~去帮别人助力吧~
                     help.success = true
                }
-               if(helpToast.indexOf("今日助力次数已达上限")!=-1){ //您今日助力次数已达上限~
+               if (helpToast.indexOf("今日助力次数已达上限") != -1) { //您今日助力次数已达上限~
                     tool.times = maxTimes
                }
-               if(helpToast.indexOf("火爆")!=-1){ //活动太火爆啦~请稍后再试~
+               if (helpToast.indexOf("火爆") != -1) { //活动太火爆啦~请稍后再试~
                     tool.times = maxTimes
                }
-               if(tool.timeout >= helps.length*2){
+               if (tool.timeout >= helps.length * 2) {
                     tool.times = maxTimes
                }
-               if(tool.times < maxTimes){
-                    if(Array.from(new Set(tool.helps)).length != helps.length){
+               if (tool.times < maxTimes) {
+                    if (Array.from(new Set(tool.helps)).length != helps.length) {
                          tools.unshift(tool)
                     }
                }
           }
-          if(!help.success){
-               open(help)
-          }else{
+          if (!help.success) {
+
+               await open(help)
+          } else {
                finished.push(help.id)
           }
      }
@@ -112,13 +115,14 @@ async function open(help) {
           activeType: 2,
           groupCode: help.groupCode,
           shareCode: help.shareCode,
-          activeId: help.activityId+"",
+          activeId: help.activityId + "",
           source: "guest",
      }
-     if(mode == "speed"){
+     if (mode != "speed") {
+
           data = await requestApi('signGroupHelp', tool.cookie, params)
-          handle(data)
-     }else{
+          await handle(data)
+     } else {
           requestApi('signGroupHelp', tool.cookie, params).then(handle)
      }
 }
@@ -141,9 +145,9 @@ function requestApi(functionId, cookie, body = {}) {
                },
                timeout: 1000,
           }, (_, resp, data) => {
-               if(data){
+               if (data) {
                     resolve(JSON.parse(data))
-               }else{
+               } else {
                     resolve(0)
                }
           })
