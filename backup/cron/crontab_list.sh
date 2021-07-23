@@ -4,6 +4,10 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+#燃动夏季
+12 0,6-23/2 * * * node /scripts/jd_summer_movement.js  >> /scripts/logs/jd_summer_movement.log 2>&1
+#燃动夏季_SH助力
+14/41 7-14 * * * node /scripts/jd_summer_movement_help.js  >> /scripts/logs/jd_summer_movement_help.log 2>&1
 #全民摸冰
 6 9,12 * * * node /scripts/jd_mb.js  >> /scripts/logs/jd_mb.log 2>&1
 #财富岛提现
