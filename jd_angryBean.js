@@ -7,13 +7,16 @@ TG学习交流群：https://t.me/cdles
 */
 const $ = new Env("真·抢京豆")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
+const speed = "speed"
 var pins = $.isNode() ? (process.env.angryBeanPins ? process.env.angryBeanPins : "") : "";
 let cookiesArr = [];
 var helps = [];
 var tools = [];
 var maxTimes = 3;
-var finished = [];
-var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode : "speed" ) : "priority";
+var finished = new Set();
+var init = [];
+var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode : "speed") : "priority";
+
 !(async () => {
      if ($.isNode() && !pins) {
           console.log("请在环境变量中填写需要助力的账号")
@@ -22,7 +25,15 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
      console.log(`开启${mode}模式`)
      requireConfig()
      for (let i in cookiesArr) {
+          i = +i
           cookie = cookiesArr[i]
+          var tool = {
+               id: i,
+               cookie: cookie,
+               helps: new Set(),
+               times: 0,
+               timeout: 0,
+          }
           if (!$.isNode() || pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
                await requestApi('signGroupHit', cookie, {
                     activeType: 2
@@ -40,30 +51,25 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                if (data && data.data && data.data.shareCode) {
                     console.log(`${Number(i)+1} 可以被助力`)
                     helps.push({
-                         id: +i,
+                         id: i,
                          cookie: cookie,
                          groupCode: data.data.groupCode,
                          shareCode: data.data.shareCode,
                          activityId: data.data.activityMsg.activityId,
                          success: false,
                     })
-               }else{
+                    tool.helps.add(i)
+                    init.push(i)
+               } else {
                     console.log(`${Number(i)+1} 不可以被助力`)
                }
           }
-          tools.push({
-               id: +i,
-               cookie: cookie,
-               helps: [],
-               times: 0,
-               timeout: 0,
-          })
+          tools.push(tool)
      }
-     for (let help of helps) {
-          await open(help)
-     }
-     while (finished.length != helps.length)
-          await $.wait(100)
+     for (let help of helps)
+     await open(help)
+     while (finished.size != init.length)
+     await $.wait(100)
 })().catch((e) => {
           $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
      })
@@ -74,38 +80,21 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
 async function open(help) {
      var tool = tools.pop()
      if (!tool) {
-          finished.push(help.id)
+          finished.add(help.id)
           return
      }
-     if(tool.id==help.id){
-          if(tools.length==0){
-               finished.push(help.id)
-               return
+     ecpt = new Set(tool.helps, finished)
+     diff = new Set(init.filter(hid => !ecpt.has(hid)))
+     if (diff.size == 0 || tool.helps.has(help.id)) {
+          if (diff.size != 0) {
+               tools.unshift(tool)
+          }
+          if (mode != speed) {
+               await open(help)
           } else {
-               if(mode != "speed"){
-                    await open(help)
-               }else{
-                    open(help)
-               }
-               return
+               open(help)
           }
-     }
-     var helpNum = 0
-     for (let helpId of tool.helps) {
-          if (helpId==help.id) {
-               helpNum++
-          }
-     }
-     if(mode != "speed"){
-          if(helpNum>0){
-               finished.push(help.id)
-               return
-          }
-     } else {
-          if(helpNum>2){
-               finished.push(help.id)
-               return
-          }
+          return
      }
      async function handle(data) {
           var helpToast = undefined
@@ -127,22 +116,21 @@ async function open(help) {
                if (helpToast.indexOf("火爆") != -1) { //活动太火爆啦~请稍后再试~
                     tool.times = maxTimes
                }
-               if(mode=="speed"){
-                    if(tool.timeout >= helps.length * 2) {
+               if (mode == "speed") {
+                    if (tool.timeout >= helps.length * 2) {
                          tool.times = maxTimes
                     }
                }
                if (tool.times < maxTimes) {
-                    if (Array.from(new Set(tool.helps)).length != helps.length) {
-                         tools.unshift(tool)
-                    }
+                    tools.unshift(tool)
                }
           }
-          tool.helps.push(help.id)
+          tool.helps.add(help.id)
+       
           if (!help.success) {
                await open(help)
           } else {
-               finished.push(help.id)
+               finished.add(help.id)
           }
      }
      var params = {
