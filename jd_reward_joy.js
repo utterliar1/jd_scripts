@@ -59,8 +59,11 @@ async function main(id) {
                     log = "未知状态"
                     break
             }
-            console.log(id.user, log, i.giftValue)
-            $.notices(log, id.user)
+            console.log(id.user, log, i.giftValue, $.source.currentTime)
+            $.notices(`${i.giftValue} ${log}`, id.user)
+            if (h < 16) {
+                break
+            }
         }
     } catch (e) {}
 }
