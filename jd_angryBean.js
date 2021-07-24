@@ -53,7 +53,9 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                                    success: false,
                                    address: address,
                               })
-                              tool.helps.add(i)
+                              if (mode == speed) {
+                                   tool.helps.add(i)
+                              }
                               init.push(i)
                          } else {
                               console.log(`账号${toChinesNum(i+1)}，异常`)
@@ -119,19 +121,30 @@ async function open(help) {
           finished.add(help.id)
           return
      }
-     tool.timeout++
-     ecpt = new Set(tool.helps, finished)
-     diff = new Set(init.filter(hid => !ecpt.has(hid)))
-     if (diff.size == 0 || tool.helps.has(help.id)) {
-          if (diff.size != 0 && tool.timeout < 10) {
-               tools.unshift(tool)
-          }
-          if (mode != speed) {
-               await open(help)
-          } else {
+     if (mode == speed) {
+          tool.timeout++
+          ecpt = new Set(tool.helps, finished)
+          diff = new Set(init.filter(hid => !ecpt.has(hid)))
+          if (diff.size == 0 || tool.helps.has(help.id)) {
+               if (diff.size != 0 && tool.timeout < 10) {
+                    tools.unshift(tool)
+               }
                open(help)
+               return
           }
-          return
+     } else {
+          if (tool.helps.has(help.id)) {
+               tool.helps.add(help.id)
+               tools.unshift(tool)
+               finished.add(help.id)
+               return
+          }
+          if (tool.id == help.id) {
+               tool.helps.add(help.id)
+               tools.unshift(tool)
+               await open(help)
+               return
+          }
      }
      async function handle(data) {
           var helpToast = undefined
