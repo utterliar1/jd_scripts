@@ -157,7 +157,6 @@ async function open(help) {
                }
           }
           tool.helps.add(help.id)
-
           if (!help.success) {
                await open(help)
           } else {
@@ -179,7 +178,7 @@ async function open(help) {
      }
 }
 
-function requestApi(functionId, cookie, body = {}) {
+function requestApi(functionId, cookie, body = {}, time = 0) {
      var url = `https://api.m.jd.com/client.action?functionId=${functionId}&body=${JSON.stringify(body)}&appid=ld&client=apple&clientVersion=10.0.4&networkType=wifi&osVersion=13.7&uuid=&openudid=`
      return new Promise(resolve => {
           $.get({
@@ -195,12 +194,18 @@ function requestApi(functionId, cookie, body = {}) {
                     "User-Agent": ua,
                     "Host": "api.m.jd.com",
                },
-               timeout: 1000,
+               timeout: 2500,
           }, (_, resp, data) => {
                if (data) {
                     resolve(JSON.parse(data))
                } else {
-                    resolve(0)
+                    if (time == 5) {
+                         resolve(0)
+                    } else {
+                         requestApi(functionId, cookie, body, time + 1).then(function (data) {
+                              resolve(data)
+                         })
+                    }
                }
           })
      })
