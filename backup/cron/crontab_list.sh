@@ -1,8 +1,4 @@
 ##############短期活动##############
-#燃动夏季
-12 0,6-23/2 * * * node /scripts/jd_summer_movement.js  >> /scripts/logs/jd_summer_movement.log 2>&1
-#燃动夏季_SH助力
-14/41 7-14 * * * node /scripts/jd_summer_movement_help.js  >> /scripts/logs/jd_summer_movement_help.log 2>&1
 #全民摸冰
 6 9,12 * * * node /scripts/jd_mb.js  >> /scripts/logs/jd_mb.log 2>&1
 #财富岛提现
@@ -20,14 +16,6 @@
 #1 6-21/1 * * * node /scripts/jd_618redpacket.js  >> /scripts/logs/jd_618redpacket.log 2>&1
 #口袋书店
 1 8,12,18 * * * node /scripts/jd_bookshopWenmoux.js >> /scripts/logs/jd_bookshopWenmoux.log 2>&1
-#京东签到图形验证
-14 10 * * * node /scripts/jd_sign_graphics.js >> /scripts/logs/jd_sign_graphics.log 2>&1
-#点点券
-20 0,20 * * * node /scripts/jd_necklace.js >> /scripts/logs/jd_necklace.log 2>&1
-#京东宠汪汪
-15 0-23/2 * * * node /scripts/jd_joy.js >> /scripts/logs/jd_joy.log 2>&1
-#宠汪汪偷好友积分与狗粮
-10 0-21/3 * * * node /scripts/jd_joy_steal.js >> /scripts/logs/jd_joy_steal.log 2>&1
 #送豆得豆
 45 4 * * * node /scripts/jd_sendBeans.js >> /scripts/logs/jd_sendBeans.log 2>&1
 #早起赢现金
