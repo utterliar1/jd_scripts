@@ -34,29 +34,43 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                times: 0,
                timeout: 0,
           }
-          if (!$.isNode() || pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
-               await requestApi('signGroupHit', cookie, {
+          var address = pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+          if (!$.isNode() || address != -1) {
+               var data = await requestApi('signGroupHit', cookie, {
                     activeType: 2
                });
-               var data = await getTuanInfo(cookie)
-               if (data && data.data && data.data.shareCode) {
-                    console.log(`${Number(i)+1} 可以被助力`)
-                    helps.push({
-                         id: i,
-                         cookie: cookie,
-                         groupCode: data.data.groupCode,
-                         shareCode: data.data.shareCode,
-                         activityId: data.data.activityMsg.activityId,
-                         success: false,
-                    })
-                    tool.helps.add(i)
-                    init.push(i)
+               if (data && data.data && data.data.respCode) {
+                    if (data.data.respCode != "SG100") {
+                         data = await getTuanInfo(cookie)
+                         if (data && data.data && data.data.shareCode) {
+                              console.log(`账号${toChinesNum(i+1)}，准备抢京豆`)
+                              helps.push({
+                                   id: i,
+                                   cookie: cookie,
+                                   groupCode: data.data.groupCode,
+                                   shareCode: data.data.shareCode,
+                                   activityId: data.data.activityMsg.activityId,
+                                   success: false,
+                                   address: address,
+                              })
+                              tool.helps.add(i)
+                              init.push(i)
+                         } else {
+                              console.log(`账号${toChinesNum(i+1)}，异常`)
+                         }
+                    } else {
+                         console.log(`账号${toChinesNum(i+1)}是黑号，快去怼客服吧`)
+                    }
                } else {
-                    console.log(`${Number(i)+1} 不可以被助力`)
+                    console.log(`账号${toChinesNum(i+1)}，登录信息过期了`)
                }
+
           }
           tools.push(tool)
      }
+     helps.sort((i, j) => {
+          return i.address > j.address ? 1 : -1
+     })
      for (let help of helps)
           await open(help)
      while (finished.size != init.length)
@@ -77,7 +91,7 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
      console.log(out)
      msg += out + "\n"
      if (($.isNode() ? (process.env.enableAngryBeanNotify == "false" ? "false" : "true") : "false") == "true") {
-          notify.sendNotify(`真·抢京豆`, msg);
+          require('./sendNotify').sendNotify(`真·抢京豆`, msg);
      }
 })().catch((e) => {
           $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -105,10 +119,11 @@ async function open(help) {
           finished.add(help.id)
           return
      }
+     tool.timeout++
      ecpt = new Set(tool.helps, finished)
      diff = new Set(init.filter(hid => !ecpt.has(hid)))
      if (diff.size == 0 || tool.helps.has(help.id)) {
-          if (diff.size != 0) {
+          if (diff.size != 0 && tool.timeout < 10) {
                tools.unshift(tool)
           }
           if (mode != speed) {
@@ -123,7 +138,6 @@ async function open(help) {
           if (data && data.data && data.data.helpToast) {
                helpToast = data.data.helpToast
           }
-          tool.timeout++
           if (helpToast) {
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if (helpToast.indexOf("助力成功") != -1) { //助力成功
@@ -137,11 +151,6 @@ async function open(help) {
                }
                if (helpToast.indexOf("火爆") != -1) { //活动太火爆啦~请稍后再试~
                     tool.times = maxTimes
-               }
-               if (mode == "speed") {
-                    if (tool.timeout >= helps.length * 2) {
-                         tool.times = maxTimes
-                    }
                }
                if (tool.times < maxTimes) {
                     tools.unshift(tool)
