@@ -8,6 +8,7 @@ TG学习交流群：https://t.me/cdles
 const $ = new Env("真·抢京豆")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 const speed = "speed"
+const smart = "smart"
 var pins = $.isNode() ? (process.env.angryBeanPins ? process.env.angryBeanPins : "") : "";
 let cookiesArr = [];
 var helps = [];
@@ -44,7 +45,7 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                          data = await getTuanInfo(cookie)
                          if (data && data.data && data.data.shareCode) {
                               console.log(`账号${toChinesNum(i+1)}，准备抢京豆`)
-                              helps.push({
+                              var help = {
                                    id: i,
                                    cookie: cookie,
                                    groupCode: data.data.groupCode,
@@ -52,7 +53,9 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                                    activityId: data.data.activityMsg.activityId,
                                    success: false,
                                    address: address,
-                              })
+                                   notYet: data.data.beanCountProgress.progressNotYet,
+                              }
+                              helps.push(help)
                               if (mode == speed) {
                                    tool.helps.add(i)
                               }
@@ -73,10 +76,25 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
      helps.sort((i, j) => {
           return i.address > j.address ? 1 : -1
      })
-     for (let help of helps)
-          await open(help)
-     while (finished.size != init.length)
-          await $.wait(100)
+     for (var k = 0; k < (mode == smart ? 6 : 1); k++) {
+          for (let help of helps) {
+               if (k != 0) {
+                    if (help.success) break
+                    cookie = help.cookie
+                    data = await getTuanInfo(cookie)
+                    if (data && data.data && data.data.shareCode) {
+                         help.notYet = data.data.beanCountProgress.progressNotYet
+                    }
+                    if (!help.notYet) break
+               }
+               await open(help)
+          }
+     }
+     if (mode == speed) {
+          while (finished.size != init.length)
+               await $.wait(100)
+     }
+
      var beanCount = 0
      var msg = ""
      for (let help of helps) {
@@ -121,6 +139,9 @@ async function open(help) {
           finished.add(help.id)
           return
      }
+     if (mode == smart && !help.notYet) {
+          return
+     }
      if (mode == speed) {
           tool.timeout++
           ecpt = new Set(tool.helps, finished)
@@ -155,6 +176,7 @@ async function open(help) {
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if (helpToast.indexOf("助力成功") != -1) { //助力成功
                     tool.times++
+                    help.notYet--
                }
                if (helpToast.indexOf("满") != -1) { //该团已经满啦~去帮别人助力吧~
                     help.success = true
