@@ -76,7 +76,7 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
      helps.sort((i, j) => {
           return i.address > j.address ? 1 : -1
      })
-     for (var k = 0; k < (mode == smart ? 6 : 1); k++) {
+     for (var k = 0; k < (mode == smart ? 50 : 1); k++) {
           for (let help of helps) {
                if (k != 0) {
                     if (help.success) break
