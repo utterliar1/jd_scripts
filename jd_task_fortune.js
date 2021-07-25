@@ -5,7 +5,7 @@ let min = 5,
 $.setOptions({
     headers: {
         'content-type': 'application/json',
-        'user-agent': 'jdpingou;iPhone;4.11.0;13.7;a3b4e844090b28d5c38e7529af8115172079be4d;network/wifi;model/iPhone8,1;appBuild/100591;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/568;pap/JA2019_3111789;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
+        'user-agent': 'jdapp;iPhone;10.0.8;13.7;7b01d4690ef13716984dcfcf96068f36b41f6c51;network/wifi;model/iPhone8,1;addressid/4666062376;appBuild/167741;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
         'referer': 'https://st.jingxi.com/fortune_island/index2.html',
     }
 });
@@ -33,8 +33,6 @@ async function main() {
     // await CollectorOper()
     // 倒垃圾
     await RubbishOper()
-    // 珍珠任务
-    await ComposeGame()
     for (let z in $.QueryUserInfo) {
         data = $.QueryUserInfo[z]
         switch (z) {
@@ -73,6 +71,7 @@ async function main() {
                         break
                     }
                     console.log("接待旅客", $.source.dwTodaySpeedPeople)
+                    await $.wait(200)
                 }
                 break;
             case 'StoryInfo':
@@ -114,6 +113,8 @@ async function main() {
     await GetUserTask()
     // 宝箱
     await GetActTask()
+    // 珍珠任务
+    await ComposeGame()
 }
 async function GetTakeAggrPage() {
     await work(`https://m.jingxi.com/jxbfd/story/GetTakeAggrPage?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`, 'GetTakeAggrPage')
@@ -173,6 +174,12 @@ async function GetActTask() {
     if ($.haskey($.GetActTask, 'Data.dwStatus') != 4) {
         for (let i of $.haskey($.GetActTask, 'Data.TaskList') || []) {
             if (i.dwAwardStatus == 2) {
+                console.log(i.strTaskName)
+                if (i.strJumpUrl) {
+                    jumpUrl = i.strJumpUrl.split("##")[1]
+                    await $.curl(jumpUrl)
+                    await $.wait(i.dwLookTime * 1000)
+                }
                 await work(`https://m.jingxi.com/newtasksys/newtasksys_front/Award?strZone=jxbfd&bizCode=jxbfddch&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&taskId=${i.ddwTaskId}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId&_ste=1`)
                 console.log("开宝箱")
             }
