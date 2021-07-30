@@ -53,10 +53,9 @@ jobs:
         rm -rf ./airacg
         echo "========= 开始下载小小的脚本及依赖 ========="
         git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
-        cp -f ./Aaron/jd_joy_reward.js ./jd_joy_reward_Aaron.js
-        cp -f ./Aaron/jd_blueCoin.js ./jd_blueCoin_Aaron.js
-        cp -f ./Aaron/jd_cfdtx.js ./jd_cfdtx_Aaron.js
-        cp -f ./Aaron/jd_joy_reward.js ./jd_cfd_Aaron.js
+        cp -f ./Aaron/jd_joy_reward.js ./
+        cp -f ./Aaron/jd_blueCoin.js ./
+        cp -f ./Aaron/jd_cfdtx.js ./
         cp -f ./Aaron/jd_jump.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
