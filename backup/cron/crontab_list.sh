@@ -155,17 +155,11 @@
 # 京喜签到（zero205）
 5 0 * * * node /scripts/jd_jxqd.js >> /scripts/logs/jd_jxqd.log 2>&1
 # 京喜财富岛提现（小小）
-#59 11,12,23 * * * node /scripts/jd_cfdtx_Aaron.js >> /scripts/logs/jd_cfdtx_Aaron.log 2>&1
-# 超市兑换（小小）
-59 23 * * * node /scripts/jd_blueCoin_Aaron.js >> /scripts/logs/jd_blueCoin_Aaron.log 2>&1
-# 宠汪汪兑换（小小）
-59 7,16,23 * * * node /scripts/jd_joy_reward_Aaron.js >> /scripts/logs/jd_joy_reward_Aaron.log 2>&1
+#59 11,12,23 * * * node /scripts/jd_cfdtx.js >> /scripts/logs/jd_cfdtx.log 2>&1
 # 伊利养牛（HW）
 0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1
 # 跳跳乐瓜分京豆（lxk）
 1 0,11,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
-#京喜财富岛
-#5 */1 * * * node /scripts/jd_cfd_Aaron.js >> /scripts/logs/jd_cfd_Aaron.log 2>&1
 #升级赚京豆（smiek）
 21 9 * * * node /scripts/jd_MMdou.js >> /scripts/logs/jd_MMdou.log 2>&1
 #京豆盒子（HW）
