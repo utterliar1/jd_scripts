@@ -102,7 +102,7 @@ jobs:
         sed -i 's/wenmoux//g' ./docker/crontab_list.sh
         sed -i 's/cdle//g' ./docker/crontab_list.sh
         sed -i 's/smiek2221//g' ./docker/crontab_list.sh
-        sed -i '/cashOut\|summer\|jd_live_redrain\|jd_small_home\|EsportsManager\|delCoupon\|jd_pigPet\|jd_price\|fcdyj\|jd_speed.js/d' ./docker/crontab_list.sh
+        sed -i '/jx_sign\|cashOut\|summer\|jd_live_redrain\|jd_small_home\|EsportsManager\|delCoupon\|jd_pigPet\|jd_price\|fcdyj\|jd_speed.js/d' ./docker/crontab_list.sh
         echo "========= 备份cron及yml文件 ========="
         log_time=$(date "+%Y-%m-%d-%H-%M-%S")
         diff ./docker/crontab_list.sh ./backup/cron/crontab_list.sh | tee ./backup/cron/env.diff
