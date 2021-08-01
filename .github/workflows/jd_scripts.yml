@@ -82,7 +82,7 @@ jobs:
         rm -rf ./JDHelloWorld
         echo "========= 开始下载单文件脚本 ========="
         #wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_nzmh.js
-        wget -N https://github.com/zero205/JD_tencent_scf/raw/main/jd_jxqd.js
+        wget -N https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jx_sign.js
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         #wget -N https://github.com/panghu999/panghu/raw/master/jd_ylyn.js
