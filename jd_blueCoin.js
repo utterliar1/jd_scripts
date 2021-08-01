@@ -112,8 +112,8 @@ Date.prototype.Format = function (fmt) { //author: meizz
   .finally(() => $.done())
 
 async function PrizeIndex() {
-  let nowtime = new Date().Format("s")
-  let starttime = $.isNode() ? (process.env.SM_STARTTIME ? process.env.SM_STARTTIME * 1 : 59) : ($.getdata('SM_STARTTIME') ? $.getdata('SM_STARTTIME') * 1 : 59);
+  let nowtime = new Date().Format("s.S")
+  let starttime = $.isNode() ? (process.env.SM_STARTTIME ? process.env.SM_STARTTIME * 1 : 60) : ($.getdata('SM_STARTTIME') ? $.getdata('SM_STARTTIME') * 1 : 60);
   if(nowtime < 59) {
     let sleeptime = (starttime - nowtime) * 1000;
     console.log(`等待时间 ${sleeptime / 1000}`);
