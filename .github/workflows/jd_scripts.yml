@@ -90,7 +90,7 @@ jobs:
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^jr_/jd_/' *
-        rename -f 's/^jx_/jd_/' *
+        rename -f 's/^jx_/jd_jx/' *
         rename -f 's/^gua_/jd_/' *
         #rename -f 's/^jddj/jd_dj_/' *
         echo "========= 开始合并cron定时文件 ========="
