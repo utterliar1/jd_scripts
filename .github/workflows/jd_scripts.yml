@@ -56,7 +56,7 @@ jobs:
         cp -f ./Aaron/jd_joy_reward.js ./
         cp -f ./Aaron/jd_blueCoin.js ./
         cp -f ./Aaron/jd_cfdtx.js ./
-        cp -f ./Aaron/jd_jump.js ./
+        #cp -f ./Aaron/jd_jump.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
         echo "========= 开始下载JDHelloWorld的脚本 ========="
