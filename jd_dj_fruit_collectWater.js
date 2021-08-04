@@ -7,11 +7,11 @@ TG群:https://t.me/passerbyb2021
 */
 
 //[task_local]
-//*/5 * * * * https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js
+// 5 */1 * * * https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js
 
 //================Loon==============
 //[Script]
-//cron "*/5 * * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js,tag=京东到家果园水车收水滴
+//cron "5 */1 * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js,tag=京东到家果园水车收水滴
 //
 
 const $ = new API("jddj_fruit_collectWater");

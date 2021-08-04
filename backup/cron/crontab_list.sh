@@ -160,7 +160,6 @@
 # 伊利养牛（HW）
 0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1
 # 跳跳乐瓜分京豆（lxk）
-1 0,11,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 #升级赚京豆（smiek）
 21 9 * * * node /scripts/jd_MMdou.js >> /scripts/logs/jd_MMdou.log 2>&1
 #京豆盒子（HW）
