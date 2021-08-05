@@ -7,11 +7,11 @@ TG群:https://t.me/passerbyb2021
 */
 
 //[task_local]
-// 5 */1 * * * https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js
+//*/5 * * * * https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js
 
 //================Loon==============
 //[Script]
-//cron "5 */1 * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js,tag=京东到家果园水车收水滴
+//cron "*/5 * * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js,tag=京东到家果园水车收水滴
 //
 
 const $ = new API("jddj_fruit_collectWater");
@@ -68,8 +68,8 @@ let cityid = Math.round(Math.random() * (1500 - 1000) + 1000);
         await collectWater();
         await $.wait(1000);
 
-        await water();
-        await $.wait(1000);
+        // await water();
+        // await $.wait(1000);
 
         // await treeInfo();
         // await $.wait(1000);
@@ -113,7 +113,8 @@ async function userinfo() {
 async function collectWater() {
     return new Promise(async resolve => {
         try {
-            let option = urlTask('https://daojia.jd.com/client?_jdrandom=' + Math.round(new Date()) + '&_funid_=fruit/collectWater&functionId=fruit%2FcollectWater&isNeedDealError=true&body=%7B%7D&lat=' + lat + '&lng=' + lng + '&lat_pos=' + lat + '&lng_pos=' + lng + '&city_id=' + cityid + '&channel=ios&platform=6.6.0&platCode=h5&appVersion=6.6.0&appName=paidaojia&deviceModel=appmodel&traceId=' + deviceid + '&deviceToken=' + deviceid + '&deviceId=' + deviceid, '')
+            
+            let option = urlTask('https://daojia.jd.com/client?lat=' + lat + '&lng=' + lng + '&lat_pos=' + lat + '&lng_pos=' + lng + '&city_id=1381&deviceToken=' + deviceid + '&deviceId=' + deviceid + '&channel=wx_xcx&mpChannel=wx_xcx&platform=5.0.0&platCode=mini&appVersion=5.0.0&appName=paidaojia&deviceModel=appmodel&xcxVersion=8.10.1&isNeedDealError=true&business=wxshouyeqiu&functionId=fruit%2FcollectWater&body=%7B%7D', '');
 
             $.http.get(option).then(response => {
                 let data = JSON.parse(response.body);
