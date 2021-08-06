@@ -3,6 +3,7 @@
 - 本库初衷是方便V4用户且需要上车的朋友使用，其他用户建议使用其他更适合的库
 - v4用户使用前请务必先删除scripts文件夹
 - 如果发现脚本还没有同步过来，可以点亮/取消后点亮star激活action运行获取更新
+- github action自动更新，所有脚本均为作者原版，无任何个人修改
 # V4容器docker-compoes.yml添加变量
 ```text
 environment: 
