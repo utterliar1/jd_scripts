@@ -21,12 +21,8 @@
 12 0-23/6 * * * node /scripts/jd_task_pigPet.js >> /scripts/logs/jd_task_pigPet.log 2>&1
 # 店铺签到（jiulan）
 #10 1,9 * * * node /scripts/jd_shop_sign.js >> /scripts/logs/jd_shop_sign.log 2>&1
-# 燃动夏季（smiek）
-#12 9,11,13,15,17 * * * node /scripts/jd_summer_movement.js >> /scripts/logs/jd_summer_movement.log 2>&1
-# 燃动夏季_SH助力（smiek）
-#12 7-14 * * * node /scripts/jd_summer_movement_help.js >> /scripts/logs/jd_summer_movement_help.log 2>&1
-# 京喜签到（zero205）
-5 0 * * * node /scripts/jd_jxqd.js >> /scripts/logs/jd_jxqd.log 2>&1
+# 京喜签到
+5 0 * * * node /scripts/jd_jxsign.js >> /scripts/logs/jd_jxsign.log 2>&1
 # 京喜财富岛提现（小小）
 #59 11,12,23 * * * node /scripts/jd_cfdtx.js >> /scripts/logs/jd_cfdtx.log 2>&1
 # 伊利养牛（HW）
@@ -34,7 +30,7 @@
 # 跳跳乐瓜分京豆（lxk）
 1 0,11,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 #升级赚京豆（smiek）
-21 9 * * * node /scripts/jd_MMdou.js >> /scripts/logs/jd_MMdou.log 2>&1
+21 9 * * * node /scripts/jd_guaMMdou.js >> /scripts/logs/jd_MMdou.log 2>&1
 #京豆盒子（HW）
 23 9 * * * node /scripts/jd_bean_box.js >> /scripts/logs/jd_bean_box.log 2>&1
 #京东签到图形验证
@@ -45,5 +41,5 @@
 15 0-23/2 * * * node /scripts/jd_joy.js >> /scripts/logs/jd_joy.log 2>&1
 #宠汪汪偷好友积分与狗粮
 #10 0-21/3 * * * node /scripts/jd_joy_steal.js >> /scripts/logs/jd_joy_steal.log 2>&1
-#手机狂欢城（呱）
+#手机狂欢城
 0 0-18/6 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
