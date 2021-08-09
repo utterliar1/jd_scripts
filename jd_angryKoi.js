@@ -21,7 +21,7 @@ var tools= []
         cookie = cookiesArr[i]
         if(kois.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])!=-1){
             var data = await requestApi('h5launch',cookie);
-            switch (data?.data?.result.status) {
+            switch (data?.data?.result?.status) {
                 case 1://火爆
                     continue;
                 case 2://已经发起过
