@@ -1,4 +1,6 @@
 ##############短期活动##############
+#京东手机狂欢城
+0 0-18/6 * * * node /scripts/jd_carnivalcity.js  >> /scripts/logs/jd_carnivalcity.log 2>&1
 #全民摸冰
 6 9,12 * * * node /scripts/jd_mb.js  >> /scripts/logs/jd_mb.log 2>&1
 #财富岛提现
