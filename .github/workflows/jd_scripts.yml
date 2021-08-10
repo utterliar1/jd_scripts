@@ -68,15 +68,15 @@ jobs:
         cp -f ./JDHelloWorld/jdCookie.js ./
         cp -f ./JDHelloWorld/*ShareCodes.js ./
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
+        cd ./JDHelloWorld
+        sudo npm install
+        tsc *_*.ts
         cd ./JDHelloWorld/tools
         tsc *_*.ts
         mv -f ./JDHelloWorld/*_*.ts ./backup/ts/
         cp -rf ./JDHelloWorld/tools ./
-        cd ./JDHelloWorld
-        #sudo npm install
-        tsc *_*.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
-        cd ..
+        cd ../..
         rm -rf ./JDHelloWorld/jd_update.js
         cp -rf ./JDHelloWorld/backUp/* ./backup/js/
         cp -f ./JDHelloWorld/*_*.js ./
