@@ -71,7 +71,7 @@ jobs:
         cd ./JDHelloWorld
         sudo npm install
         tsc *_*.ts
-        cd ./JDHelloWorld/tools
+        cd ./tools
         tsc *_*.ts
         mv -f ./JDHelloWorld/*_*.ts ./backup/ts/
         cp -rf ./JDHelloWorld/tools ./
