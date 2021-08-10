@@ -63,14 +63,17 @@ jobs:
         git clone https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
         echo "========= 开始复制依赖 ========="
-        cp -rf ./JDHelloWorld/tools ./
         cp -f ./JDHelloWorld/package.json ./
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
         cp -f ./JDHelloWorld/*ShareCodes.js ./
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
+        cd ./JDHelloWorld/tools
+        tsc *_*.ts
+        mv -f ./JDHelloWorld/*_*.ts ./backup/ts/
+        cp -rf ./JDHelloWorld/tools ./
         cd ./JDHelloWorld
-        sudo npm install
+        #sudo npm install
         tsc *_*.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ..
