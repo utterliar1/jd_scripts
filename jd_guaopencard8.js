@@ -23,17 +23,17 @@ guaopencard8="true"
 ============Quantumultx===============
 [task_local]
 #8.10-8.15 头号玩家 一起热8
-28 0,22 8-14 8 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard8.js, tag=8.10-8.15 头号玩家 一起热8, enabled=true
+28 0,22 8-15 8 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard8.js, tag=8.10-8.15 头号玩家 一起热8, enabled=true
 
 ================Loon==============
 [Script]
-cron "28 0,22 8-14 8 *" script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard8.js,tag=8.10-8.15 头号玩家 一起热8
+cron "28 0,22 8-15 8 *" script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard8.js,tag=8.10-8.15 头号玩家 一起热8
 
 ===============Surge=================
-8.10-8.15 头号玩家 一起热8 = type=cron,cronexp="28 0,22 8-14 8 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard8.js
+8.10-8.15 头号玩家 一起热8 = type=cron,cronexp="28 0,22 8-15 8 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard8.js
 
 ============小火箭=========
-8.10-8.15 头号玩家 一起热8 = type=cron,script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard8.js, cronexpr="28 0,22 8-14 8 *", timeout=3600, enable=true
+8.10-8.15 头号玩家 一起热8 = type=cron,script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard8.js, cronexpr="28 0,22 8-15 8 *", timeout=3600, enable=true
 */
 const $ = new Env('8.10-8.15 头号玩家 一起热8');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -306,7 +306,6 @@ function join(venderId) {
     await getshopactivityId(venderId)
     $.get(ruhui(`${venderId}`), async (err, resp, data) => {
       try {
-        // console.log(data)
         data = JSON.parse(data);
         if(data.success == true){
           $.log(data.message)
@@ -352,7 +351,6 @@ function startDraw(type) {
         if (err) {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          // $.log($.toStr(data))
           data = $.toObj(data);
           if(data.errorMessage || data.data.errorMessage) console.log(`抽奖：${data.errorMessage || data.data.errorMessage || ''}`)
           if(data.count == 0 && data.result == true){
@@ -509,7 +507,6 @@ function adLog() {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          //  data = JSON.parse(data);
           let setcookie = resp['headers']['set-cookie'] || resp['headers']['Set-Cookie'] || ''
           if(setcookie){
             let LZ_TOKEN_KEY = setcookie.filter(row => row.indexOf("LZ_TOKEN_KEY") !== -1)[0]
