@@ -26,7 +26,7 @@ let tools = []
           cookie = cookiesArr[i];
           pin = cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]
           if(pins && pins.indexOf(pin)!=-1){
-               data = await openRedEnvelopeInteract()
+               data = await openRedEnvelopeInteract({}, cookie)
                if(data?.code==16020)continue
                data = await redEnvelopeInteractHome()
                redEnvelopeId = data?.data?.redEnvelopeId
