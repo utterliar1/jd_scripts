@@ -31,8 +31,6 @@
 1 0,11,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 #升级赚京豆（smiek）
 21 9 * * * node /scripts/jd_guaMMdou.js >> /scripts/logs/jd_MMdou.log 2>&1
-#京豆盒子（HW）
-23 9 * * * node /scripts/jd_bean_box.js >> /scripts/logs/jd_bean_box.log 2>&1
 #京东签到图形验证
 14 10 * * * node /scripts/jd_sign_graphics.js >> /scripts/logs/jd_sign_graphics.log 2>&1
 #点点券
