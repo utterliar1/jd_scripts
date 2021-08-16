@@ -18,7 +18,7 @@ async function main(id) {
     let lists = txt.split("\n");
     let validate = lists[id.index - 1];
     let params = {
-        'url': `https://jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F&validate=${validate}`,
+        'url': `https://jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=${$.config['invokeKey']}&validate=${validate}`,
         'cookie': id.cookie
     }
     try {
@@ -33,7 +33,7 @@ async function main(id) {
         }
         for (let i of config.reverse()) {
             params = {
-                'url': `https://jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F&validate=${validate}`,
+                'url': `https://jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=${$.config['invokeKey']}&validate=${validate}`,
                 'body': `{"buyParam":{"orderSource":"pet","saleInfoId":${i.id}},"deviceInfo":{}}`,
                 'cookie': id.cookie
             }
