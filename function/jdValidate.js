@@ -223,7 +223,7 @@ class JDJRValidator {
             // console.log('JDJRValidator: %fs', (Date.now() - this.t) / 1000);
             return result;
         } else {
-            if (this.n > 20) {
+            if (this.n > 60) {
                 return;
             }
             this.n++;

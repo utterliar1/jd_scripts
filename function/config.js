@@ -1,4 +1,4 @@
 module.exports = {
-    'ThreadJs': [],
-    'invokeKey': 'ztmFUCxcPMNyUq0P'
+    "ThreadJs": [],
+    "invokeKey": "ztmFUCxcPMNyUq0P"
 }

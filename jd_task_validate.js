@@ -21,18 +21,21 @@ async function prepare() {
 async function main(id) {
     let code = new validator.JDJRValidator;
     for (let i = 0; i < 2; i++) {
+        validate = ''
         try {
             let veri = await code.run();
             if (veri.validate) {
-                $.validate = veri.validate;
+                validate = veri.validate;
             }
         } catch (e) {}
-        $.code.push($.validate)
-        fs.appendFile('./jdvalidate.txt', $.validate + "\n", (error) => {
-            if (error) return console.log("追加文件失败" + error.message);
-            console.log("追加成功");
-        })
-        console.log("验证码", $.validate)
+        // $.code.push(validate)
+        if (validate) {
+            fs.appendFile('./jdvalidate.txt', validate + "\n", (error) => {
+                if (error) return console.log("追加文件失败" + error.message);
+                console.log("追加成功");
+            })
+        }
+        console.log("验证码", validate)
     }
     try {} catch (e) {}
 }
