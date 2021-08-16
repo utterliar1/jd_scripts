@@ -21,12 +21,12 @@ jobs:
         rm -rf !(docker|backup|account.json|Loon|QuantumultX|README.md|jd_half_redrain.js|jd_super_redrain.js)
         shopt -u extglob
         echo "========= 开始下载smiek2221的脚本 ========="
-        git clone https://github.com/smiek2221/scripts.git  ./smiek2221
+        git clone https://github.com/smiek2221/scripts.git ./smiek2221
         rm -r ./smiek2221/USER_AGENTS.js
         cp -f ./smiek2221/*_*.js ./
         rm -rf ./smiek2221
         echo "========= 开始下载cdle的脚本 ========="
-        git clone https://github.com/cdle/xdd.git  ./cdle
+        git clone https://github.com/cdle/xdd.git ./cdle
         cp -f ./cdle/scripts/*_*.js ./
         rm -rf ./cdle
         echo "========= 开始下载Wenmoux的脚本 ========="
