@@ -49,7 +49,7 @@ jobs:
         echo "========= 开始下载airacg的脚本及依赖 ========="
         git clone https://github.com/airacg/jd_task.git ./airacg
         cp -r ./airacg/function ./
-        cp -f ./airacg/*_*.js ./
+        cp -f ./airacg/*-*.js ./
         rm -rf ./airacg
         echo "========= 开始下载小小的脚本及依赖 ========="
         git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
