@@ -26,8 +26,8 @@ jobs:
         cp -f ./smiek2221/*_*.js ./
         rm -rf ./smiek2221
         echo "========= 开始下载cdle的脚本 ========="
-        git clone https://github.com/cdle/jd_study.git  ./cdle
-        cp -f ./cdle/*_*.js ./
+        git clone https://github.com/cdle/xdd.git  ./cdle
+        cp -f ./cdle/scripts/*_*.js ./
         rm -rf ./cdle
         echo "========= 开始下载Wenmoux的脚本 ========="
         git clone -b wen https://github.com/Wenmoux/scripts.git ./Wenmoux
