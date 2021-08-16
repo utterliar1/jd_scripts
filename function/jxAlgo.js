@@ -70,7 +70,7 @@ class jxAlgo {
         return this[key]
     }
     async dec(url) {
-        if (!this.token) {
+        if (!this.tk) {
             this.fingerprint = generateFp();
             await this.requestAlgo()
         }
@@ -81,13 +81,13 @@ class jxAlgo {
     h5st(time, stk, url) {
         stk = stk || (url ? getUrlData(url, '_stk') : '')
         const timestamp = new Date(time).Format("yyyyMMddhhmmssSSS");
-        let hash1 = this.enCryptMethodJD(this.token, this.fingerprint.toString(), timestamp.toString(), this.appId.toString(), CryptoJS).toString(CryptoJS.enc.Hex);
+        let hash1 = this.enCryptMethodJD(this.tk, this.fingerprint.toString(), timestamp.toString(), this.appId.toString(), CryptoJS).toString(CryptoJS.enc.Hex);
         let st = '';
         stk.split(',').map((item, index) => {
             st += `${item}:${getUrlData(url, item)}${index === stk.split(',').length - 1 ? '' : '&'}`;
         })
         const hash2 = CryptoJS.HmacSHA256(st, hash1.toString()).toString(CryptoJS.enc.Hex);
-        const enc = (["".concat(timestamp.toString()), "".concat(this.fingerprint.toString()), "".concat(this.appId.toString()), "".concat(this.token), "".concat(hash2)].join(";"))
+        const enc = (["".concat(timestamp.toString()), "".concat(this.fingerprint.toString()), "".concat(this.appId.toString()), "".concat(this.tk), "".concat(hash2)].join(";"))
         this.result['fingerprint'] = this.fingerprint;
         this.result['timestamp'] = this.timestamp
         this.result['stk'] = stk;
@@ -107,6 +107,49 @@ class jxAlgo {
         })
         this.result['url'] = `${sp[0]}?${qs.stringify(params)}`
         return this.result
+    }
+    token(user) {
+        let nickname = user.includes('pt_pin') ? user.match(/pt_pin=([^;]+)/)[1] : user;
+        let phoneId = this.createuuid(40, 'lc');
+
+        let token = this.md5(decodeURIComponent(nickname) + this.timestamp + phoneId + 'tPOamqCuk9NLgVPAljUyIHcPRmKlVxDy');
+        return {
+            'strPgtimestamp': this.timestamp,
+            'strPhoneID': phoneId,
+            'strPgUUNum': token
+        }
+    }
+    md5(encryptString) {
+        return CryptoJS.MD5(encryptString).toString()
+    }
+    createuuid(a, c) {
+        switch (c) {
+            case "a":
+                c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                break;
+            case "n":
+                c = "0123456789";
+                break;
+            case "c":
+                c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                break;
+            case "l":
+                c = "abcdefghijklmnopqrstuvwxyz";
+                break;
+            case 'cn':
+            case 'nc':
+                c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+                break;
+            case "lc":
+            case "cl":
+                c = "abcdefghijklmnopqrstuvwxyz0123456789";
+                break;
+            default:
+                c = "0123456789abcdef"
+        }
+        var e = "";
+        for (var g = 0; g < a; g++) e += c[Math.ceil(1E8 * Math.random()) % c.length];
+        return e
     }
     async requestAlgo() {
         const options = {
@@ -141,7 +184,7 @@ class jxAlgo {
                         data = JSON.parse(data);
                         if (data['status'] === 200) {
                             let result = data.data.result
-                            this.token = result.tk;
+                            this.tk = result.tk;
                             let enCryptMethodJDString = result.algo;
                             if (enCryptMethodJDString) {
                                 this.enCryptMethodJD = new Function(`return ${enCryptMethodJDString}`)();

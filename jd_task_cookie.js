@@ -1,5 +1,5 @@
-let common = require("./utils/common");
-let $ = new common.env('京东Cookie过期判断');  
+let common = require("./function/common");
+let $ = new common.env('京东Cookie过期判断');
 $.setOptions({
     headers: {
         'content-type': 'application/json',

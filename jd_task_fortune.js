@@ -1,7 +1,7 @@
-let common = require("./utils/common");
+let common = require("./function/common");
 let $ = new common.env('京喜财富岛');
 let min = 5,
-    help = process.env[$.filename(__filename)] || Math.min(min, process.env.JdMain) || min;
+    help = $.config[$.filename(__filename)] || Math.min(min, $.config.JdMain) || min;
 $.setOptions({
     headers: {
         'content-type': 'application/json',
@@ -17,12 +17,13 @@ async function prepare() {
 }
 async function main() {
     $.ptag = `${$.rand(1001,9999)}.${$.rand(1,0)}.${$.rand(101,999)}`
-    await work(`https://m.jingxi.com/jxbfd/user/QueryUserInfo?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&ddwTaskId=&strShareId=&strMarkList=guider_step%2Ccollect_coin_auth%2Cguider_medal%2Cguider_over_flag%2Cbuild_food_full%2Cbuild_sea_full%2Cbuild_shop_full%2Cbuild_fun_full%2Cmedal_guider_show%2Cguide_guider_show%2Cguide_receive_vistor&_stk=_cfd_t%2CbizCode%2CddwTaskId%2CdwEnv%2Cptag%2Csource%2CstrMarkList%2CstrShareId%2CstrZone&_ste=1`, 'QueryUserInfo')
-    // if ($.haskey($.source, 'Fund.dwIsGetGift', 0)) {
-    // 领取百元奖励
-    // await work(`https://m.jingxi.com/jxbfd/user/drawpackprize?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`)
-    // console.log("领取百元奖励:", $.source.sErrMsg)
-    // }
+    $.token = jxAlgo.token($.user)
+    await work(`https://m.jingxi.com/jxbfd/user/QueryUserInfo?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=1627057509785&ptag=7155.9.47&ddwTaskId=&strShareId=&strMarkList=guider_step%2Ccollect_coin_auth%2Cguider_medal%2Cguider_over_flag%2Cbuild_food_full%2Cbuild_sea_full%2Cbuild_shop_full%2Cbuild_fun_full%2Cmedal_guider_show%2Cguide_guider_show%2Cguide_receive_vistor%2Cdaily_task%2Cguider_daily_task&strPgtimestamp=${$.token.strPgtimestamp}&strPhoneID=${$.token.strPhoneID}&strPgUUNum=${$.token.strPgUUNum}&strVersion=1.0.1&_stk=_cfd_t%2CbizCode%2CddwTaskId%2CdwEnv%2Cptag%2Csource%2CstrMarkList%2CstrPgUUNum%2CstrPgtimestamp%2CstrPhoneID%2CstrShareId%2CstrVersion%2CstrZone&_ste=1`, 'QueryUserInfo')
+    if ($.haskey($.source, 'Fund.dwIsGetGift', 0) && $.source.Fund.dwIsGetGift < $.source.Fund.dwIsShowFund) {
+        // 领取百元奖励
+        await work(`https://m.jingxi.com/jxbfd/user/drawpackprize?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`)
+        console.log("领取百元奖励:", $.source.sErrMsg)
+    }
     // 签到
     await GetTakeAggrPage()
     // 找导游
@@ -71,7 +72,7 @@ async function main() {
                         break
                     }
                     console.log("接待旅客", $.source.dwTodaySpeedPeople)
-                    await $.wait(200)
+                    await $.wait(300)
                 }
                 break;
             case 'StoryInfo':
@@ -81,7 +82,7 @@ async function main() {
                 }
                 for (let k of $.haskey(data, 'StoryList') || []) {
                     if (k.Mermaid) {
-                        console.log("\n美人鱼")
+                        console.log("\n遇到美人鱼")
                         // 获取昨日奖励
                         await work(`https://m.jingxi.com/jxbfd/story/MermaidOper?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&strStoryId=${k.strStoryId}&dwType=4&ddwTriggerDay=${k.ddwTriggerDay}&_stk=_cfd_t%2CbizCode%2CddwTriggerDay%2CdwEnv%2CdwType%2Cptag%2Csource%2CstrStoryId%2CstrZone&_ste=1`)
                         console.log("昨天约了:", $.source.sErrMsg)
@@ -94,14 +95,18 @@ async function main() {
                     if (k.Collector) {
                         console.log("\n遇到奸商")
                         await work(`https://m.jingxi.com/jxbfd/story/CollectorOper?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&strStoryId=${k.strStoryId}&dwType=2&ddwTriggerDay=${k.ddwTriggerDay}&_stk=_cfd_t%2CbizCode%2CddwTriggerDay%2CdwEnv%2CdwType%2Cptag%2Csource%2CstrStoryId%2CstrZone&_ste=1`)
-                        console.log($.source.sErrMsg)
-                        await CollectorOper()
+                        await work(`https://m.jingxi.com/jxbfd/story/queryshell?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`)
+                        await work(`https://m.jingxi.com/jxbfd/story/QueryMedalList?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`)
+                        await work(`https://m.jingxi.com/jxbfd/story/querystorageroom?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`)
+                        await work(`https://m.jingxi.com/jxbfd/story/sellgoods?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&strTypeCnt=1%3A1%7C2%3A4%7C3%3A4%7C4%3A2&dwSceneId=2&_stk=_cfd_t%2CbizCode%2CdwEnv%2CdwSceneId%2Cptag%2Csource%2CstrTypeCnt%2CstrZone&_ste=1`)
+                        await work(`https://m.jingxi.com/jxbfd/story/CollectorOper?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&strStoryId=${k.strStoryId}&dwType=4&ddwTriggerDay=${k.ddwTriggerDay}&_stk=_cfd_t%2CbizCode%2CddwTriggerDay%2CdwEnv%2CdwType%2Cptag%2Csource%2CstrStoryId%2CstrZone&_ste=1`)
+                        console.log("含泪贱卖:", $.source.sErrMsg)
                     }
                     if (k.Special) {
                         console.log("\n情景任务:", k.Special.strName)
                         await work(`https://m.jingxi.com/jxbfd/story/SpecialUserOper?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&strStoryId=${k.strStoryId}&dwType=2&triggerType=0&ddwTriggerDay=${k.ddwTriggerDay}&_stk=_cfd_t%2CbizCode%2CddwTriggerDay%2CdwEnv%2CdwType%2Cptag%2Csource%2CstrStoryId%2CstrZone%2CtriggerType&_ste=1`)
                         console.log($.source.sErrMsg)
-                        await $.wait(2000)
+                        await $.wait(31000)
                         await work(`https://m.jingxi.com/jxbfd/story/SpecialUserOper?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&strStoryId=${k.strStoryId}&dwType=3&triggerType=0&ddwTriggerDay=${k.ddwTriggerDay}&_stk=_cfd_t%2CbizCode%2CddwTriggerDay%2CdwEnv%2CdwType%2Cptag%2Csource%2CstrStoryId%2CstrZone%2CtriggerType&_ste=1`)
                         console.log($.source.sErrMsg)
                     }
@@ -111,10 +116,23 @@ async function main() {
     }
     // 任务列表
     await GetUserTask()
+    // 提现
+    // await UserCashOut()
     // 宝箱
     await GetActTask()
     // 珍珠任务
     await ComposeGame()
+}
+async function UserCashOut() {
+    await work(`https://m.jingxi.com/jxbfd/user/UserCashOutState?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=1627230478007&ptag=7155.9.47&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`, 'UserCashOutState')
+    if ($.haskey($.UserCashOutState, 'UsrCurrCashList') && $.UserCashOutState.UsrCurrCashList.length > 0 && $.UserCashOutState.dwTodayIsCashOut == 0) {
+        for (let i of $.UserCashOutState.UsrCurrCashList) {
+            if (i.dwDefault == 1) {
+                await work(`https://m.jingxi.com/jxbfd/user/CashOut?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=1627230762800&ptag=7155.9.47&ddwMoney=${i.ddwMoney}&ddwPaperMoney=${i.ddwPaperMoney}&strPgtimestamp=${$.token.strPgtimestamp}&strPhoneID=${$.token.strPhoneID}&strPgUUNum=${$.token.strPgUUNum}&_stk=_cfd_t%2CbizCode%2CddwMoney%2CddwPaperMoney%2CdwEnv%2Cptag%2Csource%2CstrPgUUNum%2CstrPgtimestamp%2CstrPhoneID%2CstrZone&_ste=1`)
+                console.log("兑换:", i.ddwMoney / 100)
+            }
+        }
+    }
 }
 async function GetTakeAggrPage() {
     await work(`https://m.jingxi.com/jxbfd/story/GetTakeAggrPage?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`, 'GetTakeAggrPage')
@@ -179,9 +197,9 @@ async function GetActTask() {
                     jumpUrl = i.strJumpUrl.split("##")[1]
                     await $.curl(jumpUrl)
                     await $.wait(i.dwLookTime * 1000)
+                    await work(`https://m.jingxi.com/newtasksys/newtasksys_front/DoTask?strZone=jxbfd&bizCode=jxbfddch&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&taskId=${i.ddwTaskId}&configExtra=&_stk=_cfd_t%2CbizCode%2CconfigExtra%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId&_ste=1`)
                 }
                 await work(`https://m.jingxi.com/newtasksys/newtasksys_front/Award?strZone=jxbfd&bizCode=jxbfddch&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&taskId=${i.ddwTaskId}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId&_ste=1`)
-                console.log("开宝箱")
             }
         }
         await work(`https://m.jingxi.com/jxbfd/story/ActTaskAward?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${$.timestamp}&ptag=${$.ptag}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone&_ste=1`)
@@ -239,11 +257,11 @@ async function CollectorOper() {
     shellData = $.querystorageroom.Data
     shell = []
     for (let i in shellData.ShellKind) {
-        if (array.includes(shellData.ShellKind[i].strName)) {
-            if (shellData.Office[i] && shellData.Office[i].dwCount > 0) {
-                shell.push(`${shellData.Office[i].dwType}:${shellData.Office[i].dwCount}`)
-            }
+        // if (array.includes(shellData.ShellKind[i].strName)) {
+        if (shellData.Office[i] && shellData.Office[i].dwCount > 0) {
+            shell.push(`${shellData.Office[i].dwType}:${shellData.Office[i].dwCount}`)
         }
+        // }
     }
     if (shell.length > 0) {
         strTypeCnt = shell.join('|')

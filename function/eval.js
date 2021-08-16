@@ -1,7 +1,7 @@
 function mainEval($) {
     return `
 !(async () => {
-    jdcookie = process.env.JD_COOKIE ? process.env.JD_COOKIE.split("&") : require("./utils/jdcookie").cookie;
+    jdcookie = process.env.JD_COOKIE ? process.env.JD_COOKIE.split("&") : require("./function/jdcookie").cookie;
     cookies={
         'all':jdcookie,
         'help': typeof(help) != 'undefined' ? [...jdcookie].splice(0,parseInt(help)):[]

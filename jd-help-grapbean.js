@@ -1,7 +1,7 @@
-let common = require("./utils/common");
+let common = require("./function/common");
 let $ = new common.env('全民抢京豆');
 let min = 2,
-    help = process.env[$.filename(__filename)] || Math.min(min, process.env.JdMain) || min;
+    help = $.config[$.filename(__filename)] || Math.min(min, $.config.JdMain) || min;
 $.setOptions({
     headers: {
         'content-type': 'application/json',

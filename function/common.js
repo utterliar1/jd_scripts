@@ -7,8 +7,15 @@ let notify = require('./sendNotify');
 let eval = require("./eval");
 let assert = require('assert');
 let jxAlgo = require("./jxAlgo");
+let config = {}
+try {
+    config = require("./config");
+} catch (e) {}
 class env {
     constructor(name) {
+        this.config = { ...config,
+            ...process.env
+        };
         this.name = name;
         this.message = [];
         this.sharecode = [];
@@ -50,7 +57,7 @@ class env {
                 return JSON.parse(str);
             } catch (e) {
                 try {
-                    str = str.match(/try\s*\{\w+\s*\(([^\)]+)/)[1]
+                    str = this.match([/try\s*\{\w+\s*\(([^\)]+)/, /\w+\s*\(([^\)]+)/], str)
                     return JSON.parse(str);
                 } catch (ee) {
                     return str
@@ -64,28 +71,22 @@ class env {
                 'url': params
             }
         }
-        //if (params.url.match(/jd.com\/|jingxi.com\//)) {
-        // 只有访问京东链接才带cookie
         params = Object.assign({ ...this.options
         }, params);
-        //}
         params.method = params.body ? 'POST' : 'GET';
-        if (params.ua) {
-            this.options.headers['user-agent'] = params.ua;
+        if (params.hasOwnProperty('cookie')) {
+            params.headers.cookie = params.cookie
         }
-        if (params.referer) {
-            this.options.headers.referer = params.referer;
+        if (params.hasOwnProperty('ua') || params.hasOwnProperty('useragent')) {
+            params.headers['user-agent'] = params.ua
         }
-        if (params.cookie) {
-            this.options.headers.cookie = params.cookie;
+        if (params.hasOwnProperty('referer')) {
+            params.headers.referer = params.referer
         }
-        if (params.headers) {
-            this.options.headers = params.headers;
-        }
-        if (params.params) {
+        if (params.hasOwnProperty('params')) {
             params.url += '?' + qs.stringify(params.params)
         }
-        if (params.form) {
+        if (params.hasOwnProperty('form')) {
             params.method = 'POST'
         }
         return new Promise(resolve => {
@@ -231,6 +232,21 @@ class env {
             }
         }
         return return_array;
+    }
+    compact(lists, keys) {
+        let array = {};
+        for (let i of keys) {
+            if (lists[i]) {
+                array[i] = lists[i];
+            }
+        }
+        return array;
+    }
+    unique(arr) {
+        return Array.from(new Set(arr));
+    }
+    end(args) {
+        return args[args.length - 1]
     }
 }
 module.exports = {
