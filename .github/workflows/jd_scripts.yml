@@ -92,6 +92,9 @@ jobs:
         wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
+        rename -f 's/^jd-help-/jd_help_/' *
+        rename -f 's/^jx-help-/jd_help_/' *
+        rename -f 's/^jd-reward-/jd_reward_/' *
         rename -f 's/^jd-task-/jd_task_/' *
         rename -f 's/^jx-task-/jd_task_/' *
         rename -f 's/^jr-task-/jd_task_/' *
