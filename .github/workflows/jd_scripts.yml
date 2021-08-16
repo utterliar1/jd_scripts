@@ -48,7 +48,7 @@ jobs:
         rm -rf ./curtinlv
         echo "========= 开始下载airacg的脚本及依赖 ========="
         git clone https://github.com/airacg/jd_task.git ./airacg
-        cp -r ./airacg/utils ./
+        cp -r ./airacg/function ./
         cp -f ./airacg/*_*.js ./
         rm -rf ./airacg
         echo "========= 开始下载小小的脚本及依赖 ========="
@@ -92,6 +92,9 @@ jobs:
         wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
+        rename -f 's/^jd-task-/jd_task_/' *
+        rename -f 's/^jx-task-/jd_task_/' *
+        rename -f 's/^jr-task-/jd_task_/' *
         rename -f 's/^jr_/jd_/' *
         rename -f 's/^jx_/jd_jx/' *
         rename -f 's/^gua_/jd_gua/' *
