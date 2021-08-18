@@ -11,6 +11,7 @@ $.setOptions({
 eval(common.eval.mainEval($));
 async function prepare() {
     $.thread = 1;
+    console.log('invokeKey', $.config['invokeKey'])
     //await $.timer("00 00 */8",120)
 }
 async function main(id) {
@@ -21,8 +22,8 @@ async function main(id) {
         'url': `https://jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=${$.config['invokeKey']}&validate=${validate}`,
         'cookie': id.cookie
     }
-    try {
-        await $.curl(params)
+    await $.curl(params)
+    if ($.source.data) {
         let h = new Date().getHours();
         if (h >= 0 && h < 8) {
             config = $.source.data['beanConfigs0']
@@ -65,5 +66,7 @@ async function main(id) {
                 break
             }
         }
-    } catch (e) {}
+    } else {
+        console.log(`${$.config['invokeKey']}未获取到数据`)
+    }
 }
