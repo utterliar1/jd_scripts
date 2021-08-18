@@ -205,7 +205,7 @@ class env {
     }
     filename(file, rename = '') {
         if (!this.runfile) {
-            this.runfile = path.basename(file).replace(".js", '')
+            this.runfile = path.basename(file).replace(".js", '').replace(/-/g,'_')
         }
         if (rename) {
             rename = `-${rename}`;
