@@ -12,11 +12,11 @@ environment:
 ```
 # 青龙容器添加repo命令
 ```text
-ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "utils|backup|tools" "^jd[^_]|USER|package|tools|utils"
+ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "utils|backup|tools" "^jd[^_]|USER|^TS|tools|function|utils"
 ```
 extra.sh添加
 ```text
-cp -f /ql/repo/utterliar1_jd_scripts/package.json /ql/scripts/package.json && cd scripts && pnpm install
+wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm install
 ```
 # References:
 - [@gossh520](https://github.com/gossh520/jd-v4.git)
