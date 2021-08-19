@@ -5,6 +5,10 @@
 更新时间：2021-07-13 12:00
 脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
 搬运cui521大佬脚本
+店铺签到抓取token 
+step 1 : 抓取地址为  https://api.m.jd.com/client.action?functionId=genToken 的接口  拿到body内容
+step 2 : 对body 进行两次url解码   得到地址https://h5.m.jd.com/babelDiy/Zeus/2PAAf74aG3D61qvfKUM5dxUssJQ9/index.html?token=517AD3C83C8D5EE281BB808BFF283C17   取token后面参数即可
+
 //方式一
 //export MyShopToken1='30DE3F2E8B4278A120007C8CD0D4F835'
 //export MyShopToken2='3C0B9CE1F01623C77ADE9F90AFA0FD5F'
