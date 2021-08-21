@@ -5,7 +5,7 @@
 - 如果发现脚本还没有同步过来，可以点亮/取消后点亮star激活action运行获取更新
 - github action自动更新，所有脚本均为作者原版，无任何个人修改
 - 临时脚本会同步到库里，但是不会及时添加定时，有需求自己运行即可
-- 如果遇到拉库失败，或者更新不了脚本，可以尝试容器内`bash scripts/backup/update.sh`进行强制更新
+- 如果遇到拉库失败，或者更新不了脚本，可以尝试容器内`bash scripts/docker/update.sh`进行强制更新
 # V4容器docker-compoes.yml添加变量
 ```text
 environment: 
