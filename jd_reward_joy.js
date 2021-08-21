@@ -11,6 +11,8 @@ $.setOptions({
 eval(common.eval.mainEval($));
 async function prepare() {
     $.thread = 1;
+    $.options.headers.lkt = $.timestamp;
+    $.options.headers.lks = $.md5(`${$.config['invokeKey']}${$.timestamp}`)
     console.log('invokeKey', $.config['invokeKey'])
     //await $.timer("00 00 */8",120)
 }
