@@ -27,14 +27,14 @@ function mainEval($) {
                     'user': $.user,
                     'cookie': $.cookie
                 }
+                if (!$.thread) {
+                    console.log(\`\n******开始【京东账号\${$.index}】\${$.user} 任务*********\n\`);
+                }
                 if ($.config[\`\${$.runfile}_except\`] && $.config[\`\${$.runfile}_except\`].includes(\$.user)) {
                     console.log(\`全局变量\${$.runfile}_except中配置了该账号pt_pin,跳过此次任务\`)
                 }else{
+                    $.setCookie($.cookie)
                     try{
-                        if (!$.thread) {
-                            console.log(\`\n******开始【京东账号\${$.index}】\${$.user} 任务*********\n\`);
-                            $.setCookie($.cookie)
-                        }
                         if ($.sharecode.length > 0) {
                             for (let smp of $.sharecode) {
                                 smp = Object.assign({ ...info}, smp);
