@@ -27,23 +27,28 @@ function mainEval($) {
                     'user': $.user,
                     'cookie': $.cookie
                 }
-                try{
-                    if (!$.thread) {
-                        console.log(\`\n******开始【京东账号\${$.index}】\${$.user} 任务*********\n\`);
-                        $.setCookie($.cookie)
-                    }
-                    if ($.sharecode.length > 0) {
-                        for (let smp of $.sharecode) {
-                            smp = Object.assign({ ...info}, smp);
-                            $.thread ? main(smp) : await main(smp);
+                if ($.config[\`\${$.runfile}_except\`] && $.config[\`\${$.runfile}_except\`].includes(\$.user)) {
+                    console.log(\`全局变量\${$.runfile}_except中配置了该账号pt_pin,跳过此次任务\`)
+                }else{
+                    try{
+                        if (!$.thread) {
+                            console.log(\`\n******开始【京东账号\${$.index}】\${$.user} 任务*********\n\`);
+                            $.setCookie($.cookie)
                         }
-                    }else{
-                        $.thread ? main(info) : await main(info);
+                        if ($.sharecode.length > 0) {
+                            for (let smp of $.sharecode) {
+                                smp = Object.assign({ ...info}, smp);
+                                $.thread ? main(smp) : await main(smp);
+                            }
+                        }else{
+                            $.thread ? main(info) : await main(info);
+                        }
+                    }
+                    catch(em){
+                        console.log(em.message)
                     }
                 }
-                catch(em){
-                    console.log(em.message)
-                }
+
 
             }
         }catch(em){console.log(em.message)}
