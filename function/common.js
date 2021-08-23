@@ -65,7 +65,7 @@ class env {
             }
         }
     }
-    curl(params) {
+    curl(params, extra = '') {
         if (typeof(params) != 'object') {
             params = {
                 'url': params
@@ -96,6 +96,9 @@ class env {
                         console.log(data)
                     }
                     this.source = this.jsonParse(data);
+                    if (extra) {
+                        this[extra] = this.source
+                    }
                 } catch (e) {
                     console.log(e, resp)
                 } finally {
@@ -205,10 +208,10 @@ class env {
     }
     filename(file, rename = '') {
         if (!this.runfile) {
-            this.runfile = path.basename(file).replace(".js", '').replace(/-/g,'_')
+            this.runfile = path.basename(file).replace(".js", '').replace(/-/g, '_')
         }
         if (rename) {
-            rename = `-${rename}`;
+            rename = `_${rename}`;
         }
         return path.basename(file).replace(".js", rename);
     }
