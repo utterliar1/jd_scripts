@@ -4,7 +4,7 @@ let qs = require('querystring');
 let urls = require('url');
 let path = require('path');
 let notify = require('./sendNotify');
-let eval = require("./eval");
+let mainEval = require("./eval");
 let assert = require('assert');
 let jxAlgo = require("./jxAlgo");
 let config = {}
@@ -52,14 +52,22 @@ class env {
         this.options.headers.cookie = cookie
     }
     jsonParse(str) {
-        if (typeof str == "string") {
+        try {
+            return JSON.parse(str);
+        } catch (e) {
             try {
-                return JSON.parse(str);
-            } catch (e) {
+                let data = this.match([/try\s*\{\w+\s*\(([^\)]+)/, /\w+\s*\(([^\)]+)/], str)
+                return JSON.parse(data);
+            } catch (ee) {
                 try {
-                    str = this.match([/try\s*\{\w+\s*\(([^\)]+)/, /\w+\s*\(([^\)]+)/], str)
-                    return JSON.parse(str);
-                } catch (ee) {
+                    let cb = this.match(/try\s*\{\s*(\w+)/, str)
+                    if (cb) {
+                        let func = "";
+                        let data = str.replace(cb, `func=`)
+                        eval(data);
+                        return func
+                    }
+                } catch (eee) {
                     return str
                 }
             }
@@ -211,7 +219,7 @@ class env {
             this.runfile = path.basename(file).replace(".js", '').replace(/-/g, '_')
         }
         if (rename) {
-            rename = `_${rename}`;
+            rename = `-${rename}`;
         }
         return path.basename(file).replace(".js", rename);
     }
@@ -254,7 +262,7 @@ class env {
 }
 module.exports = {
     env,
-    eval,
+    eval: mainEval,
     assert,
     jxAlgo,
 }

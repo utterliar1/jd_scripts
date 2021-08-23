@@ -14,7 +14,7 @@ async function prepare() {
     $.n = $.config[$.runfile] ? Math.ceil($.config[$.runfile]) : 2
 }
 async function main(id) {
-    url = 'https://wq.jd.com/fav/shop/QueryShopFavList?cp=1&pageSize=10&lastlogintime=1629620290&_=1629620296971&g_login_type=0&callback=jsonpCBKA&g_tk=1994796340&g_ty=ls&sceneval=2&g_login_type=1'
+    url = `https://wq.jd.com/fav/shop/QueryShopFavList?cp=1&pageSize=10&lastlogintime=${$.timestamp}&_=1629620296971&g_login_type=0&callback=jsonpCBKA&g_tk=1994796340&g_ty=ls&sceneval=2&g_login_type=1`
     array = []
     for (let j = 0; j < $.n; j++) {
         await $.curl(url, 'lists')
@@ -28,6 +28,8 @@ async function main(id) {
                 console.log("取消关注", i.shopName)
                 array.push(i.shopName)
             }
+        }else{
+            console.log("未获取到店铺关注信息")
         }
     }
     $.notice(`取消关注:\n${array.join("|")}`)
