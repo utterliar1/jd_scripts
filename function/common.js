@@ -219,9 +219,9 @@ class env {
             this.runfile = path.basename(file).replace(".js", '').replace(/-/g, '_')
         }
         if (rename) {
-            rename = `-${rename}`;
+            rename = `_${rename}`;
         }
-        return path.basename(file).replace(".js", rename);
+        return path.basename(file).replace(".js", rename).replace(/-/g, '_');
     }
     rand(n, m) {
         var random = Math.floor(Math.random() * (m - n + 1) + n);
