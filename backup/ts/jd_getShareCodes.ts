@@ -1,17 +1,15 @@
 /**
- * cron: 0 23 * * *
- * 查看助力码和助力次数
+ * cron 0 20 * * 6
  */
 
-import axios from 'axios';
-import USER_AGENT, {requireConfig, TotalBean} from '../TS_USER_AGENTS';
+import {requireConfig, TotalBean} from "./TS_USER_AGENTS";
+import {bean, farm, pet, factory, sgmh, jxfactory, cash, carnivalcity} from "./tools/shareCodesTool";
 
-const notify = require('../sendNotify')
-let cookie: string = '', res: any = '', UserName: string, index: number;
+const notify = require('./sendNotify')
+let cookie: string = '', UserName: string, index: number;
 
 !(async () => {
   let cookiesArr: any = await requireConfig();
-
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
@@ -23,40 +21,14 @@ let cookie: string = '', res: any = '', UserName: string, index: number;
     }
     console.log(`\n开始【京东账号${index}】${nickName || UserName}\n`);
 
-    await carnivalcity()
+    console.log('种豆得豆:', await bean(cookie))
+    console.log('东东农场:', await farm(cookie))
+    console.log('东东萌宠:', await pet(cookie))
+    console.log('东东工厂:', await factory(cookie))
+    console.log('京喜工厂:', await jxfactory(cookie))
+    console.log('闪购盲盒:', await sgmh(cookie))
+    console.log('领现金呀:', await cash(cookie))
+    console.log('狂欢城呀:', await carnivalcity(cookie))
+
   }
 })()
-
-async function carnivalcity() {
-  res = await axios.post('https://api.m.jd.com/api',
-    `appid=guardian-starjd&functionId=carnivalcity_jd_prod&body=${escape(JSON.stringify({apiMapping: "/khc/task/getSupport"}))}&t=${Date.now()}&loginType=2`, {
-      headers: {
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "zh-cn",
-        "Connection": "keep-alive",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Origin": "https://carnivalcity.m.jd.com",
-        "Referer": "https://carnivalcity.m.jd.com/",
-        "Cookie": cookie,
-        "User-Agent": USER_AGENT,
-      }
-    })
-  console.log('carnivalcity:', res.data.data.shareId)
-
-  res = await axios.post('https://api.m.jd.com/api',
-    `appid=guardian-starjd&functionId=carnivalcity_jd_prod&body=${escape(JSON.stringify({apiMapping: "/khc/index/supportList"}))}&t=${Date.now()}&loginType=2`, {
-      headers: {
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "zh-cn",
-        "Connection": "keep-alive",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Origin": "https://carnivalcity.m.jd.com",
-        "Referer": "https://carnivalcity.m.jd.com/",
-        "Cookie": cookie,
-        "User-Agent": USER_AGENT,
-      }
-    })
-  console.log('被助力：', res.data.data.supportedNums, '/', res.data.data.supportNeedNums)
-}

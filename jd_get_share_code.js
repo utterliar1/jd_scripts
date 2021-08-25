@@ -408,9 +408,12 @@ async function getPlantBean() {
     await plantBeanIndex();
     // console.log(plantBeanIndexResult.data.taskList);
     if ($.plantBeanIndexResult.code === "0") {
-      const shareUrl = $.plantBeanIndexResult.data.jwordShareInfo.shareUrl;
-      $.myPlantUuid = getParam(shareUrl, "plantUuid");
-      console.log(`【京东账号${$.index}（${$.UserName}）种豆得豆】${$.myPlantUuid}`);
+      if($.plantBeanIndexResult.data){
+           const shareUrl = $.plantBeanIndexResult.data.jwordShareInfo.shareUrl;
+           $.myPlantUuid = getParam(shareUrl, "plantUuid");
+           console.log(`【京东账号${$.index}（${$.UserName}）种豆得豆】${$.myPlantUuid}`);
+      }
+     
 
     } else {
       console.log(
