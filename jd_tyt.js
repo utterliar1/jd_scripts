@@ -103,7 +103,7 @@ function tythelp() {
                     console.log("已完成砍价")
                     status = 1
                 } else {
-                    // console.log(data.msg)
+                    console.log(data.msg)
                 }
             } catch (e) {
                 $.logErr(e, resp);
