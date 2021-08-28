@@ -20,9 +20,9 @@ extra.sh添加
 wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm install
 ```
 # References:
-- [@gossh520](https://github.com/gossh520/jd-v4.git)
+- [@Annyoo2021](https://github.com/Annyoo2021/scripts.git)
 - [@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)
-- [@cdle](https://github.com/cdle/jd_study.git)
+- [@cdle](https://github.com/cdle)
 - [@smiek](https://github.com/smiek2221/scripts)
 - [@Wenmoux](https://github.com/Wenmoux/scripts.git)
 - [@passerby](https://github.com/passerby-b/JDDJ.git)
