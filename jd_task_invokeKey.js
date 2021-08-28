@@ -17,7 +17,7 @@ async function prepare() {
         jsContent = await $.curl(js)
         let index = 'https:' + $.match(/src="([^\"]+)"/, jsContent)
         let indexContent = await $.curl(index)
-        invokeKey = $.match(/"channel_sign_invoke_key":"([^\"]+)"/, indexContent)
+        invokeKey = $.match(/\w+\s*=\s*\w+\(\d+\)\s*,\s*\w+\s*=\s*"(\w{16})"/, indexContent)
     } catch (e) {}
     if (invokeKey) {
         let config = require("./function/config");

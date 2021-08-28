@@ -2,6 +2,8 @@ let common = require("./function/common");
 let $ = new common.env('京东验证码获取');
 let validator = require("./function/jdValidate");
 let fs = require("fs");
+let min = 2,
+    help = $.config[$.filename(__filename)] || Math.min(min, $.config.JdMain) || min;
 $.setOptions({
     headers: {
         'content-type': 'application/json',
@@ -9,6 +11,11 @@ $.setOptions({
         'referer': 'https://happy.m.jd.com/babelDiy/Zeus/3ugedFa7yA6NhxLN5gw2L3PF9sQC/index.html?asid=287215626&un_area=12_904_905_57901&lng=117.612969135975&lat=23.94014745198865',
     }
 });
+$.readme = `
+58 7,15,23 * * * task jd-task-validate
+exprot jd_task_validate=5  #限制跑验证码账户个数
+export JDJR_SERVER=ip  #如获取不到验证码,本地先获取iv.jd.com的ip,再自行添加环境变量
+        `
 eval(common.eval.mainEval($));
 async function prepare() {
     $.thread = 1;
@@ -17,8 +24,12 @@ async function prepare() {
         if (error) return console.log("初始化失败" + error.message);
         console.log("初始化成功");
     })
+    $.jump = $.config[$.runfile] ? cookies['all'].splice(parseInt($.config[$.runfile])) : []
 }
 async function main(id) {
+    if ($.jump.includes(id.cookie)) {
+        return;
+    }
     let code = new validator.JDJRValidator;
     for (let i = 0; i < 2; i++) {
         validate = ''

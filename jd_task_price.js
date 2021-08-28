@@ -30,16 +30,24 @@ async function main(id) {
         };
         h = await $.curl(p)
         console.log(h)
+        await $.wait(5000)
         // 获取保价信息
         console.log("获取保价订单")
         let p2 = {
             'url': `https://api.m.jd.com/api?appid=siteppM&functionId=siteppM_appliedSuccAmount&forcebot=&t=${$.timestamp}`,
-            'form': {
-                'body': `"{\"sid\":\"\",\"type\":\"3\",\"forcebot\":\"\"}"`
-            }
+            // 'form': {
+            //     'body': `"{\"sid\":\"\",\"type\":\"3\",\"forcebot\":\"\"}"`
+            // }
+            'form': 'body={"sid":"","type":"3","forcebot":"","num":15}'
         }
         await $.curl(p2)
-        console.log($.source)
+        if ($.source.flag) {
+            text = `本次保价金额: ${$.source.succAmount}`
+        } else {
+            text = "本次无保价订单"
+        }
+        console.log(text)
+        $.notice(text)
         if ($.config[$.runfile]) {
             // 单个商品检测,没什么用处
             console.log("\n手动保价前25个订单")
@@ -122,10 +130,11 @@ async function jstoken() {
     let {
         JSDOM
     } = jsdom;
-    resourceLoader = new jsdom.ResourceLoader({
+    let resourceLoader = new jsdom.ResourceLoader({
         userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0',
         referrer: "https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu?sid=0b5a9d5564059f36ed16a8967c37e24w",
     });
+    let virtualConsole = new jsdom.VirtualConsole();
     var options = {
         referrer: "https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu?sid=0b5a9d5564059f36ed16a8967c37e24w",
         userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0',
@@ -135,12 +144,9 @@ async function jstoken() {
         includeNodeLocations: true,
         storageQuota: 10000000,
         pretendToBeVisual: true,
+        virtualConsole
     };
     $.dom = new JSDOM(`<body><script src="https://js-nocaptcha.jd.com/statics/js/main.min.js"></script></body>`, options);
-    //
-    // 屏蔽error错误
-    //
-    console.error = function() {}
     await $.wait(1000)
     try {
         feSt = 's'

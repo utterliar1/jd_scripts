@@ -8,9 +8,13 @@ function mainEval($) {
     }
     taskCookie=cookies['all']
     jxAlgo = new common.jxAlgo();
+    if ($.readme) {
+            console.log(\`使用说明:\\n\${$.readme}\\n以上内容仅供参考,有需求自行添加\\n\`,)
+    }
     console.log(\`======================本次任务共\${taskCookie.length}个京东账户Cookie======================\\n\`)
     try{
         await prepare();
+
         if ($.sharecode.length > 0) {
             $.sharecode = $.sharecode.filter(d=>d && JSON.stringify(d)!='{}')
             console.log('助力码', $.sharecode )

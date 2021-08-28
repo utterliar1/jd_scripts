@@ -190,7 +190,10 @@ const DATA = {
     "product": "embed",
     "lang": "zh_CN",
 };
-const SERVER = 'iv.jd.com';
+let SERVER = 'iv.jd.com';
+if (process.env.JDJR_SERVER) {
+    SERVER = process.env.JDJR_SERVER
+}
 class JDJRValidator {
     constructor() {
         this.data = {};
