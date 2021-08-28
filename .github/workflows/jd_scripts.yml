@@ -25,15 +25,6 @@ jobs:
         rm -r ./smiek2221/USER_AGENTS.js
         cp -f ./smiek2221/*_*.js ./
         rm -rf ./smiek2221
-        echo "========= 开始下载cdle的脚本 ========="
-        git clone https://github.com/cdle/xdd.git ./cdle
-        cp -f ./cdle/scripts/*_*.js ./
-        rm -rf ./cdle
-        echo "========= 开始下载Wenmoux的脚本 ========="
-        git clone -b wen https://github.com/Wenmoux/scripts.git ./Wenmoux
-        mv ./Wenmoux/jd/chinnkarahoi_jd_bookshop.js ./jd_bookshopWenmoux.js
-        cp -f ./Wenmoux/jd/*_*.js ./
-        rm -rf ./Wenmoux
         echo "========= 开始下载passby的脚本 ========="
         wget -O ./jd_dj_fruit.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit.js
         wget -O ./jd_dj_fruit_collectWater.js https://github.com/passerby-b/JDDJ/raw/main/jddj_fruit_collectWater.js
@@ -57,6 +48,13 @@ jobs:
         cp -f ./Aaron/jd_blueCoin.js ./
         #cp -f ./Aaron/jd_cfdtx.js ./
         #cp -f ./Aaron/jd_jump.js ./
+        cp -f ./Aaron/jd_bookshop.js ./
+        cp -f ./Aaron/jd_jxlhb.js ./
+        cp -f ./Aaron/jd_wish.js ./
+        cp -f ./Aaron/jd_nzmh.js ./
+        cp -f ./Aaron/jd_speed_redpocke.js ./
+        cp -f ./Aaron/jd_daily_lottery.js ./
+        cp -f ./Aaron/jd_ccSign.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
         echo "========= 开始下载JDHelloWorld的脚本 ========="
@@ -90,6 +88,10 @@ jobs:
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         #wget -N https://github.com/panghu999/panghu/raw/master/jd_ylyn.js
         wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
+        wget -O jd_kxcdz.js https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_kxcdz.js
+        wget -O jd_wxFans.js https://raw.githubusercontent.com/star261/jd/main/scripts/jd_fan.js
+        wget -O jd_superBrand.js https://github.com/star261/jd/raw/main/scripts/jd_productZ4Brand.js
+        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_dwapp.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^jd-help-/jd_help_/' *
@@ -103,15 +105,15 @@ jobs:
         rename -f 's/^gua_/jd_gua/' *
         #rename -f 's/^jddj/jd_dj_/' *
         echo "========= 开始合并cron定时文件 ========="
-        wget -N https://raw.githubusercontent.com/gossh520/jd-v4/master/docker/crontab_list.sh
+        wget -N https://github.com/Annyoo2021/scripts/raw/main/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 修改cron名称及临时屏蔽 ========="
-        sed -i 's/car_reward/car_exchange/g' ./docker/crontab_list.sh
-        sed -i 's/wenmoux//g' ./docker/crontab_list.sh
-        sed -i 's/cdle//g' ./docker/crontab_list.sh
-        sed -i 's/smiek2221//g' ./docker/crontab_list.sh
-        sed -i '/jd_jump\|jx_sign\|cashOut\|summer\|jd_live_redrain\|jd_small_home\|EsportsManager\|delCoupon\|jd_pigPet\|jd_price\|fcdyj\|jd_speed.js\|necklace/d' ./docker/crontab_list.sh
+        sed -i 's/sjzjd/guaMMdou/g' ./docker/crontab_list.sh
+        sed -i 's/jxqd/jxsign/g' ./docker/crontab_list.sh
+        sed -i 's/jd_joy.js/jd_joy_new.js/g' ./docker/crontab_list.sh
+        sed -i 's/zqfl/getUp/g' ./docker/crontab_list.sh
+        sed -i '/jd_qqxing\|jd_lsj\|jd_joy_run\|cfdtx\|jd_pigPet\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace/d' ./docker/crontab_list.sh
         echo "========= 备份cron及yml文件 ========="
         log_time=$(date "+%Y-%m-%d-%H-%M-%S")
         diff ./docker/crontab_list.sh ./backup/cron/crontab_list.sh | tee ./backup/cron/env.diff
