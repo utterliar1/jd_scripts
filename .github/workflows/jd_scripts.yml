@@ -18,7 +18,7 @@ jobs:
       run: |
         echo "========= 开始清空脚本 ========="
         shopt -s extglob
-        rm -rf !(docker|backup|account.json|Loon|QuantumultX|README.md|jd_half_redrain.js|jd_super_redrain.js)
+        rm -rf !(docker|backup|icon|account.json|Loon|QuantumultX|README.md|jd_half_redrain.js|jd_super_redrain.js)
         shopt -u extglob
         echo "========= 开始下载smiek2221的脚本 ========="
         git clone https://github.com/smiek2221/scripts.git ./smiek2221
