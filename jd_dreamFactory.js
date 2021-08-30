@@ -1650,7 +1650,7 @@ const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%2
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const inviteCodes = [''];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let runTimesErr = '', runTimesErrNotify = process.env.runTimesErrNotify ?? "false";
+let runTimesErr = '', runTimesErrNotify = $.isNode() ? (process.env.runTimesErrNotify ? process.env.runTimesErrNotify : 'false') : 'false';
 $.tuanIds = [];
 $.appId = 10001;
 if ($.isNode()) {
@@ -1721,6 +1721,9 @@ if ($.isNode()) {
   }
   if ($.isNode() && allMessage) {
     await notify.sendNotify(`${$.name}`, `${allMessage}`, {url: jxOpenUrl})
+  }
+  if (runTimesErrNotify === 'true' && runTimesErr) {
+    await notify.sendNotify(`${$.name}上报失败`, runTimesErr, '', '\n\n你好,世界!')
   }
 })()
 
@@ -2239,13 +2242,13 @@ function userInfo() {
                 }, (err, resp, data) => {
                   if (err) {
                     console.log('上报失败', err)
-                    runTimesErr += `${$.userName}:${err}\n`
+                    runTimesErr += `${$.UserName}:${err}\n`
                   } else {
                     if (data === '1' || data === '0') {
                       console.log('上报成功')
                     } else {
                       console.log('上报失败', data)
-                      runTimesErr += `${$.userName}:${data}\n`
+                      runTimesErr += `${$.UserName}:${data}\n`
                     }
                   }
                 })

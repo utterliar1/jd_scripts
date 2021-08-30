@@ -35,7 +35,7 @@ let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, new
 let shareCodes = ['']
 let message = '', subTitle = '', option = {};
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
-let runTimesErr = '', runTimesErrNotify = process.env.runTimesErrNotify ?? "false";
+let runTimesErr = '', runTimesErrNotify = $.isNode() ? (process.env.runTimesErrNotify ? process.env.runTimesErrNotify : 'false') : 'false';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
 let randomCount = $.isNode() ? 20 : 5;
@@ -124,13 +124,13 @@ async function jdPet() {
       }, (err, resp, data) => {
         if (err) {
           console.log('上报失败', err)
-          runTimesErr += `${$.userName}:${err}\n`
+          runTimesErr += `${$.UserName}:${err}\n`
         } else {
           if (data === '1' || data === '0') {
             console.log('上报成功')
           } else {
             console.log('上报失败', data)
-            runTimesErr += `${$.userName}:${data}\n`
+            runTimesErr += `${$.UserName}:${data}\n`
           }
         }
       })
