@@ -23,7 +23,6 @@ const activityList = [
     {"actid":"e8206cf7401e4e90a5f645f990283144","endTime":1630339198000},
     {"actid":"4a2eb0132725416fa2a3086018437594","endTime":1630339200000},
     {"actid":"4baf19fa3f454e6abf82be7d66605ab4","endTime":1630425599000},
-    {"actid":"c75ae2afd7ff4aec9ed47008b08400f7","endTime":1630288800000},
     {"actid":"3da50af9e8664746844c5456b8920b7d","endTime":1630425599000},
     {"actid":"58121dee0d84428bbdeb83934ffa1b80","endTime":1630425599000},
     {"actid":"8afc9104d6444696b3f16ceb23a24536","endTime":1630425599000},
@@ -33,7 +32,6 @@ const activityList = [
     {"actid":"5622386323bb4a82a2ed4e0158f7c6a7","endTime":1631289599000},
     {"actid":"4ee56f673e164305a527545efe566b20","endTime":1630425599000},
     {"actid":"9bb5cb2801114f2981c183abbc2aa522","endTime":1630425596000},
-    {"actid":"72e2c4f63db0481cbe5acc2d962aa3b1","endTime":1630252799000}
 ];
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
