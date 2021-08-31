@@ -19,3 +19,5 @@
 2 9 * * * node /scripts/jd_fruit_moreTask.js >> /scripts/logs/jd_fruit_moreTask.log 2>&1
 # 助力池连通性测试(HW)
 2 9 * * * node /scripts/jd_api_test.js >> /scripts/logs/jd_api_test.log 2>&1
+# ck检测(HW)
+2 */2 * * * node /scripts/jd_checkCookie.js >> /scripts/logs/jd_checkCookie.log 2>&1
