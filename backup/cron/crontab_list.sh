@@ -5,8 +5,8 @@
 
 ##############短期活动##############
 
-# 开学充电站 
-19 1 20-31 8 * node /scripts/jd_kxcdz.js >> /scripts/logs/jd_kxcdz.log 2>&1
+# 送豆得豆
+6 1,14 * * * node /scripts/jd_sendBeans.js >> /scripts/logs/jd_sendBeans.log 2>&1
 
 # 粉丝互动 
 #21 6,18 * * * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
