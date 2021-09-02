@@ -65,6 +65,7 @@ jobs:
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
         cp -f ./JDHelloWorld/*ShareCodes.js ./
+        cp -f ./backup/js/shareCodesTool.js ./JDHelloWorld/tools/
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
         sudo npm install
