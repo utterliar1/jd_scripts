@@ -55,6 +55,8 @@ jobs:
         cp -f ./Aaron/jd_speed_redpocke.js ./
         cp -f ./Aaron/jd_daily_lottery.js ./
         cp -f ./Aaron/jd_ccSign.js ./
+        cp -f ./Aaron/jd_sendBeans.js ./
+        #cp -f ./Aaron/jx_sign.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
         echo "========= 开始下载JDHelloWorld的脚本 ========="
@@ -84,12 +86,12 @@ jobs:
         rm -rf ./JDHelloWorld
         echo "========= 开始下载单文件脚本 ========="
         #wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_nzmh.js
-        wget -N https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jx_sign.js
+        #wget -N https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jx_sign.js
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         #wget -N https://github.com/panghu999/panghu/raw/master/jd_ylyn.js
         wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
-        wget -O jd_kxcdz.js https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_kxcdz.js
+        #wget -O jd_kxcdz.js https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_kxcdz.js
         wget -O jd_wxFans.js https://raw.githubusercontent.com/star261/jd/main/scripts/jd_fan.js
         wget -O jd_superBrand.js https://github.com/star261/jd/raw/main/scripts/jd_productZ4Brand.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_dwapp.js
