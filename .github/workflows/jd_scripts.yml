@@ -70,10 +70,10 @@ jobs:
         sudo npm install
         tsc *_*.ts
         cd ./tools
-        tsc *_*.ts
+        tsc *.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ../..
-        mv -f ./JDHelloWorld/tools/*_*.ts ./backup/ts/
+        mv -f ./JDHelloWorld/tools/*.ts ./backup/ts/
         cp -rf ./JDHelloWorld/tools ./
         rm -rf ./JDHelloWorld/jd_update.js
         cp -rf ./JDHelloWorld/backUp/* ./backup/js/
