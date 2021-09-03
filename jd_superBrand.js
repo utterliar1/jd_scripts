@@ -1,9 +1,11 @@
 /**
 特务Z
+环境变量 OPEN_CARD="1" 不执行开卡任务 OPEN_CARD="2" 执行开卡任务 默认不执行
 cron 23 8,9 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_productZ4Brand.js
 一天要跑2次
 */
 const $ = new Env('特务Z');
+const openCard = $.isNode() ? (process.env.OPEN_CARD ? process.env.OPEN_CARD : '1'):'1';
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [];
@@ -110,10 +112,15 @@ async function doTask(){
       console.log(`任务：${$.oneTask.assignmentName}，已完成`);
       continue;
     }
-    if($.oneTask.assignmentType === 3 || $.oneTask.assignmentType === 0){
+    if(openCard === '1' && $.oneTask.assignmentType === 7){
+      console.log(`任务：${$.oneTask.assignmentName}，不执行，若想执行设置，设置环境变量 OPEN_CARD="2"`);
+      continue;
+    }
+    if($.oneTask.assignmentType === 3 || $.oneTask.assignmentType === 0 || $.oneTask.assignmentType === 7){
       console.log(`任务：${$.oneTask.assignmentName}，去执行`);
-      if($.oneTask.ext && $.oneTask.ext.followShop && $.oneTask.ext.followShop[0]){
-        $.runInfo = $.oneTask.ext.followShop[0]
+      let subInfo = $.oneTask.ext.followShop || $.oneTask.ext.brandMemberList;
+      if(subInfo[0]){
+        $.runInfo = subInfo[0];
       }else{
         $.runInfo = {'itemId':null};
       }
@@ -195,6 +202,8 @@ function dealReturn(type, data) {
     case 'superBrandDoTask':
       if(data.code === '0'){
         console.log(JSON.stringify(data.data.bizMsg));
+      }else{
+        console.log(JSON.stringify(data));
       }
       break;
     case 'superBrandTaskLottery':
