@@ -48,7 +48,7 @@ jobs:
         cp -f ./Aaron/jd_blueCoin.js ./
         #cp -f ./Aaron/jd_cfdtx.js ./
         #cp -f ./Aaron/jd_jump.js ./
-        cp -f ./Aaron/jd_bookshop.js ./
+        #cp -f ./Aaron/jd_bookshop.js ./
         cp -f ./Aaron/jd_jxlhb.js ./
         cp -f ./Aaron/jd_wish.js ./
         cp -f ./Aaron/jd_nzmh.js ./
@@ -67,17 +67,17 @@ jobs:
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
         cp -f ./JDHelloWorld/*ShareCodes.js ./
-        cp -f ./backup/js/shareCodesTool.js ./JDHelloWorld/tools/
+        #cp -f ./backup/js/shareCodesTool.js ./JDHelloWorld/tools/
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
         sudo npm install
         tsc *_*.ts
-        cd ./tools
+        cd ./utils
         tsc *.ts
         echo "========= 开始复制JDHelloWorld的脚本 ========="
         cd ../..
-        mv -f ./JDHelloWorld/tools/*.ts ./backup/ts/
-        cp -rf ./JDHelloWorld/tools ./
+        mv -f ./JDHelloWorld/utils/*.ts ./backup/ts/
+        cp -rf ./JDHelloWorld/utils ./
         rm -rf ./JDHelloWorld/jd_update.js
         cp -rf ./JDHelloWorld/backUp/* ./backup/js/
         cp -f ./JDHelloWorld/*_*.js ./
