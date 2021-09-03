@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 京喜领88元红包(9.30结束)
+0 0,12,21 * * * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
+
 # 送豆得豆
 6 1,14 * * * node /scripts/jd_sendBeans.js >> /scripts/logs/jd_sendBeans.log 2>&1
 
