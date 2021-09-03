@@ -36,9 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.carnivalcity = exports.cash = exports.jxfactory = exports.sgmh = exports.factory = exports.pet = exports.farm = exports.bean = void 0;
+exports.cash = exports.jxfactory = exports.sgmh = exports.factory = exports.pet = exports.farm = exports.bean = void 0;
 var axios_1 = require("axios");
 var TS_USER_AGENTS_1 = require("../TS_USER_AGENTS");
+// let USER_AGENT:string = '', decrypt:any ='';
+// try{
+//   USER_AGENT = require('../TS_USER_AGENTS').USER_AGENT
+//   decrypt = require('../TS_USER_AGENTS').decrypt
+// }catch (e) {
+//   USER_AGENT = require('./TS_USER_AGENTS').USER_AGENT
+//   decrypt = require('./TS_USER_AGENTS').decrypt
+// }
 function bean(cookie) {
     var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
@@ -217,30 +225,3 @@ function cash(cookie) {
     });
 }
 exports.cash = cash;
-function carnivalcity(cookie) {
-    var _a, _b;
-    return __awaiter(this, void 0, void 0, function () {
-        var data;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].post('https://api.m.jd.com/api', "appid=guardian-starjd&functionId=carnivalcity_jd_prod&body=" + escape(JSON.stringify({ apiMapping: "/khc/index/supportList" })) + "&t=" + Date.now() + "&loginType=2", {
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded",
-                            "Origin": "https://carnivalcity.m.jd.com",
-                            "Referer": "https://carnivalcity.m.jd.com/",
-                            "Cookie": cookie,
-                            "User-Agent": TS_USER_AGENTS_1["default"]
-                        }
-                    })];
-                case 1:
-                    data = (_c.sent()).data;
-                    if (((_a = data.data) === null || _a === void 0 ? void 0 : _a.supportedNums) && ((_b = data.data) === null || _b === void 0 ? void 0 : _b.supportNeedNums))
-                        return [2 /*return*/, data.data.supportedNums + " / " + data.data.supportNeedNums];
-                    else
-                        return [2 /*return*/, 'null / null'];
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.carnivalcity = carnivalcity;
