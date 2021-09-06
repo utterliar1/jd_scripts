@@ -8,14 +8,15 @@ let mainEval = require("./eval");
 let assert = require('assert');
 let jxAlgo = require("./jxAlgo");
 let config = require("./config");
-let user={}
+let user = {}
 try {
     user = require("./user")
 } catch (e) {}
 class env {
     constructor(name) {
-        this.config = { ...user,
-            ...process.env
+        this.config = { ...config,
+            ...process.env,
+            ...user,
         };
         this.name = name;
         this.message = [];
