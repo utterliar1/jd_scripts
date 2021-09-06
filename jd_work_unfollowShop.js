@@ -9,6 +9,10 @@ $.setOptions({
         'referer': 'https://happy.m.jd.com/babelDiy/Zeus/3ugedFa7yA6NhxLN5gw2L3PF9sQC/index.html?asid=287215626&un_area=12_904_905_57901&lng=117.612969135975&lat=23.94014745198865',
     }
 });
+$.readme = `
+42 23 * * * task ${$.runfile}
+exprot ${$.runfile}=2  #默认执行2次取关API,共20个店铺
+`
 eval(common.eval.mainEval($));
 async function prepare() {
     $.n = $.config[$.runfile] ? Math.ceil($.config[$.runfile]) : 2

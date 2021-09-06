@@ -1,6 +1,8 @@
 let common = require("./function/common");
 let $ = new common.env('京东invokeKey获取替换');
 let fs = require("fs");
+let min = 2,
+    help = $.config[$.filename(__filename)] || Math.min(min, $.config.JdMain) || min;
 $.setOptions({
     headers: {
         'content-type': 'application/json',
@@ -8,6 +10,9 @@ $.setOptions({
         'referer': 'https://happy.m.jd.com/babelDiy/',
     }
 });
+$.readme = `
+50 7,15,23 * * * task ${$.runfile}
+`
 eval(common.eval.mainEval($));
 async function prepare() {
     invokeKey = ''

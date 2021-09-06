@@ -9,6 +9,10 @@ $.setOptions({
         'referer': 'https://st.jingxi.com/pingou/dream_factory/divide.html?activeId=laD7IwPwDF1-Te-MvbW9Iw==&_close=1&jxsid=16232028831911667857',
     }
 });
+$.readme = `
+44 */6 * * * task ${$.runfile}
+exprot ${$.runfile}=2  #如需增加被助力账号,在这边修改人数
+`
 eval(common.eval.mainEval($));
 async function prepare() {
     let deramUrl = 'https://st.jingxi.com/pingou/dream_factory/index.html?ptag=7155.9.46'

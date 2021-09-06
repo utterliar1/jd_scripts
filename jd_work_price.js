@@ -10,6 +10,10 @@ $.setOptions({
         'referer': 'https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu?sid=0b5a9d5564059f36ed16a8967c37e24w',
     }
 });
+$.readme = `
+48 */8 * * * task ${$.runfile}
+exprot ${$.runfile}=1  #输出购买订单保价内容,没什么用
+`
 eval(common.eval.mainEval($));
 async function prepare() {}
 async function main(id) {

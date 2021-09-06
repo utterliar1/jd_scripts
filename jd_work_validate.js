@@ -12,10 +12,10 @@ $.setOptions({
     }
 });
 $.readme = `
-58 7,15,23 * * * task jd-task-validate
-exprot jd_task_validate=5  #限制跑验证码账户个数
+58 7,15,23 * * * task ${$.runfile}
+exprot ${$.runfile}=5  #限制跑验证码账户个数
 export JDJR_SERVER=ip  #如获取不到验证码,本地先获取iv.jd.com的ip,再自行添加环境变量
-        `
+`
 eval(common.eval.mainEval($));
 async function prepare() {
     $.thread = 1;

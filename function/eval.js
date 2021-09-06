@@ -6,6 +6,7 @@ function mainEval($) {
         'all':jdcookie,
         'help': typeof(help) != 'undefined' ? [...jdcookie].splice(0,parseInt(help)):[]
     }
+    $.sleep=cookies['all'].length * 500
     taskCookie=cookies['all']
     jxAlgo = new common.jxAlgo();
     if ($.readme) {
@@ -56,6 +57,9 @@ function mainEval($) {
 
             }
         }catch(em){console.log(em.message)}
+        if ($.thread) {
+            await $.wait($.sleep)
+        }
     }
     if (typeof(extra) != 'undefined') {
         console.log(\`============================开始运行额外任务============================\`)
