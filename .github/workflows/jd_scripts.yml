@@ -52,7 +52,7 @@ jobs:
         #cp -f ./Aaron/jd_bookshop.js ./
         cp -f ./Aaron/jd_jxlhb.js ./
         cp -f ./Aaron/jd_wish.js ./
-        cp -f ./Aaron/jd_nzmh.js ./
+        #cp -f ./Aaron/jd_nzmh.js ./
         cp -f ./Aaron/jd_speed_redpocke.js ./
         cp -f ./Aaron/jd_daily_lottery.js ./
         cp -f ./Aaron/jd_ccSign.js ./
