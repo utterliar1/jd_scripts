@@ -118,8 +118,8 @@ async function doTask(){
     }
     if($.oneTask.assignmentType === 3 || $.oneTask.assignmentType === 0 || $.oneTask.assignmentType === 7){
       console.log(`任务：${$.oneTask.assignmentName}，去执行`);
-      let subInfo = $.oneTask.ext.followShop || $.oneTask.ext.brandMemberList;
-      if(subInfo[0]){
+      let subInfo = $.oneTask.ext.followShop || $.oneTask.ext.brandMemberList || '';
+      if(subInfo && subInfo[0]){
         $.runInfo = subInfo[0];
       }else{
         $.runInfo = {'itemId':null};
