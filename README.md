@@ -22,7 +22,6 @@ wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm in
 # References:
 - [@Annyoo2021](https://github.com/Annyoo2021/scripts.git)
 - [@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)
-- [@cdle](https://github.com/cdle)
 - [@smiek](https://github.com/smiek2221/scripts)
 - [@passerby](https://github.com/passerby-b/JDDJ.git)
 - [@airacg](https://github.com/airacg/jd_task.git)
