@@ -34,9 +34,9 @@ async function main(id) {
         };
         h = await $.curl(p)
         console.log(h)
-        await $.wait(5000)
+        console.log("等待20s获取保价信息")
+        await $.wait(20000)
         // 获取保价信息
-        console.log("获取保价订单")
         let p2 = {
             'url': `https://api.m.jd.com/api?appid=siteppM&functionId=siteppM_appliedSuccAmount&forcebot=&t=${$.timestamp}`,
             // 'form': {
