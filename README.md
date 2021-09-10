@@ -30,3 +30,4 @@ wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm in
 - [@jiulan](https://github.com/jiulan/platypus.git)
 - [@Aaron-lv](https://github.com/Aaron-lv/sync.git)
 - [@curtinlv](https://github.com/curtinlv/JD-Script.git)
+- [@star261](https://github.com/star261/jd.git)
