@@ -67,6 +67,12 @@ const urlSchema = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%2
     await notify.sendNotify(`${$.name}上报失败`, runTimesErr, '', '\n\n你好,世界!')
   }
 })()
+  .catch((e) => {
+    $.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, "");
+  })
+  .finally(() => {
+    $.done();
+  });
 
 async function jdFruit() {
   subTitle = `【京东账号${$.index}】${$.nickName}`;
@@ -134,7 +140,7 @@ async function jdFruit() {
 function runTimes() {
   return new Promise((resolve, reject) => {
     $.get({
-      url: `https://api.sharecode.ga/api/runTimes?activityId=farm&sharecode=${$.farmInfo.farmUserPro.shareCode}`
+      url: `https://api.jdsharecode.xyz/api/runTimes?activityId=farm&sharecode=${$.farmInfo.farmUserPro.shareCode}`
     }, (err, resp, data) => {
       if (err) {
         console.log('上报失败', err)
@@ -1326,7 +1332,7 @@ function timeFormat(time) {
 
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://api.sharecode.ga/api/farm/${randomCount}`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `https://api.jdsharecode.xyz/api/farm/${randomCount}`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)

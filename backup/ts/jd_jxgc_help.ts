@@ -1,11 +1,8 @@
 /**
- * 这是一个只会助力的脚本，因为没打工仔了。
- * 先内部，再助力池。
- * cron: 0,30 21-23 * * *
- */
-
+* cron: 30 * * * *
+*/
 import axios from 'axios';
-import {requireConfig, wait, requestAlgo, decrypt} from './TS_USER_AGENTS';
+import {requireConfig, wait, requestAlgo, decrypt, h5st} from './TS_USER_AGENTS';
 import {jxfactory} from "./utils/shareCodesTool";
 
 let cookie: string = '', res: any = '', UserName: string, index: number;
@@ -67,14 +64,7 @@ interface Params {
 function api(fn: string, stk: string, params: Params = {}) {
   return new Promise(async (resolve, reject) => {
     let url = `https://m.jingxi.com/dreamfactory/${fn}?zone=dream_factory&_time=${Date.now()}&_stk=${encodeURIComponent(stk)}&_ste=1&_=${Date.now()}&sceneval=2`
-    if (Object.keys(params).length !== 0) {
-      let key: (keyof Params)
-      for (key in params) {
-        if (params.hasOwnProperty(key))
-          url += `&${key}=${params[key]}`
-      }
-    }
-    url += '&h5st=' + decrypt(stk, url)
+    url = h5st(url, stk, params, 10001)
     try {
       let {data} = await axios.get(url, {
         headers: {
@@ -93,7 +83,7 @@ function api(fn: string, stk: string, params: Params = {}) {
 
 async function getShareCodes() {
   try {
-    let {data} = await axios.get("https://api.sharecode.ga/api/jxfactory/30")
+    let {data} = await axios.get("https://api.jdsharecode.xyz/api/jxfactory/30")
     console.log(`从助力池获取到30个:${JSON.stringify(data.data)}`)
     shareCodes = [...shareCodesInternal, ...data.data]
   } catch (e) {

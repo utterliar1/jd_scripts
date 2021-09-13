@@ -36,6 +36,6 @@ async function main(id) {
             console.log("未获取到店铺关注信息")
         }
     }
-    $.notice(`取消关注:\n${array.join("|")}`)
+    $.notice(`取消关注:\n${array.join("\n")}`,1)
 }
 

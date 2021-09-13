@@ -69,8 +69,13 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
     }
   }
 })()
-  .catch((e) => $.logErr(e))
-  .finally(() => $.done())
+  .catch((e) => {
+    $.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, "");
+  })
+  .finally(() => {
+    $.done();
+  });
+
 //获取活动信息
 function interact_template_getHomeData(timeout = 0) {
   return new Promise((resolve) => {
@@ -303,7 +308,7 @@ function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
     $.get({
-      url: `https://api.sharecode.ga/api/sgmh/${randomCount}`, 'timeout': 10000}, (err, resp, data) => {
+      url: `https://api.jdsharecode.xyz/api/sgmh/${randomCount}`, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)

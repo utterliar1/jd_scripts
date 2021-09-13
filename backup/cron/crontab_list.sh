@@ -7,6 +7,9 @@
 # 心相印店铺活动  古蜀寻宝 (10.6 结束)
 17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
 
+# 京小鸽吾悦寄 (9.30 结束)
+9 1,13 1-30 9 * node /scripts/jd_jxg.js >> /scripts/logs/jd_jxg.log 2>&1
+
 # 发财大赢家之翻翻乐 (9.30结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 
@@ -52,6 +55,12 @@
 5 0,9 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
 # 领券中心签到
 17 0 * * * node /scripts/jd_ccSign.js >> /scripts/logs/jd_ccSign.log 2>&1
+# 京喜购物返红包助力
+11 */6 * * * node /scripts/jx_aid_cashback.js >> /scripts/logs/jx_aid_cashback.log 2>&1
+# 宠汪汪跑验证码
+58 7,15,23 * * * node /scripts/jd_work_validate.js >> /scripts/logs/jd_work_validate.log 2>&1
+# 宠汪汪兑换
+0 */8 * * * node /scripts/jd_exchange_joy.js >> /scripts/logs/jd_exchange_joy.log 2>&1
 # 积分换话费
 13 6,18 * * * node /scripts/jd_dwapp.js >> /scripts/logs/jd_dwapp.log 2>&1
 # 取关主播
