@@ -58,7 +58,6 @@
 # 京喜购物返红包助力
 11 */6 * * * node /scripts/jx_aid_cashback.js >> /scripts/logs/jx_aid_cashback.log 2>&1
 # 宠汪汪跑验证码
-58 7,15,23 * * * node /scripts/jd_work_validate.js >> /scripts/logs/jd_work_validate.log 2>&1
 # 宠汪汪兑换
 0 */8 * * * node /scripts/jd_exchange_joy.js >> /scripts/logs/jd_exchange_joy.log 2>&1
 # 积分换话费
