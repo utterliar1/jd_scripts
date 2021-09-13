@@ -13,7 +13,7 @@ environment:
 ```
 # 青龙容器添加repo命令
 ```text
-ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "utils|backup|tools|function" "^jd[^_]|USER|^TS|tools|function|utils"
+ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "utils|backup|function" "^jd[^_]|USER|^TS|function|utils"
 ```
 extra.sh添加
 ```text
@@ -22,9 +22,7 @@ wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm in
 # References:
 - [@Annyoo2021](https://github.com/Annyoo2021/scripts.git)
 - [@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)
-- [@cdle](https://github.com/cdle)
 - [@smiek](https://github.com/smiek2221/scripts)
-- [@Wenmoux](https://github.com/Wenmoux/scripts.git)
 - [@passerby](https://github.com/passerby-b/JDDJ.git)
 - [@airacg](https://github.com/airacg/jd_task.git)
 - [@NobyDa](https://github.com/NobyDa/Script.git)
@@ -32,3 +30,4 @@ wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm in
 - [@jiulan](https://github.com/jiulan/platypus.git)
 - [@Aaron-lv](https://github.com/Aaron-lv/sync.git)
 - [@curtinlv](https://github.com/curtinlv/JD-Script.git)
+- [@star261](https://github.com/star261/jd.git)

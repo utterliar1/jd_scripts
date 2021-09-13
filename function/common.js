@@ -7,14 +7,16 @@ let notify = require('./sendNotify');
 let mainEval = require("./eval");
 let assert = require('assert');
 let jxAlgo = require("./jxAlgo");
-let config = {}
+let config = require("./config");
+let user = {}
 try {
-    config = require("./config");
+    user = require("./user")
 } catch (e) {}
 class env {
     constructor(name) {
         this.config = { ...config,
-            ...process.env
+            ...process.env,
+            ...user,
         };
         this.name = name;
         this.message = [];
@@ -35,12 +37,20 @@ class env {
         console.log(`🔔${this.name}, 结束!\n`)
     }
     notify(array) {
-        let text = '';
+        let text = [];
+        let type = 0
         for (let i of array) {
-            text += `${i.user} -- ${i.msg}\n`
+            text.push(`${i.user} -- ${i.msg}`)
+            type = i.type
         }
         console.log(`\n=============================开始发送提醒消息=============================`)
-        notify.sendNotify(this.name + "消息提醒", text)
+        if (type == 1) {
+            for (let i of text) {
+                notify.sendNotify(this.name + "消息提醒", i)
+            }
+        } else {
+            notify.sendNotify(this.name + "消息提醒", text.join('\n'))
+        }
     }
     wait(t) {
         return new Promise(e => setTimeout(e, t))
@@ -121,18 +131,20 @@ class env {
     loads(str) {
         return JSON.parse(str)
     }
-    notice(msg) {
+    notice(msg, type = 0) {
         this.message.push({
             'index': this.index,
             'user': this.user,
-            'msg': msg
+            'msg': msg,
+            type
         })
     }
-    notices(msg, user, index = '') {
+    notices(msg, user, type = 0) {
         this.message.push({
             'user': user,
             'msg': msg,
-            'index': index
+            // 'index': index,
+            type
         })
     }
     urlparse(url) {

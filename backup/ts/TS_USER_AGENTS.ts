@@ -5,7 +5,8 @@ import {Md5} from "ts-md5";
 
 const CryptoJS = require('crypto-js')
 dotenv.config()
-let appId: number = 10028, fingerprint: string | number, token: string = '', enCryptMethodJD: any;
+
+let fingerprint: string | number, token: string = '', enCryptMethodJD: any;
 
 const USER_AGENTS: Array<string> = [
   "jdapp;android;10.0.2;10;network/wifi;Mozilla/5.0 (Linux; Android 10; ONEPLUS A5010 Build/QKQ1.191014.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045230 Mobile Safari/537.36",
@@ -46,7 +47,13 @@ const USER_AGENTS: Array<string> = [
   "jdapp;iPhone;10.0.2;14.1;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 14_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
 ]
 
-const jd_joy_invokeKey = "value1"
+function TotalBean(cookie: string) {
+  return {
+    cookie: cookie,
+    isLogin: true,
+    nickName: ''
+  }
+}
 
 function getRandomNumberByRange(start: number, end: number) {
   return Math.floor(Math.random() * (end - start) + start)
@@ -90,44 +97,6 @@ async function getFarmShareCode(cookie: string) {
     return ''
 }
 
-function TotalBean(cookie: string) {
-  let totalBean = {
-    isLogin: true,
-    nickName: ''
-  }
-  return new Promise(resolve => {
-    axios.get('https://me-api.jd.com/user_new/info/GetJDUserInfoUnion', {
-      headers: {
-        Host: "me-api.jd.com",
-        Connection: "keep-alive",
-        Cookie: cookie,
-        "User-Agent": USER_AGENT,
-        "Accept-Language": "zh-cn",
-        "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
-        "Accept-Encoding": "gzip, deflate, br"
-      }
-    }).then(res => {
-      if (res.data) {
-        let data = res.data
-        if (data['retcode'] === "1001") {
-          totalBean.isLogin = false; //cookie过期
-        }
-        if (data['retcode'] === "0" && data['data'] && data.data.hasOwnProperty("userInfo")) {
-          totalBean.isLogin = true
-          totalBean.nickName = data.data.userInfo.baseInfo.nickname;
-        }
-        resolve(totalBean)
-      } else {
-        console.log('京东服务器返回空数据');
-        resolve(totalBean)
-      }
-    }).catch(e => {
-      console.log('Error:', e)
-      resolve(totalBean)
-    })
-  })
-}
-
 function requireConfig() {
   let cookiesArr: string[] = []
   return new Promise(resolve => {
@@ -143,17 +112,14 @@ function requireConfig() {
   })
 }
 
-function wait(t: number) {
-  return new Promise<void>(resolve => {
-    setTimeout(() => {
-      resolve()
-    }, t)
+function wait(timeout: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout)
   })
 }
 
-async function requestAlgo() {
-
-  fingerprint = await generateFp();
+async function requestAlgo(appId = 10032) {
+  fingerprint = generateFp();
   return new Promise<void>(async resolve => {
     let {data} = await axios.post('https://cactus.jd.com/request_algo?g_ty=ajax', {
       "version": "1.0",
@@ -207,7 +173,7 @@ function getQueryString(url: string, name: string) {
   return '';
 }
 
-function decrypt(stk: string, url: string) {
+function decrypt(stk: string, url: string, appId: number) {
   const timestamp = (format(new Date(), 'yyyyMMddhhmmssSSS'))
   let hash1: string;
   if (fingerprint && token && enCryptMethodJD) {
@@ -225,6 +191,14 @@ function decrypt(stk: string, url: string) {
   })
   const hash2 = CryptoJS.HmacSHA256(st, hash1.toString()).toString(CryptoJS.enc.Hex);
   return encodeURIComponent(["".concat(timestamp.toString()), "".concat(fingerprint.toString()), "".concat(appId.toString()), "".concat(token), "".concat(hash2)].join(";"))
+}
+
+function h5st(url: string, stk: string, params: object, appId: number = 10032) {
+  for (const [key, val] of Object.entries(params)) {
+    url += `&${key}=${val}`
+  }
+  url += '&h5st=' + decrypt(stk, url, appId)
+  return url
 }
 
 function getJxToken(cookie: string) {
@@ -256,8 +230,8 @@ export {
   requireConfig,
   wait,
   getRandomNumberByRange,
-  jd_joy_invokeKey,
   requestAlgo,
   decrypt,
-  getJxToken
+  getJxToken,
+  h5st
 }

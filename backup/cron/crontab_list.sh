@@ -4,18 +4,26 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+# 心相印店铺活动  古蜀寻宝 (10.6 结束)
+17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
 
-# 开学充电站 
-19 1 20-31 8 * node /scripts/jd_kxcdz.js >> /scripts/logs/jd_kxcdz.log 2>&1
+# 京小鸽吾悦寄 (9.30 结束)
+9 1,13 1-30 9 * node /scripts/jd_jxg.js >> /scripts/logs/jd_jxg.log 2>&1
+
+# 发财大赢家之翻翻乐 (9.30结束)
+20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
+
+# 京喜领88元红包(9.30结束)
+0 0,12,21 * * * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
+
+# 内容鉴赏官 (9.30 结束，10月继续开启)
+11 1,5 * * * node /scripts/jd_connoisseur.js >> /scripts/logs/jd_connoisseur.log 2>&1
+
+# 送豆得豆
+6 1,14 * * * node /scripts/jd_sendBeans.js >> /scripts/logs/jd_sendBeans.log 2>&1
 
 # 粉丝互动 
 #21 6,18 * * * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
-
-# 京喜领88元红包(8.31结束)
-0 0,12,21 * 7-8 * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
-
-# 发财大赢家之翻翻乐 .8.15结束
-20,40 * * 7-8 * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 
 # 众筹许愿池 活动时间：2021-08-01到2021-12-31
 11 1,9 * * * node /scripts/jd_wish.js >> /scripts/logs/jd_wish.log 2>&1
@@ -23,7 +31,7 @@
 # 星系牧场 #wen
 
 # 特物Z|万物皆可国创 活动时间：###
-3 13,22 * * * node /scripts/jd_superBrand.js >> /scripts/logs/jd_superBrand.log 2>&1
+3 13,22 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
 
 # 女装盲盒 活动时间：2021-05-24到2021-06-22
 35 1,22 * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
@@ -40,11 +48,18 @@
 # 5G超级盲盒(活动时间：2021-06-2到2021-07-31)
 0 0-23/4 * * * node /scripts/jd_mohe.js >> /scripts/logs/jd_mohe.log 2>&1
 
+# 京东零食街 活动时间：年底
+
 ##############长期活动##############
 # 签到
 5 0,9 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
 # 领券中心签到
 17 0 * * * node /scripts/jd_ccSign.js >> /scripts/logs/jd_ccSign.log 2>&1
+# 京喜购物返红包助力
+11 */6 * * * node /scripts/jx_aid_cashback.js >> /scripts/logs/jx_aid_cashback.log 2>&1
+# 宠汪汪跑验证码
+# 宠汪汪兑换
+0 */8 * * * node /scripts/jd_exchange_joy.js >> /scripts/logs/jd_exchange_joy.log 2>&1
 # 积分换话费
 13 6,18 * * * node /scripts/jd_dwapp.js >> /scripts/logs/jd_dwapp.log 2>&1
 # 取关主播
@@ -57,7 +72,6 @@
 30 6 * * * node /scripts/jd_getUp.js >> /scripts/logs/jd_getUp.log 2>&1
 # 店铺签到
 45 0,23 * * * node /scripts/jd_shop_sign.js >> /scripts/logs/jd_shop_sign.log 2>&1
-# 京东零食街 活动时间：年底
 # 汪汪乐园养joy
 6 */2 * * * node /scripts/jd_joy_park.js >> /scripts/logs/jd_joy_park.log 2>&1
 # 汪汪乐园每日任务
@@ -102,7 +116,6 @@
 # 京东排行榜
 11 0 * * * node /scripts/jd_rankingList.js >> /scripts/logs/jd_rankingList.log 2>&1
 # 天天提鹅
-30 2-23/3 * * * node /scripts/jd_daily_egg.js >> /scripts/logs/jd_daily_egg.log 2>&1
 # 金融养猪
 # 京喜工厂
 20 * * * * node /scripts/jd_dreamFactory.js >> /scripts/logs/jd_dreamFactory.log 2>&1
@@ -167,15 +180,18 @@
 0 */1 * * * node /scripts/jd_dj_getPoints.js >> /scripts/logs/jd_dj_getPoints.log 2>&1
 # 京喜财富岛
 6 * * * * node /scripts/jd_cfd.js >> /scripts/logs/jd_cfd.log 2>&1
+# 京喜财富岛互助
+11 0,1,9,14,18 * * * node /scripts/jd_cfd_help.js >> /scripts/logs/jd_cfd_help.log 2>&1
 # 超级直播间红包雨(活动时间不定期，出现异常提示请忽略。红包雨期间会正常)
-
 # 半点京豆雨（龙珠）
-30,31 16-23 * * * node /scripts/jd_half_redrain.js >> /scripts/logs/jd_half_redrain.log 2>&1
+#30,31 16-23 * * * node /scripts/jd_half_redrain.js >> /scripts/logs/jd_half_redrain.log 2>&1
 &1
 # 整点京豆雨（龙珠）
 #0,1 16-23 * * * node /scripts/jd_super_redrain.js >> /scripts/logs/jd_super_redrain.log 2>&1
+# 京东保价（ak）
+#48 */8 * * * node /scripts/jd_work_price.js >> /scripts/logs/jd_work_price.log 2>&1
 # 京东金融养猪猪（ak）
-12 0-23/6 * * * node /scripts/jd_task_pigPet.js >> /scripts/logs/jd_task_pigPet.log 2>&1
+12 0-23/6 * * * node /scripts/jd_work_pigPet.js >> /scripts/logs/jd_work_pigPet.log 2>&1
 # 京喜财富岛提现（小小）
 # 伊利养牛（HW）
 0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1
@@ -189,3 +205,5 @@
 2 9 * * * node /scripts/jd_fruit_moreTask.js >> /scripts/logs/jd_fruit_moreTask.log 2>&1
 # 助力池连通性测试(HW)
 2 9 * * * node /scripts/jd_api_test.js >> /scripts/logs/jd_api_test.log 2>&1
+# ck检测(HW)
+2 */2 * * * node /scripts/jd_checkCookie.js >> /scripts/logs/jd_checkCookie.log 2>&1

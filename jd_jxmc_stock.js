@@ -41,25 +41,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var date_fns_1 = require("date-fns");
 var axios_1 = require("axios");
 var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
 var fs_1 = require("fs");
-var CryptoJS = require('crypto-js');
 var notify = require('./sendNotify');
-var appId = 10028, fingerprint, token, enCryptMethodJD;
-var cookie = '', res = '', UserName, index;
+var cookie = '', res = '', UserName;
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, exist, items, message, _i, _a, good, _b, _c, t, _d, _e, j;
-    return __generator(this, function (_f) {
-        switch (_f.label) {
-            case 0: return [4 /*yield*/, requestAlgo()];
+    var cookiesArr, exist, items, message, token, _i, _a, good, allItems, arr, result, i, len, _b, result_1, group, _c, group_1, id, _d, _e, t, _f, _g, j;
+    return __generator(this, function (_h) {
+        switch (_h.label) {
+            case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requestAlgo)()];
             case 1:
-                _f.sent();
+                _h.sent();
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
             case 2:
-                cookiesArr = _f.sent();
-                cookie = cookiesArr[0];
+                cookiesArr = _h.sent();
+                cookie = cookiesArr[(0, TS_USER_AGENTS_1.getRandomNumberByRange)(0, cookiesArr.length)];
                 UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
                 try {
                     (0, fs_1.accessSync)('./jxmc_stock.json');
@@ -68,10 +65,19 @@ var cookie = '', res = '', UserName, index;
                     (0, fs_1.writeFileSync)('./jxmc_stock.json', '{}', 'utf-8');
                 }
                 exist = JSON.parse((0, fs_1.readFileSync)('./jxmc_stock.json', 'utf-8'));
-                items = '', message = '';
-                return [4 /*yield*/, api('queryservice/GetGoodsListV2', 'channel,sceneid')];
+                items = '', message = '', token = (0, TS_USER_AGENTS_1.getJxToken)(cookie);
+                return [4 /*yield*/, api('queryservice/GetGoodsListV2', 'activeid,activekey,channel,jxmc_jstoken,phoneid,sceneid,timestamp', {
+                        activeid: 'jxmc_active_0001',
+                        activekey: 'null',
+                        jxmc_jstoken: token.strPgUUNum,
+                        timestamp: token.strPgtimestamp,
+                        phoneid: token.strPhoneID
+                    })];
             case 3:
-                res = _f.sent();
+                res = _h.sent();
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
+            case 4:
+                _h.sent();
                 for (_i = 0, _a = res.data.goodslist; _i < _a.length; _i++) {
                     good = _a[_i];
                     if (!Object.keys(exist).includes(good.prizepool)) {
@@ -82,29 +88,54 @@ var cookie = '', res = '', UserName, index;
                         };
                     }
                 }
-                if (!items) return [3 /*break*/, 5];
+                allItems = items;
+                if (!items) return [3 /*break*/, 9];
+                arr = items.split(',');
+                arr.pop();
+                items = '';
+                result = [];
+                for (i = 0, len = arr.length; i < len; i += 30) {
+                    result.push(arr.slice(i, i + 30));
+                }
+                _b = 0, result_1 = result;
+                _h.label = 5;
+            case 5:
+                if (!(_b < result_1.length)) return [3 /*break*/, 9];
+                group = result_1[_b];
+                for (_c = 0, group_1 = group; _c < group_1.length; _c++) {
+                    id = group_1[_c];
+                    items += id + ',';
+                }
                 return [4 /*yield*/, getEgg(items)];
-            case 4:
-                res = _f.sent();
-                for (_b = 0, _c = res.result; _b < _c.length; _b++) {
-                    t = _c[_b];
+            case 6:
+                res = _h.sent();
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
+            case 7:
+                _h.sent();
+                for (_d = 0, _e = res.result; _d < _e.length; _d++) {
+                    t = _e[_d];
+                    console.log(t.prizes[0].Name);
                     exist[t.active].name = t.prizes[0].Name;
                 }
-                _f.label = 5;
-            case 5:
+                items = '';
+                _h.label = 8;
+            case 8:
+                _b++;
+                return [3 /*break*/, 5];
+            case 9:
                 (0, fs_1.writeFileSync)('./jxmc_stock.json', JSON.stringify(exist, null, 2), 'utf-8');
-                for (_d = 0, _e = Object.keys(exist); _d < _e.length; _d++) {
-                    j = _e[_d];
-                    if (items.indexOf(j) > -1) {
+                for (_f = 0, _g = Object.keys(exist); _f < _g.length; _f++) {
+                    j = _g[_f];
+                    if (allItems.indexOf(j) > -1) {
                         message += exist[j].name + '\t' + exist[j].egg + '\n';
                     }
                 }
-                if (!message) return [3 /*break*/, 7];
-                return [4 /*yield*/, notify.sendNotify('京喜牧场兑换', message, '', '\n\n你好，世界！')];
-            case 6:
-                _f.sent();
-                _f.label = 7;
-            case 7:
+                if (!message) return [3 /*break*/, 11];
+                return [4 /*yield*/, notify.sendNotify('京喜牧场兑换', message)];
+            case 10:
+                _h.sent();
+                _h.label = 11;
+            case 11:
                 console.log(exist);
                 return [2 /*return*/];
         }
@@ -114,19 +145,12 @@ function api(fn, stk, params) {
     var _this = this;
     if (params === void 0) { params = {}; }
     return new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-        var url, key, data, e_1;
+        var url, data, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     url = "https://m.jingxi.com/jxmc/" + fn + "?channel=7&sceneid=1001&_stk=" + encodeURIComponent(stk) + "&_ste=1&sceneval=2";
-                    if (Object.keys(params).length !== 0) {
-                        key = void 0;
-                        for (key in params) {
-                            if (params.hasOwnProperty(key))
-                                url += "&" + key + "=" + params[key];
-                        }
-                    }
-                    url += '&h5st=' + decrypt(stk, url);
+                    url = (0, TS_USER_AGENTS_1.h5st)(url, stk, {});
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
@@ -153,116 +177,26 @@ function api(fn, stk, params) {
 }
 function getEgg(items) {
     var _this = this;
+    items = items.substr(0, items.length - 1);
+    var rnd = "abcdefhijkmnprstwxyz".charAt(Math.floor(Math.random() * 4)).toUpperCase();
     return new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
         var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].get("https://m.jingxi.com/active/queryprizedetails?actives=" + items + "&_=" + Date.now() + "&sceneval=2", {
+                case 0: return [4 /*yield*/, axios_1["default"].get("https://m.jingxi.com/active/queryprizedetails?actives=" + items + "&_=" + Date.now() + "&sceneval=2&g_login_type=1&callback=jsonpCBK" + rnd + "&g_ty=ls", {
                         headers: {
                             'Cookie': cookie,
                             'Host': 'm.jingxi.com',
                             'User-Agent': 'jdpingou;',
-                            'Referer': 'https://st.jingxi.com/'
+                            'Referer': 'https://st.jingxi.com/pingou/jxmc/index.html'
                         }
                     })];
                 case 1:
                     data = (_a.sent()).data;
-                    data = JSON.parse(data.replace('try{ QueryPrizesDetails(', '').replace(');}catch(e){}', ''));
+                    data = JSON.parse(data.replace("try{ jsonpCBK" + rnd + "(", '').replace(');}catch(e){}', ''));
                     resolve(data);
                     return [2 /*return*/];
             }
         });
     }); });
-}
-function requestAlgo() {
-    return __awaiter(this, void 0, void 0, function () {
-        var _this = this;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, generateFp()];
-                case 1:
-                    fingerprint = _a.sent();
-                    return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
-                            var data, enCryptMethodJDString;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0: return [4 /*yield*/, axios_1["default"].post('https://cactus.jd.com/request_algo?g_ty=ajax', {
-                                            "version": "1.0",
-                                            "fp": fingerprint,
-                                            "appId": appId,
-                                            "timestamp": Date.now(),
-                                            "platform": "web",
-                                            "expandParams": ""
-                                        }, {
-                                            "headers": {
-                                                'Authority': 'cactus.jd.com',
-                                                'Pragma': 'no-cache',
-                                                'Cache-Control': 'no-cache',
-                                                'Accept': 'application/json',
-                                                'User-Agent': TS_USER_AGENTS_1["default"],
-                                                'Content-Type': 'application/json',
-                                                'Origin': 'https://st.jingxi.com',
-                                                'Sec-Fetch-Site': 'cross-site',
-                                                'Sec-Fetch-Mode': 'cors',
-                                                'Sec-Fetch-Dest': 'empty',
-                                                'Referer': 'https://st.jingxi.com/',
-                                                'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7'
-                                            }
-                                        })];
-                                    case 1:
-                                        data = (_a.sent()).data;
-                                        if (data['status'] === 200) {
-                                            token = data.data.result.tk;
-                                            enCryptMethodJDString = data.data.result.algo;
-                                            if (enCryptMethodJDString)
-                                                enCryptMethodJD = new Function("return " + enCryptMethodJDString)();
-                                        }
-                                        else {
-                                            console.log("fp: " + fingerprint);
-                                            console.log('request_algo 签名参数API请求失败:');
-                                        }
-                                        resolve(200);
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); })];
-            }
-        });
-    });
-}
-function decrypt(stk, url) {
-    var timestamp = ((0, date_fns_1.format)(new Date(), 'yyyyMMddhhmmssSSS'));
-    var hash1;
-    if (fingerprint && token && enCryptMethodJD) {
-        hash1 = enCryptMethodJD(token, fingerprint.toString(), timestamp.toString(), appId.toString(), CryptoJS).toString(CryptoJS.enc.Hex);
-    }
-    else {
-        var random = '5gkjB6SpmC9s';
-        token = "tk01wcdf61cb3a8nYUtHcmhSUFFCfddDPRvKvYaMjHkxo6Aj7dhzO+GXGFa9nPXfcgT+mULoF1b1YIS1ghvSlbwhE0Xc";
-        fingerprint = 9686767825751161;
-        // $.fingerprint = 7811850938414161;
-        var str = "" + token + fingerprint + timestamp + appId + random;
-        hash1 = CryptoJS.SHA512(str, token).toString(CryptoJS.enc.Hex);
-    }
-    var st = '';
-    stk.split(',').map(function (item, index) {
-        st += item + ":" + getQueryString(url, item) + (index === stk.split(',').length - 1 ? '' : '&');
-    });
-    var hash2 = CryptoJS.HmacSHA256(st, hash1.toString()).toString(CryptoJS.enc.Hex);
-    return encodeURIComponent(["".concat(timestamp.toString()), "".concat(fingerprint.toString()), "".concat(appId.toString()), "".concat(token), "".concat(hash2)].join(";"));
-}
-function generateFp() {
-    var e = "0123456789";
-    var a = 13;
-    var i = '';
-    for (; a--;)
-        i += e[Math.random() * e.length | 0];
-    return (i + Date.now()).slice(0, 16);
-}
-function getQueryString(url, name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    var r = url.split('?')[1].match(reg);
-    if (r != null)
-        return unescape(r[2]);
-    return '';
 }

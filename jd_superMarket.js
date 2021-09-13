@@ -50,17 +50,8 @@ let shareCodes = []
       $.coinerr = "";
       $.blueCionTimes = 0;
       $.isLogin = true;
-      $.nickName = '';
-      await TotalBean();
+      $.nickName = $.UserName;
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
-      if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
-
-        if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        }
-        continue
-      }
       message = '';
       subTitle = '';
       //await shareCodesFormat();//格式化助力码
@@ -501,7 +492,7 @@ async function businessCircleActivity() {
     if (joinStatus === 0) {
       if (joinPkTeam === 'true') {
         console.log(`\n注：PK会在每天的七点自动随机加入作者创建的队伍\n`)
-        await updatePkActivityIdCDN('https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/tools/empty.json');
+        await updatePkActivityIdCDN('https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/utils/empty.json');
         console.log(`\nupdatePkActivityId[pkActivityId]:::${$.updatePkActivityIdRes && $.updatePkActivityIdRes.pkActivityId}`);
         console.log(`\n京东服务器返回的[pkActivityId] ${pkActivityId}`);
         if ($.updatePkActivityIdRes && ($.updatePkActivityIdRes.pkActivityId === pkActivityId)) {
@@ -1725,48 +1716,6 @@ function requireConfig() {
   })
 }
 
-function TotalBean() {
-  return new Promise(async resolve => {
-    const options = {
-      url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
-      headers: {
-        Host: "me-api.jd.com",
-        Accept: "*/*",
-        Connection: "keep-alive",
-        Cookie: cookie,
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-        "Accept-Language": "zh-cn",
-        "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
-        "Accept-Encoding": "gzip, deflate, br"
-      }
-    }
-    $.get(options, (err, resp, data) => {
-      try {
-        if (err) {
-          $.logErr(err)
-        } else {
-          if (data) {
-            data = JSON.parse(data);
-            if (data['retcode'] === "1001") {
-              $.isLogin = false; //cookie过期
-              return;
-            }
-            if (data['retcode'] === "0" && data.data && data.data.hasOwnProperty("userInfo")) {
-              $.nickName = data.data.userInfo.baseInfo.nickname;
-            }
-          } else {
-            $.log('京东服务器返回空数据');
-          }
-        }
-      } catch (e) {
-        $.logErr(e)
-      } finally {
-        resolve();
-      }
-    })
-  })
-}
-
 function getTeam() {
   return new Promise(async resolve => {
     $.getTeams = [];
@@ -1926,7 +1875,7 @@ function getRandomArrayElements(_0x455952, _0x3426be) {
 
 async function helpAuthor() {
   var _0x4cd14c = {
-    'hpVGM': 'https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/tools/empty.json', 'kyvMc': _0x2e68('3', '$Ni3'), 'ZGgUT': function (_0x3c511f, _0x3727b9, _0x142178) {
+    'hpVGM': 'https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/utils/empty.json', 'kyvMc': _0x2e68('3', '$Ni3'), 'ZGgUT': function (_0x3c511f, _0x3727b9, _0x142178) {
       return _0x3c511f(_0x3727b9, _0x142178);
     }, 'WfjUY': function (_0x23a12a, _0x4dc817) {
       return _0x23a12a > _0x4dc817;
@@ -2041,7 +1990,7 @@ async function aaa() {
       return _0x538ef2 !== _0x193fca;
     }, 'pROUD': _0x2e68('4f', 'jv5T'), 'gOmhr': _0x2e68('50', '!8Uv'), 'PHhBT': function (_0x34352f, _0x28c1df) {
       return _0x34352f(_0x28c1df);
-    }, 'KePDl': 'https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/tools/empty.json', 'SDREf': function (_0xe348aa, _0x439d0e, _0x3a4d9d) {
+    }, 'KePDl': 'https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/utils/empty.json', 'SDREf': function (_0xe348aa, _0x439d0e, _0x3a4d9d) {
       return _0xe348aa(_0x439d0e, _0x3a4d9d);
     }, 'dkEjF': _0x2e68('51', 'vdM@')
   };

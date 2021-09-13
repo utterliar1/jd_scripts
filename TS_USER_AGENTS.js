@@ -36,14 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getJxToken = exports.decrypt = exports.requestAlgo = exports.jd_joy_invokeKey = exports.getRandomNumberByRange = exports.wait = exports.requireConfig = exports.getFarmShareCode = exports.getBeanShareCode = exports.TotalBean = void 0;
+exports.h5st = exports.getJxToken = exports.decrypt = exports.requestAlgo = exports.getRandomNumberByRange = exports.wait = exports.requireConfig = exports.getFarmShareCode = exports.getBeanShareCode = exports.TotalBean = void 0;
 var axios_1 = require("axios");
 var date_fns_1 = require("date-fns");
 var dotenv = require("dotenv");
 var ts_md5_1 = require("ts-md5");
 var CryptoJS = require('crypto-js');
 dotenv.config();
-var appId = 10028, fingerprint, token = '', enCryptMethodJD;
+var fingerprint, token = '', enCryptMethodJD;
 var USER_AGENTS = [
     "jdapp;android;10.0.2;10;network/wifi;Mozilla/5.0 (Linux; Android 10; ONEPLUS A5010 Build/QKQ1.191014.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045230 Mobile Safari/537.36",
     "jdapp;iPhone;10.0.2;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
@@ -82,8 +82,14 @@ var USER_AGENTS = [
     "jdapp;android;10.0.2;10;network/wifi;Mozilla/5.0 (Linux; Android 10; MI 8 Build/QKQ1.190828.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045227 Mobile Safari/537.36",
     "jdapp;iPhone;10.0.2;14.1;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 14_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
 ];
-var jd_joy_invokeKey = "value1";
-exports.jd_joy_invokeKey = jd_joy_invokeKey;
+function TotalBean(cookie) {
+    return {
+        cookie: cookie,
+        isLogin: true,
+        nickName: ''
+    };
+}
+exports.TotalBean = TotalBean;
 function getRandomNumberByRange(start, end) {
     return Math.floor(Math.random() * (end - start) + start);
 }
@@ -142,45 +148,6 @@ function getFarmShareCode(cookie) {
     });
 }
 exports.getFarmShareCode = getFarmShareCode;
-function TotalBean(cookie) {
-    var totalBean = {
-        isLogin: true,
-        nickName: ''
-    };
-    return new Promise(function (resolve) {
-        axios_1["default"].get('https://me-api.jd.com/user_new/info/GetJDUserInfoUnion', {
-            headers: {
-                Host: "me-api.jd.com",
-                Connection: "keep-alive",
-                Cookie: cookie,
-                "User-Agent": USER_AGENT,
-                "Accept-Language": "zh-cn",
-                "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
-                "Accept-Encoding": "gzip, deflate, br"
-            }
-        }).then(function (res) {
-            if (res.data) {
-                var data = res.data;
-                if (data['retcode'] === "1001") {
-                    totalBean.isLogin = false; //cookie过期
-                }
-                if (data['retcode'] === "0" && data['data'] && data.data.hasOwnProperty("userInfo")) {
-                    totalBean.isLogin = true;
-                    totalBean.nickName = data.data.userInfo.baseInfo.nickname;
-                }
-                resolve(totalBean);
-            }
-            else {
-                console.log('京东服务器返回空数据');
-                resolve(totalBean);
-            }
-        })["catch"](function (e) {
-            console.log('Error:', e);
-            resolve(totalBean);
-        });
-    });
-}
-exports.TotalBean = TotalBean;
 function requireConfig() {
     var cookiesArr = [];
     return new Promise(function (resolve) {
@@ -196,68 +163,63 @@ function requireConfig() {
     });
 }
 exports.requireConfig = requireConfig;
-function wait(t) {
+function wait(timeout) {
     return new Promise(function (resolve) {
-        setTimeout(function () {
-            resolve();
-        }, t);
+        setTimeout(resolve, timeout);
     });
 }
 exports.wait = wait;
-function requestAlgo() {
+function requestAlgo(appId) {
+    if (appId === void 0) { appId = 10032; }
     return __awaiter(this, void 0, void 0, function () {
         var _this = this;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, generateFp()];
-                case 1:
-                    fingerprint = _a.sent();
-                    return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
-                            var data, enCryptMethodJDString;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0: return [4 /*yield*/, axios_1["default"].post('https://cactus.jd.com/request_algo?g_ty=ajax', {
-                                            "version": "1.0",
-                                            "fp": fingerprint,
-                                            "appId": appId,
-                                            "timestamp": Date.now(),
-                                            "platform": "web",
-                                            "expandParams": ""
-                                        }, {
-                                            "headers": {
-                                                'Authority': 'cactus.jd.com',
-                                                'Pragma': 'no-cache',
-                                                'Cache-Control': 'no-cache',
-                                                'Accept': 'application/json',
-                                                'User-Agent': USER_AGENT,
-                                                'Content-Type': 'application/json',
-                                                'Origin': 'https://st.jingxi.com',
-                                                'Sec-Fetch-Site': 'cross-site',
-                                                'Sec-Fetch-Mode': 'cors',
-                                                'Sec-Fetch-Dest': 'empty',
-                                                'Referer': 'https://st.jingxi.com/',
-                                                'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7'
-                                            }
-                                        })];
-                                    case 1:
-                                        data = (_a.sent()).data;
-                                        if (data['status'] === 200) {
-                                            token = data.data.result.tk;
-                                            console.log('token:', token);
-                                            enCryptMethodJDString = data.data.result.algo;
-                                            if (enCryptMethodJDString)
-                                                enCryptMethodJD = new Function("return " + enCryptMethodJDString)();
-                                        }
-                                        else {
-                                            console.log("fp: " + fingerprint);
-                                            console.log('request_algo 签名参数API请求失败:');
-                                        }
-                                        resolve();
-                                        return [2 /*return*/];
+            fingerprint = generateFp();
+            return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
+                    var data, enCryptMethodJDString;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, axios_1["default"].post('https://cactus.jd.com/request_algo?g_ty=ajax', {
+                                    "version": "1.0",
+                                    "fp": fingerprint,
+                                    "appId": appId,
+                                    "timestamp": Date.now(),
+                                    "platform": "web",
+                                    "expandParams": ""
+                                }, {
+                                    "headers": {
+                                        'Authority': 'cactus.jd.com',
+                                        'Pragma': 'no-cache',
+                                        'Cache-Control': 'no-cache',
+                                        'Accept': 'application/json',
+                                        'User-Agent': USER_AGENT,
+                                        'Content-Type': 'application/json',
+                                        'Origin': 'https://st.jingxi.com',
+                                        'Sec-Fetch-Site': 'cross-site',
+                                        'Sec-Fetch-Mode': 'cors',
+                                        'Sec-Fetch-Dest': 'empty',
+                                        'Referer': 'https://st.jingxi.com/',
+                                        'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7'
+                                    }
+                                })];
+                            case 1:
+                                data = (_a.sent()).data;
+                                if (data['status'] === 200) {
+                                    token = data.data.result.tk;
+                                    console.log('token:', token);
+                                    enCryptMethodJDString = data.data.result.algo;
+                                    if (enCryptMethodJDString)
+                                        enCryptMethodJD = new Function("return " + enCryptMethodJDString)();
                                 }
-                            });
-                        }); })];
-            }
+                                else {
+                                    console.log("fp: " + fingerprint);
+                                    console.log('request_algo 签名参数API请求失败:');
+                                }
+                                resolve();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })];
         });
     });
 }
@@ -277,7 +239,7 @@ function getQueryString(url, name) {
         return unescape(r[2]);
     return '';
 }
-function decrypt(stk, url) {
+function decrypt(stk, url, appId) {
     var timestamp = ((0, date_fns_1.format)(new Date(), 'yyyyMMddhhmmssSSS'));
     var hash1;
     if (fingerprint && token && enCryptMethodJD) {
@@ -298,6 +260,16 @@ function decrypt(stk, url) {
     return encodeURIComponent(["".concat(timestamp.toString()), "".concat(fingerprint.toString()), "".concat(appId.toString()), "".concat(token), "".concat(hash2)].join(";"));
 }
 exports.decrypt = decrypt;
+function h5st(url, stk, params, appId) {
+    if (appId === void 0) { appId = 10032; }
+    for (var _i = 0, _a = Object.entries(params); _i < _a.length; _i++) {
+        var _b = _a[_i], key = _b[0], val = _b[1];
+        url += "&" + key + "=" + val;
+    }
+    url += '&h5st=' + decrypt(stk, url, appId);
+    return url;
+}
+exports.h5st = h5st;
 function getJxToken(cookie) {
     function generateStr(input) {
         var src = 'abcdefghijklmnopqrstuvwxyz1234567890';

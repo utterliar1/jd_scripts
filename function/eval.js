@@ -6,7 +6,11 @@ function mainEval($) {
         'all':jdcookie,
         'help': typeof(help) != 'undefined' ? [...jdcookie].splice(0,parseInt(help)):[]
     }
+    $.sleep=cookies['all'].length * 500
     taskCookie=cookies['all']
+    if($.config[\`\${$.runfile}_limit\`]){
+        taskCookie = cookies['all'].slice(0,parseInt($.config[\`\${$.runfile}_limit\`]))
+    }
     jxAlgo = new common.jxAlgo();
     if ($.readme) {
             console.log(\`使用说明:\\n\${$.readme}\\n以上内容仅供参考,有需求自行添加\\n\`,)
@@ -56,6 +60,9 @@ function mainEval($) {
 
             }
         }catch(em){console.log(em.message)}
+        if ($.thread) {
+            await $.wait($.sleep)
+        }
     }
     if (typeof(extra) != 'undefined') {
         console.log(\`============================开始运行额外任务============================\`)
