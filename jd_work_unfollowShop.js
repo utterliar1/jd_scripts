@@ -11,7 +11,7 @@ $.setOptions({
 });
 $.readme = `
 42 23 * * * task ${$.runfile}
-exprot ${$.runfile}=2  #默认执行2次取关API,共20个店铺
+export ${$.runfile}=2  #默认执行2次取关API,共20个店铺
 `
 eval(common.eval.mainEval($));
 async function prepare() {

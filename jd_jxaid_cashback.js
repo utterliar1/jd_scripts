@@ -12,7 +12,7 @@ $.setOptions({
 $.readme = `
 在京喜下单,如订单有购物返现,脚本会自动查询返现groupid并予以助力,目前每个账号每天能助力3次
 44 */6 * * * task ${$.runfile}
-exprot ${$.runfile}=2  #如需增加被助力账号,在这边修改人数
+export ${$.runfile}=2  #如需增加被助力账号,在这边修改人数
 `
 eval(common.eval.mainEval($));
 async function prepare() {
