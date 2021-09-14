@@ -13,7 +13,7 @@ $.setOptions({
 });
 $.readme = `
 58 7,15,23 * * * task ${$.runfile}
-exprot ${$.runfile}=5  #限制跑验证码账户个数
+export ${$.runfile}_limit=5  #限制跑验证码账户个数
 export JDJR_SERVER=ip  #如获取不到验证码,本地先获取iv.jd.com的ip,再自行添加环境变量
 `
 eval(common.eval.mainEval($));
@@ -24,12 +24,8 @@ async function prepare() {
         if (error) return console.log("初始化失败" + error.message);
         console.log("初始化成功");
     })
-    $.jump = $.config[$.runfile] ? cookies['all'].splice(parseInt($.config[$.runfile])) : []
 }
 async function main(id) {
-    if ($.jump.includes(id.cookie)) {
-        return;
-    }
     let code = new validator.JDJRValidator;
     for (let i = 0; i < 2; i++) {
         validate = ''

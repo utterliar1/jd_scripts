@@ -12,7 +12,7 @@ $.setOptions({
 });
 $.readme = `
 48 */8 * * * task ${$.runfile}
-exprot ${$.runfile}=1  #输出购买订单保价内容,没什么用
+export ${$.runfile}=1  #输出购买订单保价内容,没什么用
 `
 eval(common.eval.mainEval($));
 async function prepare() {}
