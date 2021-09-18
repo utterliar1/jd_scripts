@@ -115,6 +115,13 @@ async function doTask(){
             })
             continue;
         }
+        if($.oneTask.taskType === 12){
+            $.info = $.taskDetailList;
+            console.log(`任务：${$.oneTask.taskName} 去执行`);
+            await takePostRequest('do_task');
+            await $.wait(1000);
+            continue;
+        }
         for (let j = 0; j < $.taskDetailList.length; j++) {
             $.info = $.taskDetailList[j];
             if($.info.status !== 1){
