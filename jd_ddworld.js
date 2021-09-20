@@ -75,9 +75,9 @@ async function main() {
     $.token = ``;
     await getToken();
     if ($.token === ``) {console.log(`获取token失败`);return;}
-    $.accessToken = '';
+    $.accessToken = 'undefined';
     await takePostRequest('jd-user-info');
-    if (!$.accessToken) {console.log(`获取accessToken失败`);return;}
+    if (!$.accessToken || $.accessToken === 'undefined') {console.log(`获取accessToken失败`);return;}
     authorization[$.UserName] = $.accessToken;
     $.userInfo = {};
     await takeGetRequest('get_user_info');
@@ -160,7 +160,7 @@ async function takePostRequest(type) {
             'Origin' : `ddsj-dz.isvjcloud.com`,
             'Connection' : `keep-alive`,
             'Accept' : `application/json, text/plain, */*`,
-            'Authorization':`Bearer ${$.accessToken ?? 'undefined'}`,
+            'Authorization':`Bearer ${$.accessToken}`,
             'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
             'Content-Type':'application/x-www-form-urlencoded',
             'Referer' : `https://ddsj-dz.isvjcloud.com/dd-world/logined_jd/`,
