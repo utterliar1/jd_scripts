@@ -1,11 +1,10 @@
 /**
 特务Z
-环境变量 OPEN_CARD="1" 不执行开卡任务 OPEN_CARD="2" 执行开卡任务 默认不执行
+脚本没有自动开卡，会尝试领取开卡奖励
 cron 23 8,9 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_productZ4Brand.js
 一天要跑2次
 */
 const $ = new Env('特务Z');
-const openCard = $.isNode() ? (process.env.OPEN_CARD ? process.env.OPEN_CARD : '1'):'1';
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [];
@@ -35,8 +34,8 @@ if ($.isNode()) {
     $.cookie = cookiesArr[i];
     $.isLogin = true;
     $.nickName = '';
-    await TotalBean();
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+    await TotalBean();
     console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}*****\n`);
     if (!$.isLogin) {
       $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -112,12 +111,12 @@ async function doTask(){
       console.log(`任务：${$.oneTask.assignmentName}，已完成`);
       continue;
     }
-    if(openCard === '1' && $.oneTask.assignmentType === 7){
-      console.log(`任务：${$.oneTask.assignmentName}，不执行，若想执行设置，设置环境变量 OPEN_CARD="2"`);
-      continue;
-    }
     if($.oneTask.assignmentType === 3 || $.oneTask.assignmentType === 0 || $.oneTask.assignmentType === 7){
-      console.log(`任务：${$.oneTask.assignmentName}，去执行`);
+      if($.oneTask.assignmentType === 7){
+        console.log(`任务：${$.oneTask.assignmentName}，尝试领取开卡奖励；（不会自动开卡，如果你已经是会员，则会领取成功）`);
+      }else{
+        console.log(`任务：${$.oneTask.assignmentName}，去执行`);
+      }
       let subInfo = $.oneTask.ext.followShop || $.oneTask.ext.brandMemberList || '';
       if(subInfo && subInfo[0]){
         $.runInfo = subInfo[0];
