@@ -39,8 +39,8 @@ if ($.isNode()) {
         $.oldcookie = cookiesArr[i];
         $.isLogin = true;
         $.nickName = '';
-        await TotalBean();
         $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+        await TotalBean();
         console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}*****\n`);
         if (!$.isLogin) {
             $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -111,10 +111,12 @@ async function main() {
         await $.wait(1000);
     }
     $.score2Flag = true;
-    for (let i = 0; i < score2 && $.score2Flag; i++) {
+    $.score2Time = 0;
+    for (let i = 0; i < score2 && $.score2Flag && $.score2Time< 10; i++) {
         console.log(`进行第${i+1}次扭蛋`);
         await takePostRequest('draw');
         await $.wait(1500);
+        $.score2Time++;
     }
     if($.index === '1'){
         $.shareUuid = $.activityData.actorUuid;

@@ -11,6 +11,9 @@
 # 跳跳乐瓜分京豆(9.13-9.19)
 11 1,12,22 * 9 * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 
+# 蚊子腿豆子 (9.21-10.16 10月16号应该可以参与瓜分)
+3 6,18 1-16,21-30 9,10 * node /scripts/jd_decompression.js >> /scripts/logs/jd_decompression.log 2>&1
+
 # 东东玩家(9.17-10.11)
 9 0 * 9-10 * node /scripts/jd_ddwj.js >> /scripts/logs/jd_ddwj.log 2>&1
 
