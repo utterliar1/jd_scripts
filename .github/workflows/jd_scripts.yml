@@ -90,6 +90,8 @@ jobs:
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 修改cron名称及临时屏蔽 ========="
+        sed -i 's/ddwj/guaddgame/g' ./docker/crontab_list.sh
+        sed -i 's/ddworld/guaddworld/g' ./docker/crontab_list.sh
         sed -i 's/sjzjd/guaMMdou/g' ./docker/crontab_list.sh
         sed -i 's/superBrand/productZ4Brand/g' ./docker/crontab_list.sh
         sed -i 's/jxqd/jxsign/g' ./docker/crontab_list.sh
