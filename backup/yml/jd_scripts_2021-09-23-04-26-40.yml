@@ -68,8 +68,7 @@ jobs:
         mv -f ./JDHelloWorld/utils/*.ts ./backup/ts/
         cp -rf ./JDHelloWorld/utils ./
         rm -rf ./JDHelloWorld/jd_update.js
-        cp -rf ./JDHelloWorld/backUp/*.js ./backup/js/
-        cp -rf ./JDHelloWorld/backUp/*.ts ./backup/ts/
+        cp -rf ./JDHelloWorld/backUp/* ./backup/js/
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
         rm -rf ./JDHelloWorld
