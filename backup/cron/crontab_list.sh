@@ -26,9 +26,6 @@
 # 企有此礼(9.30 结束)
 28 0 10-30 9 * node /scripts/jd_qycl.js >> /scripts/logs/jd_qycl.log 2>&1
 
-# 芯意制造盒(9.23 结束)
-39 0 15-23 9 * node /scripts/jd_xyzzh.js >> /scripts/logs/jd_xyzzh.log 2>&1
-
 # 心相印店铺活动  古蜀寻宝 (10.6 结束)
 17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
 
