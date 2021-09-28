@@ -22,6 +22,7 @@ jobs:
         shopt -u extglob
         echo "========= 开始下载小小的脚本及依赖 ========="
         git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
+        rm ./Aaron/jd_ddworld.js
         cp -f ./Aaron/jd_*.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
