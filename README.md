@@ -13,7 +13,7 @@ environment:
 ```
 # 青龙容器添加repo命令
 ```text
-ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "utils|backup|function" "^jd[^_]|USER|^TS|function|utils"
+ql repo https://github.com/utterliar1/jd_scripts.git "jd_" "utils|backup" "^jd[^_]|USER|^TS|utils"
 ```
 extra.sh添加
 ```text
@@ -24,7 +24,6 @@ wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm in
 - [@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)
 - [@smiek](https://github.com/smiek2221/scripts)
 - [@passerby](https://github.com/passerby-b/JDDJ.git)
-- [@airacg](https://github.com/airacg/jd_task.git)
 - [@NobyDa](https://github.com/NobyDa/Script.git)
 - [@yangtingxiao](https://github.com/yangtingxiao/QuantumultX.git)
 - [@jiulan](https://github.com/jiulan/platypus.git)
