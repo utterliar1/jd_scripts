@@ -141,6 +141,7 @@
 11 0 * * * node /scripts/jd_rankingList.js >> /scripts/logs/jd_rankingList.log 2>&1
 # 天天提鹅
 # 金融养猪
+12 */6 * * * node /scripts/jd_pigPet.js >> /scripts/logs/jd_pigPet.log 2>&1
 # 京喜工厂
 20 * * * * node /scripts/jd_dreamFactory.js >> /scripts/logs/jd_dreamFactory.log 2>&1
 # 东东小窝
@@ -215,7 +216,7 @@
 # 京东保价（ak）
 #48 */8 * * * node /scripts/jd_work_price.js >> /scripts/logs/jd_work_price.log 2>&1
 # 京东金融养猪猪（ak）
-12 0-23/6 * * * node /scripts/jd_work_pigPet.js >> /scripts/logs/jd_work_pigPet.log 2>&1
+#12 0-23/6 * * * node /scripts/jd_work_pigPet.js >> /scripts/logs/jd_work_pigPet.log 2>&1
 # 京喜财富岛提现（小小）
 # 伊利养牛（HW）
 0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1
