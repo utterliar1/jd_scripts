@@ -6,7 +6,7 @@
 # 京东保价（ak）
 #48 */8 * * * node /scripts/jd_work_price.js >> /scripts/logs/jd_work_price.log 2>&1
 # 京东金融养猪猪（ak）
-12 0-23/6 * * * node /scripts/jd_work_pigPet.js >> /scripts/logs/jd_work_pigPet.log 2>&1
+#12 0-23/6 * * * node /scripts/jd_work_pigPet.js >> /scripts/logs/jd_work_pigPet.log 2>&1
 # 京喜财富岛提现（小小）
 #59 11,12,23 * * * node /scripts/jd_cfdtx.js >> /scripts/logs/jd_cfdtx.log 2>&1
 # 伊利养牛（HW）
