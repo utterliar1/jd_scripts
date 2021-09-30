@@ -100,25 +100,6 @@ jobs:
         sed -i 's/jd_joy.js/jd_joy_new.js/g' ./docker/crontab_list.sh
         sed -i 's/zqfl/getUp/g' ./docker/crontab_list.sh
         sed -i '/jd_qqxing\|jd_work_validate\|jd_work_validate\|daily_egg\|jd_lsj\|jd_joy_run\|cfdtx\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace/d' ./docker/crontab_list.sh
-        echo "========= 备份cron及yml文件 ========="
-        log_time=$(date "+%Y-%m-%d-%H-%M-%S")
-        diff ./docker/crontab_list.sh ./backup/cron/crontab_list.sh | tee ./backup/cron/env.diff
-        if [ ! -s ./backup/cron/env.diff ]; then
-            echo "定时文件没有变化...\n"
-        elif [ -s ./backup/cron/env.diff ] ; then
-            cp -f ./docker/crontab_list.sh ./backup/cron/crontab_list_$log_time.sh
-        fi
-        diff ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts.yml | tee ./backup/yml/env.diff
-        if [ ! -s ./backup/yml/env.diff ]; then
-            echo -e "yml文件没有变化...\n"
-        elif [ -s ./backup/yml/env.diff ] ; then
-            cp -f ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts_$log_time.yml
-        fi
-        echo "========= 删除对比缓存及复制文件下次对比 ========="
-        rm -rf ./backup/yml/env.diff
-        rm -rf ./backup/cron/env.diff
-        cp -f ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts.yml
-        cp -f ./docker/crontab_list.sh ./backup/cron/crontab_list.sh
     - name: 'Commit Files'
       id: commit
       run: |
