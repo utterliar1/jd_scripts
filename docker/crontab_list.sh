@@ -24,7 +24,6 @@
 9 0 * 9-10 * node /scripts/jd_guaddgame.js >> /scripts/logs/jd_guaddgame.log 2>&1
 
 # 企有此礼(9.30 结束)
-28 0 10-30 9 * node /scripts/jd_qycl.js >> /scripts/logs/jd_qycl.log 2>&1
 
 # 心相印店铺活动  古蜀寻宝 (10.6 结束)
 17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
@@ -83,10 +82,8 @@
 # 东东世界
 17 1,15 * * * node /scripts/jd_guaddworld.js >> /scripts/logs/jd_guaddworld.log 2>&1
 # 京喜购物返红包助力
-11 */6 * * * node /scripts/jx_aid_cashback.js >> /scripts/logs/jx_aid_cashback.log 2>&1
 # 宠汪汪跑验证码
 # 宠汪汪兑换
-0 */8 * * * node /scripts/jd_exchange_joy.js >> /scripts/logs/jd_exchange_joy.log 2>&1
 # 积分换话费
 13 6,18 * * * node /scripts/jd_dwapp.js >> /scripts/logs/jd_dwapp.log 2>&1
 # 取关主播
@@ -217,9 +214,7 @@
 # 整点京豆雨（龙珠）
 #0,1 16-23 * * * node /scripts/jd_super_redrain.js >> /scripts/logs/jd_super_redrain.log 2>&1
 # 京东保价（ak）
-#48 */8 * * * node /scripts/jd_work_price.js >> /scripts/logs/jd_work_price.log 2>&1
 # 京东金融养猪猪（ak）
-#12 0-23/6 * * * node /scripts/jd_work_pigPet.js >> /scripts/logs/jd_work_pigPet.log 2>&1
 # 京喜财富岛提现（小小）
 # 伊利养牛（HW）
 0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1
