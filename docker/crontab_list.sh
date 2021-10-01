@@ -14,22 +14,14 @@
 # 京东小魔方 (9.29 24.00 结束)
 13 1,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
 
-# 跳跳乐瓜分京豆(9.13-9.19)
-11 1,12,22 * 9 * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
-
 # 蚊子腿豆子 (9.21-10.16 10月16号应该可以参与瓜分)
 3 6,18 1-16,21-30 9,10 * node /scripts/jd_decompression.js >> /scripts/logs/jd_decompression.log 2>&1
 
 # 东东玩家(9.17-10.11)
 9 0 * 9-10 * node /scripts/jd_guaddgame.js >> /scripts/logs/jd_guaddgame.log 2>&1
 
-# 企有此礼(9.30 结束)
-
 # 心相印店铺活动  古蜀寻宝 (10.6 结束)
 17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
-
-# 京小鸽吾悦寄 (9.30 结束)
-9 1,13 1-30 9 * node /scripts/jd_jxg.js >> /scripts/logs/jd_jxg.log 2>&1
 
 # 芥末小程序签到领现金 (12.31结束)
 16 9 * * * node /scripts/jd_zsign.js >> /scripts/logs/jd_zsign.log 2>&1
@@ -54,7 +46,7 @@
 
 # 星系牧场 #wen
 
-# 特物Z|万物皆可国创 活动时间：###
+# 特物Z 活动时间：###
 3 13,22 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
 
 # 女装盲盒 活动时间：2021-05-24到2021-06-22
