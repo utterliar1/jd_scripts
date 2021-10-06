@@ -5,17 +5,11 @@
 
 ##############短期活动##############
 
-# 京东手机狂欢城 (10.1 结束)
-6 0-18/6 1,16-30 9-10 * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
-
 # 集魔方 (京东APP - 新品 - 集魔方)
 16 5,13 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
 
 # 京东小魔方 (9.29 24.00 结束)
 13 1,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
-
-# 跳跳乐瓜分京豆(9.13-9.19)
-11 1,12,22 * 9 * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 
 # 蚊子腿豆子 (9.21-10.16 10月16号应该可以参与瓜分)
 3 6,18 1-16,21-30 9,10 * node /scripts/jd_decompression.js >> /scripts/logs/jd_decompression.log 2>&1
@@ -23,14 +17,14 @@
 # 东东玩家(9.17-10.11)
 9 0 * 9-10 * node /scripts/jd_guaddgame.js >> /scripts/logs/jd_guaddgame.log 2>&1
 
-# 企有此礼(9.30 结束)
-28 0 10-30 9 * node /scripts/jd_qycl.js >> /scripts/logs/jd_qycl.log 2>&1
-
 # 心相印店铺活动  古蜀寻宝 (10.6 结束)
 17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
 
-# 京小鸽吾悦寄 (9.30 结束)
-9 1,13 1-30 9 * node /scripts/jd_jxg.js >> /scripts/logs/jd_jxg.log 2>&1
+# 芥么赚豪礼
+22 1,13 * * * node /scripts/jd_genz.js >> /scripts/logs/jd_genz.log 2>&1
+
+# 芥末小程序签到领现金 (12.31结束)
+16 9 * * * node /scripts/jd_zsign.js >> /scripts/logs/jd_zsign.log 2>&1
 
 # 发财大赢家之翻翻乐 (9.30结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
@@ -52,7 +46,7 @@
 
 # 星系牧场 #wen
 
-# 特物Z|万物皆可国创 活动时间：###
+# 特物Z 活动时间：###
 3 13,22 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
 
 # 女装盲盒 活动时间：2021-05-24到2021-06-22
@@ -80,10 +74,8 @@
 # 东东世界
 17 1,15 * * * node /scripts/jd_guaddworld.js >> /scripts/logs/jd_guaddworld.log 2>&1
 # 京喜购物返红包助力
-11 */6 * * * node /scripts/jx_aid_cashback.js >> /scripts/logs/jx_aid_cashback.log 2>&1
 # 宠汪汪跑验证码
 # 宠汪汪兑换
-0 */8 * * * node /scripts/jd_exchange_joy.js >> /scripts/logs/jd_exchange_joy.log 2>&1
 # 积分换话费
 13 6,18 * * * node /scripts/jd_dwapp.js >> /scripts/logs/jd_dwapp.log 2>&1
 # 取关主播
@@ -141,6 +133,7 @@
 11 0 * * * node /scripts/jd_rankingList.js >> /scripts/logs/jd_rankingList.log 2>&1
 # 天天提鹅
 # 金融养猪
+12 */6 * * * node /scripts/jd_pigPet.js >> /scripts/logs/jd_pigPet.log 2>&1
 # 京喜工厂
 20 * * * * node /scripts/jd_dreamFactory.js >> /scripts/logs/jd_dreamFactory.log 2>&1
 # 东东小窝
@@ -213,9 +206,7 @@
 # 整点京豆雨（龙珠）
 #0,1 16-23 * * * node /scripts/jd_super_redrain.js >> /scripts/logs/jd_super_redrain.log 2>&1
 # 京东保价（ak）
-#48 */8 * * * node /scripts/jd_work_price.js >> /scripts/logs/jd_work_price.log 2>&1
 # 京东金融养猪猪（ak）
-12 0-23/6 * * * node /scripts/jd_work_pigPet.js >> /scripts/logs/jd_work_pigPet.log 2>&1
 # 京喜财富岛提现（小小）
 # 伊利养牛（HW）
 0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1

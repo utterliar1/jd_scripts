@@ -22,7 +22,6 @@ jobs:
         shopt -u extglob
         echo "========= 开始下载小小的脚本及依赖 ========="
         git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
-        rm ./Aaron/jd_ddworld.js
         cp -f ./Aaron/jd_*.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
@@ -43,11 +42,11 @@ jobs:
         git clone -b main https://github.com/star261/jd.git ./star
         cp -rf ./star/scripts/*_*.js ./
         rm -rf ./star
-        echo "========= 开始下载airacg的脚本及依赖 ========="
-        git clone https://github.com/airacg/jd_task.git ./airacg
-        cp -r ./airacg/function ./
-        cp -f ./airacg/*_*.js ./
-        rm -rf ./airacg
+        #echo "========= 开始下载airacg的脚本及依赖 ========="
+        #git clone https://github.com/airacg/jd_task.git ./airacg
+        #cp -r ./airacg/function ./
+        #cp -f ./airacg/*_*.js ./
+        #rm -rf ./airacg
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
@@ -74,11 +73,13 @@ jobs:
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
         rm -rf ./JDHelloWorld
+        rm ./jd_ddworld.js
         echo "========= 开始下载单文件脚本 ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_dwapp.js
+        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zsign.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^js_/jd_js/' *
@@ -99,26 +100,7 @@ jobs:
         sed -i 's/jxqd/jxsign/g' ./docker/crontab_list.sh
         sed -i 's/jd_joy.js/jd_joy_new.js/g' ./docker/crontab_list.sh
         sed -i 's/zqfl/getUp/g' ./docker/crontab_list.sh
-        sed -i '/jd_qqxing\|jd_work_validate\|jd_work_validate\|daily_egg\|jd_lsj\|jd_joy_run\|cfdtx\|jd_pigPet\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace/d' ./docker/crontab_list.sh
-        echo "========= 备份cron及yml文件 ========="
-        log_time=$(date "+%Y-%m-%d-%H-%M-%S")
-        diff ./docker/crontab_list.sh ./backup/cron/crontab_list.sh | tee ./backup/cron/env.diff
-        if [ ! -s ./backup/cron/env.diff ]; then
-            echo "定时文件没有变化...\n"
-        elif [ -s ./backup/cron/env.diff ] ; then
-            cp -f ./docker/crontab_list.sh ./backup/cron/crontab_list_$log_time.sh
-        fi
-        diff ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts.yml | tee ./backup/yml/env.diff
-        if [ ! -s ./backup/yml/env.diff ]; then
-            echo -e "yml文件没有变化...\n"
-        elif [ -s ./backup/yml/env.diff ] ; then
-            cp -f ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts_$log_time.yml
-        fi
-        echo "========= 删除对比缓存及复制文件下次对比 ========="
-        rm -rf ./backup/yml/env.diff
-        rm -rf ./backup/cron/env.diff
-        cp -f ./.github/workflows/jd_scripts.yml ./backup/yml/jd_scripts.yml
-        cp -f ./docker/crontab_list.sh ./backup/cron/crontab_list.sh
+        sed -i '/jd_qqxing\|jd_work_validate\|jd_work_validate\|daily_egg\|jd_lsj\|jd_joy_run\|cfdtx\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace\|qycl\|cashback\|jd_exchange_joy\|work/d' ./docker/crontab_list.sh
     - name: 'Commit Files'
       id: commit
       run: |

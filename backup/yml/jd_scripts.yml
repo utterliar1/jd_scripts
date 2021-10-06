@@ -22,7 +22,6 @@ jobs:
         shopt -u extglob
         echo "========= 开始下载小小的脚本及依赖 ========="
         git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
-        rm ./Aaron/jd_ddworld.js
         cp -f ./Aaron/jd_*.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
@@ -43,11 +42,11 @@ jobs:
         git clone -b main https://github.com/star261/jd.git ./star
         cp -rf ./star/scripts/*_*.js ./
         rm -rf ./star
-        echo "========= 开始下载airacg的脚本及依赖 ========="
-        git clone https://github.com/airacg/jd_task.git ./airacg
-        cp -r ./airacg/function ./
-        cp -f ./airacg/*_*.js ./
-        rm -rf ./airacg
+        #echo "========= 开始下载airacg的脚本及依赖 ========="
+        #git clone https://github.com/airacg/jd_task.git ./airacg
+        #cp -r ./airacg/function ./
+        #cp -f ./airacg/*_*.js ./
+        #rm -rf ./airacg
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
@@ -74,6 +73,7 @@ jobs:
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
         rm -rf ./JDHelloWorld
+        rm ./jd_ddworld.js
         echo "========= 开始下载单文件脚本 ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
@@ -99,7 +99,7 @@ jobs:
         sed -i 's/jxqd/jxsign/g' ./docker/crontab_list.sh
         sed -i 's/jd_joy.js/jd_joy_new.js/g' ./docker/crontab_list.sh
         sed -i 's/zqfl/getUp/g' ./docker/crontab_list.sh
-        sed -i '/jd_qqxing\|jd_work_validate\|jd_work_validate\|daily_egg\|jd_lsj\|jd_joy_run\|cfdtx\|jd_pigPet\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace/d' ./docker/crontab_list.sh
+        sed -i '/jd_qqxing\|jd_work_validate\|jd_work_validate\|daily_egg\|jd_lsj\|jd_joy_run\|cfdtx\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace/d' ./docker/crontab_list.sh
         echo "========= 备份cron及yml文件 ========="
         log_time=$(date "+%Y-%m-%d-%H-%M-%S")
         diff ./docker/crontab_list.sh ./backup/cron/crontab_list.sh | tee ./backup/cron/env.diff
