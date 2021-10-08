@@ -14,9 +14,6 @@
 # 蚊子腿豆子 (9.21-10.16 10月16号应该可以参与瓜分)
 3 6,18 1-16,21-30 9,10 * node /scripts/jd_decompression.js >> /scripts/logs/jd_decompression.log 2>&1
 
-# 东东玩家(9.17-10.11)
-9 0 * 9-10 * node /scripts/jd_guaddgame.js >> /scripts/logs/jd_guaddgame.log 2>&1
-
 # 心相印店铺活动  古蜀寻宝 (10.6 结束)
 17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
 
