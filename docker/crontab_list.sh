@@ -64,6 +64,7 @@
 # 京东零食街 活动时间：年底
 
 ##############长期活动##############
+
 # 签到
 5 0,9 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
 # 领券中心签到
