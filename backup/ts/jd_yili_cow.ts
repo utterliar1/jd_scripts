@@ -1,4 +1,3 @@
-import {format} from 'date-fns';
 import axios from 'axios';
 import USER_AGENT, {TotalBean, requireConfig, wait} from "./TS_USER_AGENTS";
 import * as dotenv from 'dotenv';
@@ -33,14 +32,13 @@ async function main() {
       pin = res.data.secretPin
 
       res = await api('https://lzdz-isv.isvjcloud.com/wxActionCommon/getUserInfo', `pin=${encodeURIComponent(pin)}`)
-      if(res.data?.hasOwnProperty('id')){
+      if (res.data?.hasOwnProperty('id')) {
         uuid = res.data.id
-      }else{
+      } else {
         continue
       }
 
-      res = await api('https://lzdz-isv.isvjcloud.com/common/accessLogWithAD',`venderId=1000013402&code=99&pin=${encodeURIComponent(pin)}&activityId=dz2103100001340201&pageUrl=https%3A%2F%2Flzdz-isv.isvjcloud.com%2Fdingzhi%2Fyili%2Fyangniu%2Factivity%2F4827909%3FactivityId%3Ddz2103100001340201%26shareUuid%3Db44243656a694b6f94bb30a4a5f2a45d%26adsource%3Dziying%26shareuserid4minipg%3D5Iufa9rY657S3OP3PLSpK07oeVP9kq2pYSH90mYt4m3fwcJlClpxrfmVYaGKuquQkdK3rLBQpEQH9V4tdrrh0w%3D%3D%26shopid%3D1000013402%26lng%3D114.062604%26lat%3D29.541501%26sid%3D6e9bfee3838075a72533536815d8f3ew%26un_area%3D4_48201_54794_0&subType=app&adSource=ziying`)
-
+      res = await api('https://lzdz-isv.isvjcloud.com/common/accessLogWithAD', `venderId=1000013402&code=99&pin=${encodeURIComponent(pin)}&activityId=dz2103100001340201&pageUrl=https%3A%2F%2Flzdz-isv.isvjcloud.com%2Fdingzhi%2Fyili%2Fyangniu%2Factivity%2F4827909%3FactivityId%3Ddz2103100001340201%26shareUuid%3Db44243656a694b6f94bb30a4a5f2a45d%26adsource%3Dziying%26shareuserid4minipg%3D5Iufa9rY657S3OP3PLSpK07oeVP9kq2pYSH90mYt4m3fwcJlClpxrfmVYaGKuquQkdK3rLBQpEQH9V4tdrrh0w%3D%3D%26shopid%3D1000013402%26lng%3D114.062604%26lat%3D29.541501%26sid%3D6e9bfee3838075a72533536815d8f3ew%26un_area%3D4_48201_54794_0&subType=app&adSource=ziying`)
       res = await api('https://lzdz-isv.isvjcloud.com/dingzhi/yili/yangniu/activityContent', `activityId=dz2103100001340201&pin=${encodeURIComponent(pin)}&pinImg=null&nick=${cookie.match(/pt_pin=([^;]*)/)![1]}&cjyxPin=&cjhyPin=&shareUuid=`)
       actorUuid = res.data.actorUuid
       console.log('互助码：', actorUuid)
@@ -84,7 +82,7 @@ async function main() {
         res = await api('saveTask', `activityId=dz2103100001340201&actorUuid=${actorUuid}&pin=${encodeURIComponent(pin)}&taskType=${t.taskType}&taskValue=${t.taskValue ?? ''}`)
         if (res.result)
           console.log('任务完成：', res.data.milkCount)
-        else{
+        else {
           console.log('任务失败：', res)
           break
         }
@@ -108,7 +106,7 @@ function api(fn: string, body: Object): Object {
     url = `https://lzdz-isv.isvjcloud.com/dingzhi/yili/yangniu/${fn}`
   }
   return new Promise(async resolve => {
-    let {data, headers} = await axios.post(url, body
+    let {data, headers}: any = await axios.post(url, body
       , {
         headers: {
           'Host': 'lzdz-isv.isvjcloud.com',
@@ -127,7 +125,7 @@ function api(fn: string, body: Object): Object {
 
 function getIsvToken() {
   return new Promise<void>(async resolve => {
-    let {data} = await axios.post("https://api.m.jd.com/client.action?functionId=genToken&clientVersion=10.0.2&client=android&uuid=818aa057737ba6a4&st=1623934987178&sign=0877498be29cda51b9628fa0195f412f&sv=111",
+    let {data}: any = await axios.post("https://api.m.jd.com/client.action?functionId=genToken&clientVersion=10.0.2&client=android&uuid=818aa057737ba6a4&st=1623934987178&sign=0877498be29cda51b9628fa0195f412f&sv=111",
       `body=${escape('{"action":"to","to":"https%3A%2F%2Fh5.m.jd.com%2FbabelDiy%2FZeus%2F3KSjXqQabiTuD1cJ28QskrpWoBKT%2Findex.html%3FbabelChannel%3D45%26collectionId%3D519"}')}`, {
         headers: {
           'Host': 'api.m.jd.com',
@@ -145,7 +143,7 @@ function getIsvToken() {
 
 function getIsvToken2() {
   return new Promise<void>(async resolve => {
-    let {data} = await axios.post("https://api.m.jd.com/client.action?functionId=isvObfuscator&clientVersion=10.0.2&client=android&uuid=818aa057737ba6a4&st=1623934998790&sign=e571148c8dfb456a1795d249c6aa3956&sv=100", 'body=%7B%22id%22%3A%22%22%2C%22url%22%3A%22https%3A//xinruidddj-isv.isvjcloud.com%22%7D', {
+    let {data}: any = await axios.post("https://api.m.jd.com/client.action?functionId=isvObfuscator&clientVersion=10.0.2&client=android&uuid=818aa057737ba6a4&st=1623934998790&sign=e571148c8dfb456a1795d249c6aa3956&sv=100", 'body=%7B%22id%22%3A%22%22%2C%22url%22%3A%22https%3A//xinruidddj-isv.isvjcloud.com%22%7D', {
       headers: {
         'Host': 'api.m.jd.com',
         'user-agent': USER_AGENT,
@@ -167,7 +165,7 @@ function init() {
         'User-Agent': USER_AGENT,
         'Cookie': 'IsvToken=' + token
       }
-    }).then(res => {
+    }).then((res: any) => {
       reloadCookie(res.headers['set-cookie'])
       resolve();
     })

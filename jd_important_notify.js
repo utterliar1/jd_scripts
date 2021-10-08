@@ -37,71 +37,65 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 /**
- * 每天检测cookie是否有效
- * cron: 10 * * * *
+ * 用sendNotify推送通知
+ * 主要用于自爆通知，及时推送给不常上tg的
+ * cron: 0 0-23/1 * * *
  */
-var axios_1 = require("axios");
-var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
-var notify = require('./sendNotify');
-var cookie = '', UserName, index, errMsg = '';
+var sendNotify_1 = require("./sendNotify");
+var dotenv = require("dotenv");
+var fs_1 = require("fs");
+dotenv.config();
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, i;
+    var env, lastMsg, latestMsg;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
+            case 0:
+                env = '';
+                try {
+                    (0, fs_1.accessSync)('.env');
+                    env = (0, fs_1.readFileSync)('.env').toString();
+                }
+                catch (e) {
+                    (0, fs_1.writeFileSync)('.env', '');
+                }
+                lastMsg = process.env.ImportantNotify || '';
+                latestMsg = '2021-10-04  自爆了，重新提交';
+                if (!(lastMsg !== latestMsg)) return [3 /*break*/, 2];
+                return [4 /*yield*/, (0, sendNotify_1.sendNotify)("@所有人", latestMsg)];
             case 1:
-                cookiesArr = _a.sent();
-                i = 0;
+                _a.sent();
+                if (env.indexOf('ImportantNotify') > -1)
+                    env = env.replace(/ImportantNotify.*/, "ImportantNotify='" + latestMsg + "'");
+                else
+                    env += "ImportantNotify='" + latestMsg + "'\n";
+                (0, fs_1.writeFileSync)('.env', env);
                 _a.label = 2;
-            case 2:
-                if (!(i < cookiesArr.length)) return [3 /*break*/, 5];
-                cookie = cookiesArr[i];
-                UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
-                index = i + 1;
-                return [4 /*yield*/, api(index, cookie, UserName)];
-            case 3:
-                _a.sent();
-                _a.label = 4;
-            case 4:
-                i++;
-                return [3 /*break*/, 2];
-            case 5:
-                if (!errMsg) return [3 /*break*/, 7];
-                return [4 /*yield*/, notify.sendNotify("Cookie失效", errMsg, '', '你好，世界！')];
-            case 6:
-                _a.sent();
-                _a.label = 7;
-            case 7: return [2 /*return*/];
+            case 2: return [2 /*return*/];
         }
     });
 }); })();
-function api(index, cookie, username) {
-    return __awaiter(this, void 0, void 0, function () {
-        var data;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].get("https://me-api.jd.com/user_new/info/GetJDUserInfoUnion", {
-                        headers: {
-                            Host: "me-api.jd.com",
-                            Connection: "keep-alive",
-                            Cookie: cookie,
-                            "User-Agent": TS_USER_AGENTS_1["default"],
-                            "Accept-Language": "zh-cn",
-                            "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
-                            "Accept-Encoding": "gzip, deflate, br"
-                        }
-                    })];
-                case 1:
-                    data = (_a.sent()).data;
-                    if (data.retcode === '0') {
-                        console.log(index, '✅', username);
-                    }
-                    else {
-                        console.log(index, '❌', username);
-                        errMsg += index + " " + username + "\n";
-                    }
-                    return [2 /*return*/];
-            }
-        });
-    });
+/*
+const config = {}
+if (process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
+  config.httpsAgent = tunnel.httpsOverHttp({
+    proxy: {
+      host: '127.0.0.1',
+      port: '1080',
+    },
+  });
 }
+
+
+axios.get("https://api.sharecode.ga/api/notify", {timeout: 10000})
+  .then(async (res) => {
+    let obj = res.data
+    if (obj.time !== lastPush) {
+      // 有新提醒
+      await notify.sendNotify(`@所有人\n\n${obj.title}`, obj.content, '', '\n\n你好，世界！')
+      fs.writeFileSync('./notify.log', obj.time + '', 'utf-8')
+    }
+  })
+  .catch(() => {
+    console.log('error')
+  })
+*/

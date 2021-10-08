@@ -1,10 +1,10 @@
 "use strict";
 /**
-* TODO
-* 团
-*
-* cron: 30 * * * *
-*/
+ * TODO
+ * 团
+ *
+ * cron: 30 * * * *
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,9 +45,11 @@ exports.__esModule = true;
 var date_fns_1 = require("date-fns");
 var axios_1 = require("axios");
 var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
+var sendNotify_1 = require("./sendNotify");
+var path = require("path");
 var cookie = '', res = '', UserName, index;
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, i, productionId, factoryId, flag, j, _i, _a, t, j;
+    var cookiesArr, except, i, productionId, investedElectric, needElectric, progress, factoryId, flag, j, _i, _a, t, j;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requestAlgo)(10001)];
@@ -56,6 +58,7 @@ var cookie = '', res = '', UserName, index;
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
             case 2:
                 cookiesArr = _b.sent();
+                except = (0, TS_USER_AGENTS_1.exceptCookie)(path.basename(__filename));
                 i = 0;
                 _b.label = 3;
             case 3:
@@ -64,6 +67,10 @@ var cookie = '', res = '', UserName, index;
                 UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
                 index = i + 1;
                 console.log("\n\u5F00\u59CB\u3010\u4EAC\u4E1C\u8D26\u53F7" + index + "\u3011" + UserName + "\n");
+                if (except.includes(encodeURIComponent(UserName))) {
+                    console.log('已设置跳过');
+                    return [3 /*break*/, 28];
+                }
                 return [4 /*yield*/, api('userinfo/GetUserInfo', '_time,materialTuanId,materialTuanPin,needPickSiteInfo,pin,sharePin,shareType,source,zone', {
                         pin: '',
                         sharePin: '',
@@ -81,6 +88,12 @@ var cookie = '', res = '', UserName, index;
                 _b.sent();
                 try {
                     productionId = res.data.productionList[0].productionId;
+                    investedElectric = res.data.productionList[0].investedElectric, needElectric = res.data.productionList[0].needElectric, progress = (investedElectric / needElectric * 100).toFixed(2);
+                    console.log('生产进度:', progress);
+                    if (progress === '100.00') {
+                        (0, sendNotify_1.sendNotify)("京喜工厂生产完成", "\u8D26\u53F7" + index + " " + UserName);
+                        return [3 /*break*/, 28];
+                    }
                 }
                 catch (e) {
                     console.log('当前没有产品在生产');
@@ -113,8 +126,8 @@ var cookie = '', res = '', UserName, index;
             case 8:
                 res = _b.sent();
                 res.ret === 0
-                    ? console.log('发电机收取成功：', res.data.CollectElectricity)
-                    : console.log('发电机收取失败：', res);
+                    ? console.log('发电机收取成功:', res.data.CollectElectricity)
+                    : console.log('发电机收取失败:', res);
                 _b.label = 9;
             case 9: return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)
                 // 投入电力
@@ -129,10 +142,10 @@ var cookie = '', res = '', UserName, index;
             case 12:
                 res = _b.sent();
                 if (res.ret === 0) {
-                    console.log('投入电力：', res.data.investElectric);
+                    console.log('投入电力:', res.data.investElectric);
                 }
                 else {
-                    console.log(res.msg);
+                    console.log('投入电力失败:', res);
                     return [3 /*break*/, 15];
                 }
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(3000)];
@@ -161,7 +174,7 @@ var cookie = '', res = '', UserName, index;
             case 20:
                 _b.sent();
                 if (res.ret === 0)
-                    console.log('收取气泡成功：', t.electricityQuantity);
+                    console.log('收取气泡成功:', t.electricityQuantity);
                 _b.label = 21;
             case 21:
                 _i++;
