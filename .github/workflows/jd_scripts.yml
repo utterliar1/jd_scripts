@@ -81,7 +81,6 @@ jobs:
         wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_dwapp.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zsign.js
-        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_genz.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^js_/jd_js/' *
@@ -102,7 +101,7 @@ jobs:
         sed -i 's/jxqd/jxsign/g' ./docker/crontab_list.sh
         sed -i 's/jd_joy.js/jd_joy_new.js/g' ./docker/crontab_list.sh
         sed -i 's/zqfl/getUp/g' ./docker/crontab_list.sh
-        sed -i '/jd_qqxing\|jd_work_validate\|jd_work_validate\|daily_egg\|jd_lsj\|jd_joy_run\|cfdtx\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace\|qycl\|cashback\|jd_exchange_joy\|work/d' ./docker/crontab_list.sh
+        sed -i '/jd_qqxing\|jd_work_validate\|jd_ddworld_exchange\|jd_work_validate\|daily_egg\|jd_lsj\|jd_joy_run\|cfdtx\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace\|qycl\|cashback\|jd_exchange_joy\|work/d' ./docker/crontab_list.sh
     - name: 'Commit Files'
       id: commit
       run: |
