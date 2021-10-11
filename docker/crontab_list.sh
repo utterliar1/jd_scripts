@@ -14,9 +14,6 @@
 # 蚊子腿豆子 (9.21-10.16 10月16号应该可以参与瓜分)
 3 6,18 1-16,21-30 9,10 * node /scripts/jd_decompression.js >> /scripts/logs/jd_decompression.log 2>&1
 
-# 心相印店铺活动  古蜀寻宝 (10.6 结束)
-17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
-
 # 芥么赚豪礼
 22 1,13 * * * node /scripts/jd_genz.js >> /scripts/logs/jd_genz.log 2>&1
 
@@ -63,6 +60,9 @@
 
 # 京东零食街 活动时间：年底
 
+# 京东金融-天天拼图
+11 0,15 * * * node /scripts/jd_ttpt.js >> /scripts/logs/jd_ttpt.log 2>&1
+
 ##############长期活动##############
 
 # 签到
@@ -71,6 +71,8 @@
 17 0 * * * node /scripts/jd_ccSign.js >> /scripts/logs/jd_ccSign.log 2>&1
 # 东东世界
 17 1,15 * * * node /scripts/jd_guaddworld.js >> /scripts/logs/jd_guaddworld.log 2>&1
+# 东东世界兑换
+3 0,17 * * * node /scripts/jd_guaddworld_exchange.js >> /scripts/logs/jd_guaddworld_exchange.log 2>&1
 # 京喜购物返红包助力
 # 宠汪汪跑验证码
 # 宠汪汪兑换
