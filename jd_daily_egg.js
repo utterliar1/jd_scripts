@@ -1,24 +1,8 @@
-/*
-Last Modified time: 2020-11-20 14:11:01
-活动入口：京东金融-天天提鹅
-定时收鹅蛋,兑换金币
-已支持IOS双京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-============Quantumultx===============
-[task_local]
-#天天提鹅
-10 * * * * jd_daily_egg.js, tag=天天提鹅, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdte.png, enabled=true
-
-================Loon==============
-[Script]
-cron "10 * * * *" script-path=jd_daily_egg.js,tag=天天提鹅
-
-===============Surge=================
-天天提鹅 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=3600,script-path=jd_daily_egg.js
-
-============小火箭=========
-天天提鹅 = type=cron,script-path=jd_daily_egg.js, cronexpr="10 * * * *", timeout=3600, enable=true
+/**
+ * 京东金融-天天提鹅
+ * cron: 0 * * * *
  */
+
 const $ = new Env('天天提鹅');
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://ms.jr.jd.com/gw/generic/uc/h5/m';
@@ -28,7 +12,7 @@ const dailyEggUrl = "https://active.jd.com/forever/btgoose/?channelLv=yxjh&jrcon
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const { JSDOM } = $.isNode() ? require('jsdom') : '';
 const { window } = new JSDOM(``, { url: dailyEggUrl, runScripts: "outside-only", pretentToBeVisual: true, resources: "usable" })
-const Faker = require('./utils/JDSignValidator.js')
+const Faker = require('./utils/sign_graphics_validate.js')
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -49,18 +33,8 @@ if ($.isNode()) {
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       $.isLogin = true;
-      $.nickName = '';
       $.stopNext = false
-      await TotalBean();
-      console.log(`\n***********开始【京东账号${$.index}】${$.nickName || $.UserName}********\n`);
-      if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
-
-        if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        }
-        continue
-      }
+      console.log(`\n***********开始【京东账号${$.index}】${$.UserName}********\n`);
       const fakerBody = Faker.getBody(dailyEggUrl)
       $.fp = fakerBody.fp
       $.eid = await getClientData(fakerBody)
