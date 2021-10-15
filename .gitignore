@@ -1,1 +1,4 @@
 /utils/account.json
+/node_modules/
+/logs
+/config/
