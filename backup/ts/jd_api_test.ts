@@ -44,7 +44,7 @@ async function car(db: string, num: number) {
 
 async function runTimes() {
   try {
-    let {data}: any = await axios.get("https://api.jdsharecode.xyz/api/runTimes?activityId=bean&sharecode=123", {timeout: 10000})
+    let {data}: any = await axios.get(`https://api.jdsharecode.xyz/api/runTimes?activityId=bean&sharecode=123`, {timeout: 10000})
     return '成功'
   } catch (e: any) {
     return `${e}`

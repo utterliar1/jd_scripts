@@ -55,14 +55,13 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 exports.__esModule = true;
 var axios_1 = require("axios");
 var ts_md5_1 = require("ts-md5");
-var dotenv = require("dotenv");
 var date_fns_1 = require("date-fns");
 var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
-dotenv.config();
-var cookie = '', res = '', shareCodes = [], shareCodesSelf = [], shareCodesHW = [], isCollector = false, USER_AGENT = 'jdpingou;android;4.13.0;10;b21fede89fb4bc77;network/wifi;model/M2004J7AC;appBuild/17690;partner/xiaomi;;session/704;aid/b21fede89fb4bc77;oaid/dcb5f3e835497cc3;pap/JA2019_3111789;brand/Xiaomi;eu/8313831616035373;fv/7333732616631643;Mozilla/5.0 (Linux; Android 10; M2004J7AC Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.120 Mobile Safari/537.36', token = {};
-var UserName, index;
+var axi = axios_1["default"].create({ timeout: 10000 });
+var cookie = '', res = '', UserName, index;
+var shareCodes = [], shareCodesSelf = [], shareCodesHW = [], isCollector = false, USER_AGENT = 'jdpingou;', token = {};
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, i, e_1, todayMoney, flag, dwPageIndex, _i, _a, t, _b, _c, xb, j, wallet, build, minLV, _d, _e, b, dwCurProgress, strDT, strMyShareId, ddwSeasonStartTm, strLT, RealTmReport, j, employee, _f, employee_1, emp, empRes, _g, _h, sign, MermaidRes, shipRes, bags_1, _j, _k, s, strTypeCnt_1, n, bags, _l, _m, s, strTypeCnt, n, j, tasks, _o, _p, t, _q, _r, t, _s, _t, e, employ, _u, _v, b, data, e_2, i, data, e_3, j;
+    var cookiesArr, i, e_1, todayMoney, flag, dwPageIndex, _i, _a, t, _b, _c, xb, j, wallet, build, minLV, _d, _e, b, dwCurProgress, strDT, strMyShareId, ddwSeasonStartTm, strLT, RealTmReport, j, employee, _f, employee_1, emp, empRes, _g, _h, sign, MermaidRes, shipRes, bags_1, _j, _k, s, strTypeCnt_1, n, bags, _l, _m, s, strTypeCnt, n, j, tasks, _o, _p, t, _q, _r, t, _s, _t, e, employ, _u, _v, b, i, data, e_2, j;
     return __generator(this, function (_w) {
         switch (_w.label) {
             case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requestAlgo)()];
@@ -267,7 +266,7 @@ var UserName, index;
                 }
                 _w.label = 45;
             case 45:
-                if (!(dwCurProgress < 8 && strDT)) return [3 /*break*/, 54];
+                if (!strDT) return [3 /*break*/, 54];
                 console.log('继续合成');
                 RealTmReport = (0, TS_USER_AGENTS_1.getRandomNumberByRange)(10, 20);
                 console.log('本次合成需要上报：', RealTmReport);
@@ -283,7 +282,7 @@ var UserName, index;
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
             case 48:
                 _w.sent();
-                if (!((0, TS_USER_AGENTS_1.getRandomNumberByRange)(1, 4) === 2)) return [3 /*break*/, 51];
+                if (!((0, TS_USER_AGENTS_1.getRandomNumberByRange)(1, 6) === 2)) return [3 /*break*/, 51];
                 return [4 /*yield*/, api('user/ComposePearlAward', '__t,size,strBT,strZone,type', { __t: Date.now(), size: 1, strBT: strDT, type: 4 })];
             case 49:
                 res = _w.sent();
@@ -688,64 +687,60 @@ var UserName, index;
                 i++;
                 return [3 /*break*/, 3];
             case 135:
-                _w.trys.push([135, 137, , 138]);
-                return [4 /*yield*/, axios_1["default"].get('https://api.jdsharecode.xyz/api/HW_CODES', { timeout: 10000 })];
-            case 136:
-                data = (_w.sent()).data;
-                shareCodesHW = data['jxcfd'] || [];
-                return [3 /*break*/, 138];
-            case 137:
-                e_2 = _w.sent();
-                return [3 /*break*/, 138];
-            case 138:
                 i = 0;
-                _w.label = 139;
+                _w.label = 136;
+            case 136:
+                if (!(i < cookiesArr.length)) return [3 /*break*/, 147];
+                return [4 /*yield*/, getCodesHW()];
+            case 137:
+                _w.sent();
+                _w.label = 138;
+            case 138:
+                _w.trys.push([138, 140, , 141]);
+                return [4 /*yield*/, axi.get("https://api.jdsharecode.xyz/api/jxcfd/30", { timeout: 10000 })];
             case 139:
-                if (!(i < cookiesArr.length)) return [3 /*break*/, 149];
-                _w.label = 140;
-            case 140:
-                _w.trys.push([140, 142, , 143]);
-                return [4 /*yield*/, axios_1["default"].get('https://api.jdsharecode.xyz/api/jxcfd/20', { timeout: 10000 })];
-            case 141:
                 data = (_w.sent()).data;
-                console.log('获取到20个随机助力码:', data.data);
+                console.log('获取到30个随机助力码:', data.data);
                 shareCodes = __spreadArray(__spreadArray(__spreadArray([], shareCodesSelf, true), shareCodesHW, true), data.data, true);
-                return [3 /*break*/, 143];
-            case 142:
-                e_3 = _w.sent();
+                return [3 /*break*/, 141];
+            case 140:
+                e_2 = _w.sent();
                 console.log('获取助力池失败');
                 shareCodes = __spreadArray(__spreadArray([], shareCodesSelf, true), shareCodesHW, true);
-                return [3 /*break*/, 143];
-            case 143:
+                return [3 /*break*/, 141];
+            case 141:
                 j = 0;
-                _w.label = 144;
-            case 144:
-                if (!(j < shareCodes.length)) return [3 /*break*/, 148];
+                _w.label = 142;
+            case 142:
+                if (!(j < shareCodes.length)) return [3 /*break*/, 146];
                 cookie = cookiesArr[i];
                 console.log("\u8D26\u53F7" + (i + 1) + "\u53BB\u52A9\u529B:", shareCodes[j]);
                 return [4 /*yield*/, api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', { strShareId: shareCodes[j] })];
-            case 145:
+            case 143:
                 res = _w.sent();
                 if (res.iRet === 0) {
                     console.log('助力成功:', res.Data.GuestPrizeInfo.strPrizeName);
                 }
                 else if (res.iRet === 2232 || res.sErrMsg === '今日助力次数达到上限，明天再来帮忙吧~') {
-                    return [3 /*break*/, 148];
+                    return [3 /*break*/, 146];
                 }
                 else if (res.iRet === 2191) {
                     console.log('已助力');
                 }
+                else {
+                    console.log('其他错误:', res);
+                }
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(3000)];
-            case 146:
+            case 144:
                 _w.sent();
-                _w.label = 147;
-            case 147:
+                _w.label = 145;
+            case 145:
                 j++;
-                return [3 /*break*/, 144];
-            case 148:
+                return [3 /*break*/, 142];
+            case 146:
                 i++;
-                return [3 /*break*/, 139];
-            case 149: return [2 /*return*/];
+                return [3 /*break*/, 136];
+            case 147: return [2 /*return*/];
         }
     });
 }); })();
@@ -753,10 +748,16 @@ function api(fn, stk, params, taskPosition) {
     if (params === void 0) { params = {}; }
     if (taskPosition === void 0) { taskPosition = ''; }
     return new Promise(function (resolve, reject) {
-        var url = '';
+        var url;
         if (['GetUserTaskStatusList', 'Award', 'DoTask'].includes(fn)) {
-            var bizCode = taskPosition === 'right' ? 'jxbfddch' : 'jxbfd';
-            url = "https://m.jingxi.com/newtasksys/newtasksys_front/" + fn + "?strZone=jxbfd&bizCode=" + bizCode + "&source=jxbfd&dwEnv=7&_cfd_t=" + Date.now() + "&ptag=&showAreaTaskFlag=0&_stk=" + encodeURIComponent(stk) + "&_ste=1&_=" + Date.now() + "&sceneval=2";
+            var bizCode = void 0;
+            if (!params.bizCode) {
+                bizCode = taskPosition === 'right' ? 'jxbfddch' : 'jxbfd';
+            }
+            else {
+                bizCode = params.bizCode;
+            }
+            url = "https://m.jingxi.com/newtasksys/newtasksys_front/" + fn + "?strZone=jxbfd&bizCode=" + bizCode + "&source=jxbfd&dwEnv=7&_cfd_t=" + Date.now() + "&ptag=&_stk=" + encodeURIComponent(stk) + "&_ste=1&_=" + Date.now() + "&sceneval=2";
         }
         else {
             url = "https://m.jingxi.com/jxbfd/" + fn + "?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=" + Date.now() + "&ptag=&_ste=1&_=" + Date.now() + "&sceneval=2&_stk=" + encodeURIComponent(stk);
@@ -783,7 +784,7 @@ function task() {
             switch (_b.label) {
                 case 0:
                     console.log('刷新任务列表');
-                    return [4 /*yield*/, api('GetUserTaskStatusList', '_cfd_t,bizCode,dwEnv,ptag,showAreaTaskFlag,source,strZone,taskId', { taskId: 0, showAreaTaskFlag: 0 })];
+                    return [4 /*yield*/, api('GetUserTaskStatusList', '_cfd_t,bizCode,dwEnv,ptag,showAreaTaskFlag,source,strZone,taskId', { taskId: 0, showAreaTaskFlag: 1 })];
                 case 1:
                     res = _b.sent();
                     return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
@@ -796,15 +797,20 @@ function task() {
                     t = _a[_i];
                     if (!(t.awardStatus === 2 && t.completedTimes === t.targetTimes)) return [3 /*break*/, 8];
                     console.log('可领奖:', t.taskName);
-                    return [4 /*yield*/, api('Award', '_cfd_t,bizCode,dwEnv,ptag,source,strZone,taskId', { taskId: t.taskId })];
+                    return [4 /*yield*/, api('Award', '_cfd_t,bizCode,dwEnv,ptag,source,strZone,taskId', { taskId: t.taskId, bizCode: t.bizCode })];
                 case 4:
                     res = _b.sent();
                     return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
                 case 5:
                     _b.sent();
                     if (!(res.ret === 0)) return [3 /*break*/, 7];
-                    res = JSON.parse(res.data.prizeInfo);
-                    console.log("\u9886\u5956\u6210\u529F:", res.ddwCoin, res.ddwMoney);
+                    try {
+                        res = JSON.parse(res.data.prizeInfo);
+                        console.log("\u9886\u5956\u6210\u529F:", res.ddwCoin, res.ddwMoney);
+                    }
+                    catch (e) {
+                        console.log('领奖成功:', res.data);
+                    }
                     return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
                 case 6:
                     _b.sent();
@@ -815,7 +821,7 @@ function task() {
                 case 8:
                     if (!(t.dateType === 2 && t.awardStatus === 2 && t.completedTimes < t.targetTimes && t.taskCaller === 1)) return [3 /*break*/, 11];
                     console.log('做任务:', t.taskId, t.taskName, t.completedTimes, t.targetTimes);
-                    return [4 /*yield*/, api('DoTask', '_cfd_t,bizCode,configExtra,dwEnv,ptag,source,strZone,taskId', { taskId: t.taskId, configExtra: '' })];
+                    return [4 /*yield*/, api('DoTask', '_cfd_t,bizCode,configExtra,dwEnv,ptag,source,strZone,taskId', { taskId: t.taskId, configExtra: '', bizCode: t.bizCode })];
                 case 9:
                     res = _b.sent();
                     return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(5000)];
@@ -839,44 +845,62 @@ function task() {
     });
 }
 function makeShareCodes() {
-    var _this = this;
-    return new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-        var bean, farm, pin;
+    return __awaiter(this, void 0, void 0, function () {
+        var pin, data, e_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.getBeanShareCode)(cookie)];
+                case 0: return [4 /*yield*/, api('user/QueryUserInfo', '_cfd_t,bizCode,ddwTaskId,dwEnv,ptag,source,strPgUUNum,strPgtimestamp,strPhoneID,strShareId,strVersion,strZone', {
+                        ddwTaskId: '',
+                        strShareId: '',
+                        strMarkList: 'undefined',
+                        strPgUUNum: token.strPgUUNum,
+                        strPgtimestamp: token.strPgtimestamp,
+                        strPhoneID: token.strPhoneID,
+                        strVersion: '1.0.1'
+                    })];
                 case 1:
-                    bean = _a.sent();
-                    return [4 /*yield*/, (0, TS_USER_AGENTS_1.getFarmShareCode)(cookie)];
-                case 2:
-                    farm = _a.sent();
-                    return [4 /*yield*/, api('user/QueryUserInfo', '_cfd_t,bizCode,ddwTaskId,dwEnv,ptag,source,strPgUUNum,strPgtimestamp,strPhoneID,strShareId,strVersion,strZone', {
-                            ddwTaskId: '',
-                            strShareId: '',
-                            strMarkList: 'undefined',
-                            strPgUUNum: token.strPgUUNum,
-                            strPgtimestamp: token.strPgtimestamp,
-                            strPhoneID: token.strPhoneID,
-                            strVersion: '1.0.1'
-                        })];
-                case 3:
                     res = _a.sent();
                     console.log('助力码:', res.strMyShareId);
                     shareCodesSelf.push(res.strMyShareId);
                     pin = cookie.match(/pt_pin=([^;]*)/)[1];
                     pin = ts_md5_1.Md5.hashStr(pin);
-                    axios_1["default"].get("https://api.jdsharecode.xyz/api/autoInsert/jxcfd?sharecode=" + res.strMyShareId + "&bean=" + bean + "&farm=" + farm + "&pin=" + pin, { timeout: 10000 })
-                        .then(function (res) {
-                        if (res.data.code === 200)
-                            console.log('已自动提交助力码');
-                        else
-                            console.log('提交失败！已提交farm和bean的cookie才可提交cfd');
-                        resolve();
-                    })["catch"](function (e) {
-                        reject('访问助力池出错');
-                    });
-                    return [2 /*return*/];
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 4, , 5]);
+                    return [4 /*yield*/, axios_1["default"].get("https://api.jdsharecode.xyz/api/autoInsert/jxcfd?sharecode=" + res.strMyShareId + "&pin=" + pin, { timeout: 10000 })];
+                case 3:
+                    data = (_a.sent()).data;
+                    if (data.code === 200)
+                        console.log('已自动提交助力码');
+                    else
+                        console.log('提交失败！');
+                    return [3 /*break*/, 5];
+                case 4:
+                    e_3 = _a.sent();
+                    console.log('自动提交助力码出错');
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
-    }); });
+    });
+}
+function getCodesHW() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, e_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, axi.get("https://api.jdsharecode.xyz/api/HW_CODES", { timeout: 10000 })];
+                case 1:
+                    data = (_a.sent()).data;
+                    shareCodesHW = data['jxcfd'] || [];
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_4 = _a.sent();
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
 }

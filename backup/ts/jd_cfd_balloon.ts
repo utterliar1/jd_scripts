@@ -1,60 +1,41 @@
 /**
  * 财富岛热气球挂后台
- * cron: 0 * * * *
+ * cron: 10 0 * * *
  */
 
 import axios from 'axios'
-import USER_AGENT, {requireConfig, wait, getRandomNumberByRange, requestAlgo, h5st} from './TS_USER_AGENTS'
+import USER_AGENT, {requireConfig, wait, requestAlgo, h5st} from './TS_USER_AGENTS'
 
-let cookie: string = '', res: any = '', balloon: number = 1;
-process.env.CFD_LOOP_DELAY ? console.log('设置延迟:', parseInt(process.env.CFD_LOOP_DELAY)) : console.log('设置延迟:10000~25000随机')
-
+let cookie: string = '', res: any = '', flag: boolean = true;
 let UserName: string, index: number;
 !(async () => {
   await requestAlgo();
   let cookiesArr: any = await requireConfig();
 
   while (1) {
+    if (!flag)
+      break
     for (let i = 0; i < cookiesArr.length; i++) {
       cookie = cookiesArr[i];
       UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
       index = i + 1;
       console.log(`\n开始【京东账号${index}】${UserName}\n`);
       try {
-        if (balloon !== 500) {
-          res = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strBuildIndex,strZone')
-          if (res.iRet !== 0) {
-            console.log('手动建造4个房子')
-            continue
-          }
-          console.log('今日热气球:', res.dwTodaySpeedPeople)
-          if (res.dwTodaySpeedPeople === 500) {
-            balloon = 500
-          }
+        res = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strBuildIndex,strZone')
+        if (res.iRet !== 0) {
+          console.log('手动建造4个房子')
+          continue
         }
-/*
-        let shell: any = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strZone')
-        if (shell.Data.hasOwnProperty('NormShell')) {
-          for (let s of shell.Data.NormShell) {
-            for (let j = 0; j < s.dwNum; j++) {
-              res = await speedUp('_cfd_t,bizCode,dwEnv,dwType,ptag,source,strZone', s.dwType)
-              if (res.iRet !== 0) {
-                console.log(res)
-                break
-              }
-              console.log('捡贝壳:', res.Data.strFirstDesc)
-              await wait(500)
-            }
-          }
+        console.log('今日热气球:', res.dwTodaySpeedPeople)
+        if (res.dwTodaySpeedPeople === 500) {
+          flag = false
         }
-
- */
       } catch (e) {
         console.log(e)
       }
+      await wait(1000)
     }
-    let t: number = process.env.CFD_LOOP_DELAY ? parseInt(process.env.CFD_LOOP_DELAY) : getRandomNumberByRange(1000 * 30, 1000 * 60)
-    await wait(t)
+    await wait(30 * 1000)
   }
 })()
 
