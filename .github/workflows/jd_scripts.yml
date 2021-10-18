@@ -50,14 +50,12 @@ jobs:
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
-        rm -f ./JDHelloWorld/jd_joy_reward.ts ./JDHelloWorld/jd_qq_pasture.ts ./JDHelloWorld/jd_88hb.ts
+        #mv -f ./JDHelloWorld/jd_joy_reward.ts ./JDHelloWorld/jd_qq_pasture.ts ./JDHelloWorld/jd_88hb.ts ./backup/ts/
         echo "========= 开始复制依赖 ========="
         cp -f ./JDHelloWorld/package.json ./
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
         cp -f ./JDHelloWorld/*ShareCodes.js ./
-        #mv -f ./JDHelloWorld/jd_cfd_hb.ts ./backup/ts/
-        #cp -f ./backup/js/shareCodesTool.js ./JDHelloWorld/tools/
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
         sudo npm install
