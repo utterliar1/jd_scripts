@@ -50,14 +50,13 @@ jobs:
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
-        rm -f ./JDHelloWorld/jd_joy_reward.ts ./JDHelloWorld/jd_qq_pasture.ts ./JDHelloWorld/jd_88hb.ts
+        #mv -f ./JDHelloWorld/jd_joy_reward.ts ./JDHelloWorld/jd_qq_pasture.ts ./JDHelloWorld/jd_88hb.ts ./backup/ts/
+        mv -f ./JDHelloWorld/jd_qq_pasture.ts ./backup/ts/
         echo "========= 开始复制依赖 ========="
         cp -f ./JDHelloWorld/package.json ./
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
         cp -f ./JDHelloWorld/*ShareCodes.js ./
-        #mv -f ./JDHelloWorld/jd_cfd_hb.ts ./backup/ts/
-        #cp -f ./backup/js/shareCodesTool.js ./JDHelloWorld/tools/
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
         sudo npm install
@@ -82,6 +81,7 @@ jobs:
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_dwapp.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zsign.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_ttpt.js
+        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_mf_exchange.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^js_/jd_js/' *

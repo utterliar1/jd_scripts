@@ -6,10 +6,13 @@
 ##############短期活动##############
 
 # 集魔方 (京东APP - 新品 - 集魔方)
-16 5,13 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
+25 0,13 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
+
+# 魔方兑换 (只兑换5魔方)
+9 1,15 * * * node /scripts/jd_mf_exchange.js >> /scripts/logs/jd_mf_exchange.log 2>&1
 
 # 京东小魔方 (9.29 24.00 结束)
-13 1,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
+13 0,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
 
 # 蚊子腿豆子 (9.21-10.16 10月16号应该可以参与瓜分)
 3 6,18 1-16,21-30 9,10 * node /scripts/jd_decompression.js >> /scripts/logs/jd_decompression.log 2>&1
