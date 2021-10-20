@@ -26,9 +26,6 @@
 # 芥末小程序签到领现金 (12.31结束)
 16 9 * * * node /scripts/jd_zsign.js >> /scripts/logs/jd_zsign.log 2>&1
 
-# 发财大赢家之翻翻乐 (9.30结束)
-20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
-
 # 京喜领88元红包(9.30结束)
 0 0,12,21 * * * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
 

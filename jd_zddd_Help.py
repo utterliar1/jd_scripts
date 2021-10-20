@@ -8,6 +8,7 @@ Date: 2021/10/17 下午12:12
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
 cron: 0 0 * * *
+new Env('种豆得豆-助力.py');
 '''
 
 # 种豆得豆助力码 ENV环境变量设置 export PLANT_BEAN_SHARECODES="code1&code2&code3"
@@ -38,12 +39,14 @@ ADID = ''.join(random.sample('0987654321ABCDEF', 8)) + '-' + ''.join(
 ###
 if "PLANT_BEAN_SHARECODES" in os.environ:
     if len(os.environ["PLANT_BEAN_SHARECODES"]) > 1:
-        zddd_code_str = os.environ["PLANT_BEAN_SHARECODES"]
-        if '&' in zddd_code_str:
-            zddd_code = zddd_code_str.split('&')
-        elif '@' in zddd_code_str:
-            zddd_code = zddd_code_str.split('@')
+        zddd_code = os.environ["PLANT_BEAN_SHARECODES"]
+        if '&' in zddd_code:
+            zddd_code = zddd_code.split('&')
+        elif '@' in zddd_code:
+            zddd_code = zddd_code.split('@')
         print("已获取并使用Env环境 zddd_code:", zddd_code)
+if not isinstance(zddd_code, list):
+    zddd_code = zddd_code.split(" ")
         
 class getJDCookie(object):
     # 适配各种平台环境ck

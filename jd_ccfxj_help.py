@@ -8,6 +8,8 @@ Date: 2021/10/20 下午8:59
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
 说明：仅测试使用，目前只助力，需要手动领取提现。
+cron: 0 0 * * *
+new Env('城城分现金助力-助力.py');
 '''
 ## 助力账号名称：可填用户名 或 pin的值不要; env 设置 export ccfxj_help="Curtinlv&用户2"  多账号&分隔
 ccfxj_help=["Curtinlv", ]
@@ -177,9 +179,9 @@ getCk.getCookie()
 
 if "ccfxj_help" in os.environ:
     if len(os.environ["ccfxj_help"]) > 1:
-        ccfxj_help_str = os.environ["ccfxj_help"]
-        if '&' in ccfxj_help_str:
-            ccfxj_help = ccfxj_help_str.split('&')
+        ccfxj_help = os.environ["ccfxj_help"]
+        if '&' in ccfxj_help:
+            ccfxj_help = ccfxj_help.split('&')
         print("已获取并使用Env环境 ccfxj_help:", ccfxj_help)
 if not isinstance(ccfxj_help, list):
     ccfxj_help = ccfxj_help.split(" ")
