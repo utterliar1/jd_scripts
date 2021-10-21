@@ -5,6 +5,12 @@
 
 ##############短期活动##############
 
+# 惊喜大作战
+6 1,13 * 10-11 * node /scripts/jd_jxdzz.js >> /scripts/logs/jd_jxdzz.log 2>&1
+
+# 东东超市抢京豆
+2 0,9 * 10-11 * node /scripts/jd_fission.js >> /scripts/logs/jd_fission.log 2>&1
+
 # 城城领现金
 3 0,5,9,13,17,22 * 10 * node /scripts/jd_guacity.js >> /scripts/logs/jd_guacity.log 2>&1
 
