@@ -6,6 +6,9 @@
 ##############短期活动##############
 
 # 惊喜大作战
+2 0,2 * 10-11 * node /scripts/jd_ys.js >> /scripts/logs/jd_ys.log 2>&1
+
+# 惊喜大作战
 6 1,13 * 10-11 * node /scripts/jd_jxdzz.js >> /scripts/logs/jd_jxdzz.log 2>&1
 
 # 东东超市抢京豆

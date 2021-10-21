@@ -1,6 +1,7 @@
 /*
 * 活动：APP - 京东超市 - 限时抢京豆
 * 第一个CK助力作者，其他CK助力第一个CK
+cron 23 7,9 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_xsljd.js
 * */
 const $ = new Env('限时抢京豆');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -26,7 +27,7 @@ let autoCode = '';
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-    if(Date.now() > 1634832000000){
+    if(Date.now() > 1637424000000){
         console.log(`活动结束`);
         return;
     }
@@ -47,8 +48,6 @@ let autoCode = '';
     if(JSON.stringify(ownCode) === '{}'){
         return ;
     }
-    console.log(JSON.stringify(codeList))
-    return ;
     if(cookiesArr.length>0){
         const promiseArr = cookiesArr.map((ck, index) => help(ck));
         await Promise.all(promiseArr);
