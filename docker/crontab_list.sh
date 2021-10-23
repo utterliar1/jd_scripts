@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 京东手机狂欢城 (11.13 结束)
+6 0-18/6 * 10-11 * node /scripts/jd_carnivalguacity.js >> /scripts/logs/jd_carnivalguacity.log 2>&1
+
 # 环游记
 13 0,6-23/2 * 10-11 * node /scripts/jd_hyj.js >> /scripts/logs/jd_hyj.log 2>&1
 
