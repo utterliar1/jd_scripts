@@ -1,37 +1,56 @@
 /*
-京东手机狂欢城
+京东手机狂欢城活动
+活动时间: 2021-9-23至2021-11-13
+活动入口：暂无 [活动地址](https://carnivalcity.m.jd.com)
+
+往期奖励：
+a、第1名可获得实物手机一部
+b、 每日第2-10000名，可获得50个京豆
+c、 每日第10001-30000名可获得20个京豆
+
+
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ===================quantumultx================
 [task_local]
 #京东手机狂欢城
-0 0-18/6 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity.js, tag=京东手机狂欢城, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+0 0-18/6 * 10,11 * gua_carnivalcity.js, tag=京东手机狂欢城, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+
 =====================Loon================
 [Script]
-cron "0 0-18/6 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity.js, tag=京东手机狂欢城
-====================Surge================
-京东手机狂欢城 = type=cron,cronexp=0 0-18/6 * * *,wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity.js
-============小火箭=========
-京东手机狂欢城 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity.js, cronexpr="0 0-18/6 * * *", timeout=3600, enable=true
-*/
+cron "0 0-18/6 * 10,11 *" script-path=gua_carnivalcity.js, tag=京东手机狂欢城
 
+====================Surge================
+京东手机狂欢城 = type=cron,cronexp=0 0-18/6 * 10,11 *,wake-system=1,timeout=3600,script-path=gua_carnivalcity.js
+
+============小火箭=========
+5G狂欢城 = type=cron,script-path=gua_carnivalcity.js, cronexpr="0 0-18/6 * 10,11 *", timeout=3600, enable=true
+*/
 const $ = new Env('京东手机狂欢城');
 const notify = $.isNode() ? require('./sendNotify') : '';
+//Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+
+//IOS等用户直接用NobyDa的jd cookie
+
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
+
+
+let gua_carnivalcity_draw = "true"
+gua_carnivalcity_draw = $.isNode() ? (process.env.gua_carnivalcity_draw ? process.env.gua_carnivalcity_draw : `${gua_carnivalcity_draw}`) : ($.getdata('gua_carnivalcity_draw') ? $.getdata('gua_carnivalcity_draw') : `${gua_carnivalcity_draw}`);
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
   })
-  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {
-  };
+  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
   if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0)
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
+let inviteCodes = [];
 $.shareCodesArr = [];
 const JD_API_HOST = 'https://api.m.jd.com/api';
 const activeEndTime = '2021/11/14 00:00:00+08:00';//活动结束时间
-let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000;
+let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -39,55 +58,20 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 
   }
   $.temp = [];
   if (nowTime > new Date(activeEndTime).getTime()) {
+    //活动结束后弹窗提醒
     $.msg($.name, '活动已结束', `该活动累计获得京豆：${$.jingBeanNum}个\n请删除此脚本\n咱江湖再见`);
     if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\n咱江湖再见`);
     return
   }
-  await updateShareCodesCDN();
-
-  for (let i = 0; i < cookiesArr.length; i++) {
-    if (cookiesArr[i]) {
-      cookie = cookiesArr[i];
-      $.index = i + 1;
-      $.canHelp = true;//能否助力
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      getUA()
-      await supportList();//助力情况
-      await getHelp();//获取邀请码
-      if ($.updatePkActivityIdRes && $.updatePkActivityIdRes.length) {
-        $.temp = [...new Set([...$.temp, ...$.updatePkActivityIdRes])]
-      }
-    }
-  }
-
-  console.log('助力排队:', $.temp)
-  for (let i = 0; i < cookiesArr.length; i++) {
-    cookie = cookiesArr[i];
-    $.index = i + 1;
-    $.canHelp = true;//能否助力
-    $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-    getUA()
-    if ((cookiesArr && cookiesArr.length >= 1) && $.canHelp) {
-      console.log(`\n先自己账号内部相互邀请助力\n`);
-      for (let item of $.temp) {
-        console.log(`\n${$.UserName} 去参助力 ${item}`);
-        const helpRes = await toHelp(item.trim());
-        if (helpRes.data.status === 5) {
-          console.log(`助力机会已耗尽，跳出助力`);
-          $.canHelp = false;
-          break;
-        }
-      }
-    }
-  }
-
+  // await updateShareCodesCDN();
+  // await requireConfig();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       $.isLogin = true;
-      $.nickName = $.UserName;
+      $.nickName = '';
       $.jingBeanNum = 0;//累计获得京豆
       $.integralCount = 0;//累计获得积分
       $.integer = 0;//当天获得积分
@@ -98,29 +82,63 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 
       message = '';
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
       getUA()
+      await shareCodesFormat();
       await JD818();
     }
   }
-
+  if($.temp.length > 0){
+    for (let i = 0; i < cookiesArr.length; i++) {
+      if (cookiesArr[i]) {
+        cookie = cookiesArr[i];
+        $.canHelp = true;//能否助力
+        $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+        if ((cookiesArr && cookiesArr.length >= 1) && $.canHelp) {
+          console.log(`\n先自己账号内部相互邀请助力\n`);
+          for (let item of $.temp) {
+            console.log(`\n${$.UserName} 去参助力 ${item}`);
+            const helpRes = await toHelp(item.trim());
+            if (helpRes.data.status === 5) {
+              console.log(`助力机会已耗尽，跳出助力`);
+              $.canHelp = false;
+              break;
+            }
+          }
+        }
+        if ($.canHelp) {
+          console.log(`\n\n如果有剩余助力机会，则给作者以及随机码助力`)
+          await doHelp();
+        }
+      }
+    }
+  }
   if (allMessage) {
     if ($.isNode()) {
-      await notify.sendNotify($.name, allMessage, {url: JD_API_HOST});
+      await notify.sendNotify($.name, allMessage, { url: "https://carnivalcity.m.jd.com" });
       $.msg($.name, '', allMessage);
     }
   }
 })()
-  .catch((e) => {
-    $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-  })
-  .finally(() => {
-    $.done();
-  })
+    .catch((e) => {
+      $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+    })
+    .finally(() => {
+      $.done();
+    })
 
 async function JD818() {
   try {
     await indexInfo();//获取任务
+    await supportList();//助力情况
+    await getHelp();//获取邀请码
     if ($.blockAccount) return
-    await indexInfo(true);//获取任务
+    // await indexInfo(true);//获取任务
+    $.headInfoFlag = true
+    let s = 0
+    do{
+      await headInfo();
+      s++
+      await $.wait(1000);
+    }while ($.headInfoFlag && s<24)
     await doHotProducttask();//做热销产品任务
     await doBrandTask();//做品牌手机任务
     await doBrowseshopTask();//逛好货街，做任务
@@ -135,7 +153,6 @@ async function JD818() {
     $.logErr(e)
   }
 }
-
 async function doHotProducttask() {
   $.hotProductList = $.hotProductList.filter(v => !!v && v['status'] === "1");
   if ($.hotProductList && $.hotProductList.length) console.log(`开始 【浏览热销手机产品】任务,需等待6秒`)
@@ -147,18 +164,11 @@ async function doHotProducttask() {
     }
   }
 }
-
 //做任务 API
 function doBrowse(id = "", brandId = "", taskMark = "hot", type = "browse", logMark = "browseHotSku") {
   $.browseId = ''
   return new Promise(resolve => {
-    const body = {
-      "brandId": `${brandId}`,
-      "id": `${id}`,
-      "taskMark": `${taskMark}`,
-      "type": `${type}`,
-      "logMark": `${logMark}`
-    };
+    const body = {"brandId":`${brandId}`,"id":`${id}`,"taskMark":`${taskMark}`,"type":`${type}`,"logMark":`${logMark}`};
     const options = taskPostUrl('/khc/task/doBrowse', body)
     $.post(options, (err, resp, data) => {
       try {
@@ -182,11 +192,10 @@ function doBrowse(id = "", brandId = "", taskMark = "hot", type = "browse", logM
     })
   })
 }
-
 //领取奖励
 function getBrowsePrize(browseId, brandId = '') {
   return new Promise(resolve => {
-    const body = {"browseId": browseId, "brandId": `${brandId}`};
+    const body = {"browseId":browseId, "brandId":`${brandId}`};
     const options = taskPostUrl('/khc/task/getBrowsePrize', body)
     $.post(options, (err, resp, data) => {
       try {
@@ -208,11 +217,35 @@ function getBrowsePrize(browseId, brandId = '') {
     })
   })
 }
-
+//领取奖励
+function getHeadBrowsePrize(browseId, brandId = '') {
+  return new Promise(resolve => {
+    const body = {"browseId":browseId};
+    const options = taskPostUrl('/khc/task/getHeadBrowsePrize', body)
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          console.log(`getHeadBrowsePrize 领取奖励 结果:${data}`);
+          data = JSON.parse(data);
+          if (data && data['code'] === 200) {
+            if (data['data']['jingBean']) $.beans += data['data']['jingBean'];
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
 // 关注
 function followShop(browseId, brandId = '') {
   return new Promise(resolve => {
-    const body = {"id": `${browseId}`, "brandId": `${brandId}`};
+    const body = {"id":`${browseId}`, "brandId":`${brandId}`};
     const options = taskPostUrl('/khc/task/followShop', body)
     $.post(options, (err, resp, data) => {
       try {
@@ -240,15 +273,14 @@ async function doBrandTask() {
     await brandTaskInfo(brand['brandId']);
   }
 }
-
 function brandTaskInfo(brandId) {
-  const body = {"brandId": `${brandId}`};
+  const body = {"brandId":`${brandId}`};
   const options = taskPostUrl('/khc/index/brandTaskInfo', body)
   $.skuTask = [];
   $.shopTask = [];
   $.meetingTask = [];
   $.questionTask = {};
-  return new Promise((resolve) => {
+  return new Promise( (resolve) => {
     $.post(options, async (err, resp, data) => {
       try {
         if (err) {
@@ -263,33 +295,33 @@ function brandTaskInfo(brandId) {
             $.meetingTask = data['data']['meetingTask'] || [];
             $.questionTask = data['data']['questionTask'] || [];
             let flag = true
-            for (let sku of $.shopTask.filter(vo => !!vo && vo['status'] !== '4')) {
-              if (flag) console.log(`\n开始做 品牌手机 【${data['data']['brandName']}】 任务`)
-              if (flag) flag = false
+            for (let sku of $.shopTask.filter(vo => !!vo && vo['status'] !== '4')){
+              if(flag) console.log(`\n开始做 品牌手机 【${data['data']['brandName']}】 任务`)
+              if(flag) flag = false
               console.log(`开始浏览 1-F 关注 任务 ${sku['name']}`);
-              if (sku['status'] == 3) {
+              if(sku['status'] == 3){
                 await followShop(sku['id'], brandId);
-              } else if (sku['status'] == 8) {
+              }else if(sku['status'] == 8){
                 await doBrowse(sku['id'], brandId, "brand", "follow", "browseShop");
                 await $.wait(1000 * 6);
                 if ($.browseId) await getBrowsePrize($.browseId, brandId);
-              } else {
+              }else{
                 console.log(`未知任务状态 ${sku['status']}`)
               }
             }
             flag = true
-            for (let sku of $.skuTask.filter(vo => !!vo && vo['status'] !== '4')) {
-              if (flag) console.log(`\n开始做 品牌手机 【${data['data']['brandName']}】 任务`)
-              if (flag) flag = false
+            for (let sku of $.skuTask.filter(vo => !!vo && vo['status'] !== '4')){
+              if(flag) console.log(`\n开始做 品牌手机 【${data['data']['brandName']}】 任务`)
+              if(flag) flag = false
               console.log(`开始浏览 2-F 单品区 任务 ${sku['name']}`);
               await doBrowse(sku['id'], brandId, "brand", "presell", "browseSku");
               await $.wait(1000 * 6);
               if ($.browseId) await getBrowsePrize($.browseId, brandId);
             }
             flag = true
-            for (let sku of $.meetingTask.filter(vo => !!vo && vo['status'] !== '4')) {
-              if (flag) console.log(`\n开始做 品牌手机 【${data['data']['brandName']}】 任务`)
-              if (flag) flag = false
+            for (let sku of $.meetingTask.filter(vo => !!vo && vo['status'] !== '4')){
+              if(flag) console.log(`\n开始做 品牌手机 【${data['data']['brandName']}】 任务`)
+              if(flag) flag = false
               console.log(`开始浏览 3-F 综合区 任务 ${sku['name']}，需等待10秒`);
               await doBrowse(sku['id'], brandId, "brand", "meeting", "browseVenue");
               await $.wait(10500);
@@ -297,11 +329,11 @@ function brandTaskInfo(brandId) {
             }
             flag = true
             if ($.questionTask.hasOwnProperty('id') && $.questionTask['result'] === '0') {
-              if (flag) console.log(`\n开始做 品牌手机 【${data['data']['brandName']}】 任务`)
-              if (flag) flag = false
+              if(flag) console.log(`\n开始做 品牌手机 【${data['data']['brandName']}】 任务`)
+              if(flag) flag = false
               console.log(`开始做答题任务 ${$.questionTask['question']}`);
               let result = 0;
-              for (let i = 0; i < $.questionTask['answers'].length; i++) {
+              for (let i = 0; i < $.questionTask['answers'].length; i ++) {
                 if ($.questionTask['answers'][i]['right']) {
                   result = i + 1;//正确答案
                 }
@@ -322,10 +354,9 @@ function brandTaskInfo(brandId) {
     })
   });
 }
-
 function doQuestion(brandId, questionId, result) {
   return new Promise(resolve => {
-    const body = {"brandId": `${brandId}`, "questionId": `${questionId}`, "result": result};
+    const body = {"brandId":`${brandId}`,"questionId":`${questionId}`,"result":result};
     const options = taskPostUrl('/khc/task/doQuestion', body)
     $.post(options, (err, resp, data) => {
       try {
@@ -347,7 +378,6 @@ function doQuestion(brandId, questionId, result) {
     })
   })
 }
-
 //逛好货街，做任务
 async function doBrowseshopTask() {
   $.browseshopList = $.browseshopList.filter(v => !!v && v['status'] === "6");
@@ -360,13 +390,72 @@ async function doBrowseshopTask() {
     }
   }
 }
-
+function headInfo() {
+  const options = taskPostUrl(`/khc/index/headInfo`, {})
+  return new Promise( (resolve) => {
+    $.post(options, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          data = $.toObj(data);
+          if (data.code === 200) {
+            if([13,15].includes(Number(data['data']['taskType']))){
+              await toTaskApi('doBrowseHead',{"taskIndex":data['data']['taskIndex'],"taskId":data['data']['taskId'],"taskType":data['data']['taskType']+""})
+              if($.browseId) {
+                await $.wait(1000 * 6);
+                await toTaskApi('getHeadBrowsePrize',{"browseId":$.browseId})
+              }
+            }else if(data['data']['taskType'] == 14){
+              await toTaskApi('getHeadJoinPrize',{"taskId":data['data']['taskId'],"taskIndex":data['data']['taskIndex']})
+            }else{
+              $.headInfoFlag = false
+            }
+          }else{
+            $.headInfoFlag = false
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    })
+  });
+}
+//领取奖励
+function toTaskApi(url, body) {
+  $.browseId = ""
+  return new Promise(resolve => {
+    const options = taskPostUrl('/khc/task/'+url, body)
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          console.log(`${url} 领取奖励 结果:${data}`);
+          data = JSON.parse(data);
+          if (data && data['code'] === 200) {
+            $.browseId = data['data']['browseId'] || "";
+            if (data['data']['jingBean']) $.beans += data['data']['jingBean'];
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
 function indexInfo(flag = false) {
   const options = taskPostUrl(`/khc/index/indexInfo`, {})
   $.hotProductList = [];
   $.brandList = [];
   $.browseshopList = [];
-  return new Promise((resolve) => {
+  return new Promise( (resolve) => {
     $.post(options, async (err, resp, data) => {
       try {
         if (err) {
@@ -380,6 +469,7 @@ function indexInfo(flag = false) {
             $.browseshopList = data['data']['browseshopList'] || [];
           } else {
             console.log(`异常：${JSON.stringify(data)}`)
+            if (data.code === 1002 || data.code === 1001) $.blockAccount = true;
           }
         }
       } catch (e) {
@@ -390,11 +480,10 @@ function indexInfo(flag = false) {
     })
   });
 }
-
 //获取助力信息
 function supportList() {
   const options = taskPostUrl('/khc/index/supportList', {})
-  return new Promise((resolve) => {
+  return new Promise( (resolve) => {
     $.post(options, async (err, resp, data) => {
       try {
         if (err) {
@@ -415,11 +504,10 @@ function supportList() {
     })
   });
 }
-
 //积分抽奖
 function lottery() {
   const options = taskPostUrl('/khc/record/lottery', {})
-  return new Promise((resolve) => {
+  return new Promise( (resolve) => {
     $.post(options, async (err, resp, data) => {
       try {
         if (err) {
@@ -433,10 +521,10 @@ function lottery() {
               const url = 'https://carnivalcity.m.jd.com/#/integralDetail';
               console.log(`积分抽奖获得:${data.data.prizeName}`);
               message += `积分抽奖获得：${data.data.prizeName}\n`;
-              $.msg($.name, '', `京东账号 ${$.index} ${$.nickName || $.UserName}\n积分抽奖获得：${data.data.prizeName}\n兑换地址：${url}`, {'open-url': url});
+              $.msg($.name, '', `京东账号 ${$.index} ${$.nickName || $.UserName}\n积分抽奖获得：${data.data.prizeName}\n兑换地址：${url}`, { 'open-url': url });
               if ($.isNode()) await notify.sendNotify($.name, `京东账号 ${$.index} ${$.nickName || $.UserName}\n积分抽奖获得：${data.data.prizeName}\n兑换地址：${url}`);
             } else {
-              console.log(`积分抽奖结果:${data['data']['prizeName']}}`);
+              console.log(`积分抽奖结果:${data['data']['prizeName']}`);
             }
           }
         }
@@ -448,11 +536,10 @@ function lottery() {
     })
   });
 }
-
 //查询抽奖记录(未兑换的)
 function check() {
-  const options = taskPostUrl('/khc/record/convertRecord', {pageNum: 1})
-  return new Promise((resolve) => {
+  const options = taskPostUrl('/khc/record/convertRecord', { pageNum: 1 })
+  return new Promise( (resolve) => {
     $.post(options, async (err, resp, data) => {
       try {
         if (err) {
@@ -470,7 +557,7 @@ function check() {
           }
           if (str.length > 0) {
             const url = 'https://carnivalcity.m.jd.com/#/integralDetail';
-            $.msg($.name, '', `京东账号 ${$.index} ${$.nickName || $.UserName}\n积分抽奖获得：${str}\n兑换地址：${url}`, {'open-url': url});
+            $.msg($.name, '', `京东账号 ${$.index} ${$.nickName || $.UserName}\n积分抽奖获得：${str}\n兑换地址：${url}`, { 'open-url': url });
             if ($.isNode()) await notify.sendNotify($.name, `京东账号 ${$.index} ${$.nickName || $.UserName}\n积分抽奖获得：${str}\n兑换地址：${url}`);
           }
         }
@@ -482,7 +569,6 @@ function check() {
     })
   });
 }
-
 function myRank() {
   return new Promise(resolve => {
     const options = taskPostUrl("/khc/rank/myPastRanks", {});
@@ -509,7 +595,7 @@ function myRank() {
                   }
                   await $.wait(500);
                 } else if (data.data[i].status === '3') {
-                  console.log(`${data.data[i]['date']}日 【${data.data[i]['prizeName']}】往期京豆奖励已领取~`)
+                  console.log(`${data.data[i]['date']}日 名次:${data.data[i]['rank']} 【${data.data[i]['prizeName']}】往期京豆奖励已领取~`)
                 } else {
                   console.log(`${data.data[i]['date']}日 【${data.data[i]['status']}】往期京豆奖励，今日争取进入前30000名哦~`)
                 }
@@ -525,11 +611,10 @@ function myRank() {
     })
   })
 }
-
 //领取往期奖励API
 function saveJbean(date) {
   return new Promise(resolve => {
-    const body = {"date": `${date}`};
+    const body = {"date":`${date}`};
     const options = taskPostUrl('/khc/rank/getRankJingBean', body)
     $.post(options, (err, resp, data) => {
       try {
@@ -548,28 +633,47 @@ function saveJbean(date) {
     })
   })
 }
-
 async function doHelp() {
   console.log(`\n开始助力好友`);
   for (let i in $.newShareCodes) {
     let item = $.newShareCodes[i]
-    console.log('好友助力码：', item)
     if (!item) continue;
     const helpRes = await toHelp(item.trim());
-    if (helpRes.data.status === 5) {
-      console.log(`助力机会已耗尽，跳出助力`);
-      break;
-    } else if (helpRes.data.status === 4) {
-      console.log(`该助力码[${item}]已达上限`);
-      $.newShareCodes[i] = ''
+    if (typeof helpRes === 'object') {
+      if (helpRes.data.status === 6) {
+        console.log(`该助力码[${item}]助力成功`);
+      }else if (helpRes.data.status === 5) {
+        console.log(`助力机会已耗尽，跳出助力`);
+        break;
+      }else if (helpRes.data.status === 4){
+        console.log(`该助力码[${item}]已达上限`);
+        $.newShareCodes[i] = ''
+      }else if (helpRes.data.status === 3){
+        console.log(`已经助力过`);
+      }else if (helpRes.data.status === 2){
+        console.log(`该助力码[${item}]过期`);
+        $.newShareCodes[i] = ''
+      }else if (helpRes.data.status === 1){
+        console.log(`不能助力自己`);
+      }else if (helpRes.msg.indexOf('请求参数不合规') > -1){
+        console.log(`该助力码[${item}]助力码有问题`)
+        $.newShareCodes[i] = ''
+      }else if (helpRes.msg.indexOf('未登录') > -1 || helpRes.msg.indexOf('火爆') > -1){
+        console.log(`${helpRes.msg}，跳出助力`)
+        break;
+      }else{
+        console.log(`该助力码[${item}]助力结果\n${$.toStr(helpRes)}`)
+      }
+    }else{
+      console.log(`该助力码[${item}]助力结果\n${$.toStr(helpRes)}`)
     }
   }
 }
-
 //助力API
-function toHelp(code) {
+function toHelp(code = "") {
+  if(!code) return
   return new Promise(resolve => {
-    const body = {"shareId": `${code}`};
+    const body = {"shareId":`${code}`};
     const options = taskPostUrl('/khc/task/doSupport', body)
     $.post(options, (err, resp, data) => {
       try {
@@ -577,7 +681,7 @@ function toHelp(code) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          console.log(`助力结果:${data}`);
+          // console.log(`助力结果:${data}`);
           data = JSON.parse(data);
           if (data && data['code'] === 200) {
             if (data['data']['status'] === 6) console.log(`助力成功\n`)
@@ -592,22 +696,11 @@ function toHelp(code) {
     })
   })
 }
-
 //获取邀请码API
 function getHelp() {
   return new Promise(resolve => {
-    $.post({
-      url: 'https://api.m.jd.com/api',
-      headers: {
-        'User-Agent': 'jdapp;',
-        'Origin': 'https://carnivalcity.m.jd.com',
-        'Host': 'api.m.jd.com',
-        'Referer': 'https://carnivalcity.m.jd.com/',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Cookie': cookie
-      },
-      body: 'appid=guardian-starjd&functionId=carnivalcity_jd_prod&body={"apiMapping":"/khc/task/getSupport"}&t=1634977085493&loginType=2'
-    }, async (err, resp, data) => {
+    const options = taskPostUrl("/khc/task/getSupport", {});
+    $.post(options, async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -617,37 +710,20 @@ function getHelp() {
           if (data.code === 200) {
             console.log(`\n\n${$.name}互助码每天都变化,旧的不可继续使用`);
             $.log(`【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.data.shareId}\n\n`);
-            if (new Date().getHours() !== 0)
-              await $.wait(3000)
             $.temp.push(data.data.shareId);
           } else {
             console.log(`获取邀请码失败：${JSON.stringify(data)}`);
-            if (data.code === 1002) $.blockAccount = true;
+            if (data.code === 1002 || data.code === 1001) $.blockAccount = true;
           }
         }
       } catch (e) {
+        $.logErr(e, resp)
       } finally {
-        resolve()
+        resolve(data);
       }
     })
   })
 }
-
-function taskUrl(body = {}) {
-  return {
-    url: `${JD_API_HOST}?appid=guardian-starjd&functionId=carnivalcity_jd_prod&body=${JSON.stringify(body)}&t=${Date.now()}&loginType=2`,
-    headers: {
-      "accept": "application/json, text/plain, */*",
-      "accept-encoding": "gzip, deflate, br",
-      "accept-language": "zh-cn",
-      "referer": "https://carnivalcity.m.jd.com/",
-      "origin": "https://carnivalcity.m.jd.com",
-      "Cookie": cookie,
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-    }
-  }
-}
-
 //获取当前活动总京豆数量
 function getListJbean() {
   return new Promise(resolve => {
@@ -677,7 +753,6 @@ function getListJbean() {
     })
   })
 }
-
 //查询累计获得积分
 function getListIntegral() {
   return new Promise(resolve => {
@@ -696,7 +771,7 @@ function getListIntegral() {
             $.integralCount = data.data.integralNum || 0;//累计活动积分
             message += `累计获得积分：${$.integralCount}\n`;
             console.log(`开始抽奖，当前积分可抽奖${parseInt($.integralCount / 50)}次\n`);
-            for (let i = 0; i < parseInt($.integralCount / 50); i++) {
+            for (let i = 0; i < parseInt($.integralCount / 50) && gua_carnivalcity_draw+"" === "true"; i ++) {
               await lottery();
               await $.wait(500);
             }
@@ -746,20 +821,15 @@ function getListRank() {
   })
 }
 
-function updateShareCodesCDN() {
+function updateShareCodesCDN(url = 'https://cdn.jsdelivr.net/gh/smiek2221/updateTeam@master/shareCodes/jd_cityShareCodes.json') {
   return new Promise(resolve => {
-    $.get({
-      url: "https://api.jdsharecode.xyz/api/carnivalcity/30",
-      headers: {"User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")},
-      timeout: 10000
-    }, async (err, resp, data) => {
+    $.get({url , headers:{"User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")}, timeout: 200000}, async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          data = JSON.parse(data)
-          $.updatePkActivityIdRes = data.data;
+          $.updatePkActivityIdRes = JSON.parse(data);
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -770,18 +840,90 @@ function updateShareCodesCDN() {
   })
 }
 
-function taskPostUrl(a, t = {}) {
-  const body = $.toStr({...t, "apiMapping": `${a}`})
+function readShareCode() {
+  console.log(`开始`)
+  return new Promise(async resolve => {
+    $.get({url: `https://jd.smiek.tk/info_carnivalcity`, 'timeout': 20000}, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+//格式化助力码
+function shareCodesFormat() {
+  return new Promise(async resolve => {
+    // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
+    $.newShareCodes = [];
+    if ($.shareCodesArr[$.index - 1]) {
+      $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
+    } else {
+      // console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
+      const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
+      $.newShareCodes = inviteCodes[tempIndex] && inviteCodes[tempIndex].split('@') || [];
+      if ($.updatePkActivityIdRes && $.updatePkActivityIdRes.length) $.newShareCodes = [...$.updatePkActivityIdRes, ...$.newShareCodes];
+    }
+    const readShareCodeRes = await readShareCode();
+    if (readShareCodeRes && readShareCodeRes.code === 200) {
+      $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
+    }
+    console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
+    resolve();
+  })
+}
+function requireConfig() {
+  return new Promise(resolve => {
+    console.log(`开始获取${$.name}配置文件\n`);
+    let shareCodes = [];
+    if ($.isNode()) {
+      if (process.env.JD818_SHARECODES) {
+        if (process.env.JD818_SHARECODES.indexOf('\n') > -1) {
+          shareCodes = process.env.JD818_SHARECODES.split('\n');
+        } else {
+          shareCodes = process.env.JD818_SHARECODES.split('&');
+        }
+      }
+    }
+    console.log(`共${cookiesArr.length}个京东账号\n`);
+    $.shareCodesArr = [];
+    if ($.isNode()) {
+      Object.keys(shareCodes).forEach((item) => {
+        if (shareCodes[item]) {
+          $.shareCodesArr.push(shareCodes[item])
+        }
+      })
+    }
+    console.log(`您提供了${$.shareCodesArr.length}个账号的${$.name}助力码\n`);
+    resolve()
+  })
+}
+
+function taskPostUrl(a,t = {}) {
+  const body = $.toStr({...t,"apiMapping":`${a}`})
   return {
     url: `${JD_API_HOST}`,
     body: `appid=guardian-starjd&functionId=carnivalcity_jd_prod&body=${body}&t=${Date.now()}&loginType=2`,
     headers: {
-      "Host": "api.m.jd.com",
+      "Accept": "application/json, text/plain, */*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "zh-cn",
+      "Connection": "keep-alive",
       "Content-Type": "application/x-www-form-urlencoded",
       "Origin": "https://carnivalcity.m.jd.com",
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
       "Referer": "https://carnivalcity.m.jd.com/",
-      "Cookie": cookie
+      "Cookie": cookie,
+      "User-Agent": $.UA,
     }
   }
 }
@@ -794,10 +936,9 @@ async function showMsg() {
   $.msg($.name, `京东账号${$.index} ${$.nickName || $.UserName}`, `${message}具体详情点击弹窗跳转后即可查看`, {"open-url": "https://carnivalcity.m.jd.com"});
 }
 
-function getUA() {
+function getUA(){
   $.UA = `jdapp;iPhone;10.0.10;14.3;${randomString(40)};network/wifi;model/iPhone12,1;addressid/4199175193;appBuild/167741;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
 }
-
 function randomString(e) {
   e = e || 32;
   let t = "abcdef0123456789", a = t.length, n = "";
@@ -805,7 +946,6 @@ function randomString(e) {
     n += t.charAt(Math.floor(Math.random() * a));
   return n
 }
-
 function jsonParse(str) {
   if (typeof str == "string") {
     try {
@@ -818,290 +958,4 @@ function jsonParse(str) {
   }
 }
 
-function Env(t, e) {
-  "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
-
-  class s {
-    constructor(t) {
-      this.env = t
-    }
-
-    send(t, e = "GET") {
-      t = "string" == typeof t ? {url: t} : t;
-      let s = this.get;
-      return "POST" === e && (s = this.post), new Promise((e, i) => {
-        s.call(this, t, (t, s, r) => {
-          t ? i(t) : e(s)
-        })
-      })
-    }
-
-    get(t) {
-      return this.send.call(this.env, t)
-    }
-
-    post(t) {
-      return this.send.call(this.env, t, "POST")
-    }
-  }
-
-  return new class {
-    constructor(t, e) {
-      this.name = t, this.http = new s(this), this.data = null, this.dataFile = "box.dat", this.logs = [], this.isMute = !1, this.isNeedRewrite = !1, this.logSeparator = "\n", this.startTime = (new Date).getTime(), Object.assign(this, e), this.log("", `🔔${this.name}, 开始!`)
-    }
-
-    isNode() {
-      return "undefined" != typeof module && !!module.exports
-    }
-
-    isQuanX() {
-      return "undefined" != typeof $task
-    }
-
-    isSurge() {
-      return "undefined" != typeof $httpClient && "undefined" == typeof $loon
-    }
-
-    isLoon() {
-      return "undefined" != typeof $loon
-    }
-
-    toObj(t, e = null) {
-      try {
-        return JSON.parse(t)
-      } catch {
-        return e
-      }
-    }
-
-    toStr(t, e = null) {
-      try {
-        return JSON.stringify(t)
-      } catch {
-        return e
-      }
-    }
-
-    getjson(t, e) {
-      let s = e;
-      const i = this.getdata(t);
-      if (i) try {
-        s = JSON.parse(this.getdata(t))
-      } catch {
-      }
-      return s
-    }
-
-    setjson(t, e) {
-      try {
-        return this.setdata(JSON.stringify(t), e)
-      } catch {
-        return !1
-      }
-    }
-
-    getScript(t) {
-      return new Promise(e => {
-        this.get({url: t}, (t, s, i) => e(i))
-      })
-    }
-
-    runScript(t, e) {
-      return new Promise(s => {
-        let i = this.getdata("@chavy_boxjs_userCfgs.httpapi");
-        i = i ? i.replace(/\n/g, "").trim() : i;
-        let r = this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");
-        r = r ? 1 * r : 20, r = e && e.timeout ? e.timeout : r;
-        const [o, h] = i.split("@"), n = {
-          url: `http://${h}/v1/scripting/evaluate`,
-          body: {script_text: t, mock_type: "cron", timeout: r},
-          headers: {"X-Key": o, Accept: "*/*"}
-        };
-        this.post(n, (t, e, i) => s(i))
-      }).catch(t => this.logErr(t))
-    }
-
-    loaddata() {
-      if (!this.isNode()) return {};
-      {
-        this.fs = this.fs ? this.fs : require("fs"), this.path = this.path ? this.path : require("path");
-        const t = this.path.resolve(this.dataFile), e = this.path.resolve(process.cwd(), this.dataFile),
-          s = this.fs.existsSync(t), i = !s && this.fs.existsSync(e);
-        if (!s && !i) return {};
-        {
-          const i = s ? t : e;
-          try {
-            return JSON.parse(this.fs.readFileSync(i))
-          } catch (t) {
-            return {}
-          }
-        }
-      }
-    }
-
-    writedata() {
-      if (this.isNode()) {
-        this.fs = this.fs ? this.fs : require("fs"), this.path = this.path ? this.path : require("path");
-        const t = this.path.resolve(this.dataFile), e = this.path.resolve(process.cwd(), this.dataFile),
-          s = this.fs.existsSync(t), i = !s && this.fs.existsSync(e), r = JSON.stringify(this.data);
-        s ? this.fs.writeFileSync(t, r) : i ? this.fs.writeFileSync(e, r) : this.fs.writeFileSync(t, r)
-      }
-    }
-
-    lodash_get(t, e, s) {
-      const i = e.replace(/\[(\d+)\]/g, ".$1").split(".");
-      let r = t;
-      for (const t of i) if (r = Object(r)[t], void 0 === r) return s;
-      return r
-    }
-
-    lodash_set(t, e, s) {
-      return Object(t) !== t ? t : (Array.isArray(e) || (e = e.toString().match(/[^.[\]]+/g) || []), e.slice(0, -1).reduce((t, s, i) => Object(t[s]) === t[s] ? t[s] : t[s] = Math.abs(e[i + 1]) >> 0 == +e[i + 1] ? [] : {}, t)[e[e.length - 1]] = s, t)
-    }
-
-    getdata(t) {
-      let e = this.getval(t);
-      if (/^@/.test(t)) {
-        const [, s, i] = /^@(.*?)\.(.*?)$/.exec(t), r = s ? this.getval(s) : "";
-        if (r) try {
-          const t = JSON.parse(r);
-          e = t ? this.lodash_get(t, i, "") : e
-        } catch (t) {
-          e = ""
-        }
-      }
-      return e
-    }
-
-    setdata(t, e) {
-      let s = !1;
-      if (/^@/.test(e)) {
-        const [, i, r] = /^@(.*?)\.(.*?)$/.exec(e), o = this.getval(i), h = i ? "null" === o ? null : o || "{}" : "{}";
-        try {
-          const e = JSON.parse(h);
-          this.lodash_set(e, r, t), s = this.setval(JSON.stringify(e), i)
-        } catch (e) {
-          const o = {};
-          this.lodash_set(o, r, t), s = this.setval(JSON.stringify(o), i)
-        }
-      } else s = this.setval(t, e);
-      return s
-    }
-
-    getval(t) {
-      return this.isSurge() || this.isLoon() ? $persistentStore.read(t) : this.isQuanX() ? $prefs.valueForKey(t) : this.isNode() ? (this.data = this.loaddata(), this.data[t]) : this.data && this.data[t] || null
-    }
-
-    setval(t, e) {
-      return this.isSurge() || this.isLoon() ? $persistentStore.write(t, e) : this.isQuanX() ? $prefs.setValueForKey(t, e) : this.isNode() ? (this.data = this.loaddata(), this.data[e] = t, this.writedata(), !0) : this.data && this.data[e] || null
-    }
-
-    initGotEnv(t) {
-      this.got = this.got ? this.got : require("got"), this.cktough = this.cktough ? this.cktough : require("tough-cookie"), this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar, t && (t.headers = t.headers ? t.headers : {}, void 0 === t.headers.Cookie && void 0 === t.cookieJar && (t.cookieJar = this.ckjar))
-    }
-
-    get(t, e = (() => {
-    })) {
-      t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]), this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {"X-Surge-Skip-Scripting": !1})), $httpClient.get(t, (t, s, i) => {
-        !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i)
-      })) : this.isQuanX() ? (this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {hints: !1})), $task.fetch(t).then(t => {
-        const {statusCode: s, statusCode: i, headers: r, body: o} = t;
-        e(null, {status: s, statusCode: i, headers: r, body: o}, o)
-      }, t => e(t))) : this.isNode() && (this.initGotEnv(t), this.got(t).on("redirect", (t, e) => {
-        try {
-          if (t.headers["set-cookie"]) {
-            const s = t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();
-            s && this.ckjar.setCookieSync(s, null), e.cookieJar = this.ckjar
-          }
-        } catch (t) {
-          this.logErr(t)
-        }
-      }).then(t => {
-        const {statusCode: s, statusCode: i, headers: r, body: o} = t;
-        e(null, {status: s, statusCode: i, headers: r, body: o}, o)
-      }, t => {
-        const {message: s, response: i} = t;
-        e(s, i, i && i.body)
-      }))
-    }
-
-    post(t, e = (() => {
-    })) {
-      if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon()) this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {"X-Surge-Skip-Scripting": !1})), $httpClient.post(t, (t, s, i) => {
-        !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i)
-      }); else if (this.isQuanX()) t.method = "POST", this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {hints: !1})), $task.fetch(t).then(t => {
-        const {statusCode: s, statusCode: i, headers: r, body: o} = t;
-        e(null, {status: s, statusCode: i, headers: r, body: o}, o)
-      }, t => e(t)); else if (this.isNode()) {
-        this.initGotEnv(t);
-        const {url: s, ...i} = t;
-        this.got.post(s, i).then(t => {
-          const {statusCode: s, statusCode: i, headers: r, body: o} = t;
-          e(null, {status: s, statusCode: i, headers: r, body: o}, o)
-        }, t => {
-          const {message: s, response: i} = t;
-          e(s, i, i && i.body)
-        })
-      }
-    }
-
-    time(t, e = null) {
-      const s = e ? new Date(e) : new Date;
-      let i = {
-        "M+": s.getMonth() + 1,
-        "d+": s.getDate(),
-        "H+": s.getHours(),
-        "m+": s.getMinutes(),
-        "s+": s.getSeconds(),
-        "q+": Math.floor((s.getMonth() + 3) / 3),
-        S: s.getMilliseconds()
-      };
-      /(y+)/.test(t) && (t = t.replace(RegExp.$1, (s.getFullYear() + "").substr(4 - RegExp.$1.length)));
-      for (let e in i) new RegExp("(" + e + ")").test(t) && (t = t.replace(RegExp.$1, 1 == RegExp.$1.length ? i[e] : ("00" + i[e]).substr(("" + i[e]).length)));
-      return t
-    }
-
-    msg(e = t, s = "", i = "", r) {
-      const o = t => {
-        if (!t) return t;
-        if ("string" == typeof t) return this.isLoon() ? t : this.isQuanX() ? {"open-url": t} : this.isSurge() ? {url: t} : void 0;
-        if ("object" == typeof t) {
-          if (this.isLoon()) {
-            let e = t.openUrl || t.url || t["open-url"], s = t.mediaUrl || t["media-url"];
-            return {openUrl: e, mediaUrl: s}
-          }
-          if (this.isQuanX()) {
-            let e = t["open-url"] || t.url || t.openUrl, s = t["media-url"] || t.mediaUrl;
-            return {"open-url": e, "media-url": s}
-          }
-          if (this.isSurge()) {
-            let e = t.url || t.openUrl || t["open-url"];
-            return {url: e}
-          }
-        }
-      };
-      if (this.isMute || (this.isSurge() || this.isLoon() ? $notification.post(e, s, i, o(r)) : this.isQuanX() && $notify(e, s, i, o(r))), !this.isMuteLog) {
-        let t = ["", "==============📣系统通知📣=============="];
-        t.push(e), s && t.push(s), i && t.push(i), console.log(t.join("\n")), this.logs = this.logs.concat(t)
-      }
-    }
-
-    log(...t) {
-      t.length > 0 && (this.logs = [...this.logs, ...t]), console.log(t.join(this.logSeparator))
-    }
-
-    logErr(t, e) {
-      const s = !this.isSurge() && !this.isQuanX() && !this.isLoon();
-      s ? this.log("", `❗️${this.name}, 错误!`, t.stack) : this.log("", `❗️${this.name}, 错误!`, t)
-    }
-
-    wait(t) {
-      return new Promise(e => setTimeout(e, t))
-    }
-
-    done(t = {}) {
-      const e = (new Date).getTime(), s = (e - this.startTime) / 1e3;
-      this.log("", `🔔${this.name}, 结束! 🕛 ${s} 秒`), this.log(), (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t)
-    }
-  }(t, e)
-}
+function Env(t,e){"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);class s{constructor(t){this.env=t}send(t,e="GET"){t="string"==typeof t?{url:t}:t;let s=this.get;return"POST"===e&&(s=this.post),new Promise((e,i)=>{s.call(this,t,(t,s,r)=>{t?i(t):e(s)})})}get(t){return this.send.call(this.env,t)}post(t){return this.send.call(this.env,t,"POST")}}return new class{constructor(t,e){this.name=t,this.http=new s(this),this.data=null,this.dataFile="box.dat",this.logs=[],this.isMute=!1,this.isNeedRewrite=!1,this.logSeparator="\n",this.startTime=(new Date).getTime(),Object.assign(this,e),this.log("",`🔔${this.name}, 开始!`)}isNode(){return"undefined"!=typeof module&&!!module.exports}isQuanX(){return"undefined"!=typeof $task}isSurge(){return"undefined"!=typeof $httpClient&&"undefined"==typeof $loon}isLoon(){return"undefined"!=typeof $loon}toObj(t,e=null){try{return JSON.parse(t)}catch{return e}}toStr(t,e=null){try{return JSON.stringify(t)}catch{return e}}getjson(t,e){let s=e;const i=this.getdata(t);if(i)try{s=JSON.parse(this.getdata(t))}catch{}return s}setjson(t,e){try{return this.setdata(JSON.stringify(t),e)}catch{return!1}}getScript(t){return new Promise(e=>{this.get({url:t},(t,s,i)=>e(i))})}runScript(t,e){return new Promise(s=>{let i=this.getdata("@chavy_boxjs_userCfgs.httpapi");i=i?i.replace(/\n/g,"").trim():i;let r=this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");r=r?1*r:20,r=e&&e.timeout?e.timeout:r;const[o,h]=i.split("@"),n={url:`http://${h}/v1/scripting/evaluate`,body:{script_text:t,mock_type:"cron",timeout:r},headers:{"X-Key":o,Accept:"*/*"}};this.post(n,(t,e,i)=>s(i))}).catch(t=>this.logErr(t))}loaddata(){if(!this.isNode())return{};{this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),i=!s&&this.fs.existsSync(e);if(!s&&!i)return{};{const i=s?t:e;try{return JSON.parse(this.fs.readFileSync(i))}catch(t){return{}}}}}writedata(){if(this.isNode()){this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),i=!s&&this.fs.existsSync(e),r=JSON.stringify(this.data);s?this.fs.writeFileSync(t,r):i?this.fs.writeFileSync(e,r):this.fs.writeFileSync(t,r)}}lodash_get(t,e,s){const i=e.replace(/\[(\d+)\]/g,".$1").split(".");let r=t;for(const t of i)if(r=Object(r)[t],void 0===r)return s;return r}lodash_set(t,e,s){return Object(t)!==t?t:(Array.isArray(e)||(e=e.toString().match(/[^.[\]]+/g)||[]),e.slice(0,-1).reduce((t,s,i)=>Object(t[s])===t[s]?t[s]:t[s]=Math.abs(e[i+1])>>0==+e[i+1]?[]:{},t)[e[e.length-1]]=s,t)}getdata(t){let e=this.getval(t);if(/^@/.test(t)){const[,s,i]=/^@(.*?)\.(.*?)$/.exec(t),r=s?this.getval(s):"";if(r)try{const t=JSON.parse(r);e=t?this.lodash_get(t,i,""):e}catch(t){e=""}}return e}setdata(t,e){let s=!1;if(/^@/.test(e)){const[,i,r]=/^@(.*?)\.(.*?)$/.exec(e),o=this.getval(i),h=i?"null"===o?null:o||"{}":"{}";try{const e=JSON.parse(h);this.lodash_set(e,r,t),s=this.setval(JSON.stringify(e),i)}catch(e){const o={};this.lodash_set(o,r,t),s=this.setval(JSON.stringify(o),i)}}else s=this.setval(t,e);return s}getval(t){return this.isSurge()||this.isLoon()?$persistentStore.read(t):this.isQuanX()?$prefs.valueForKey(t):this.isNode()?(this.data=this.loaddata(),this.data[t]):this.data&&this.data[t]||null}setval(t,e){return this.isSurge()||this.isLoon()?$persistentStore.write(t,e):this.isQuanX()?$prefs.setValueForKey(t,e):this.isNode()?(this.data=this.loaddata(),this.data[e]=t,this.writedata(),!0):this.data&&this.data[e]||null}initGotEnv(t){this.got=this.got?this.got:require("got"),this.cktough=this.cktough?this.cktough:require("tough-cookie"),this.ckjar=this.ckjar?this.ckjar:new this.cktough.CookieJar,t&&(t.headers=t.headers?t.headers:{},void 0===t.headers.Cookie&&void 0===t.cookieJar&&(t.cookieJar=this.ckjar))}get(t,e=(()=>{})){t.headers&&(delete t.headers["Content-Type"],delete t.headers["Content-Length"]),this.isSurge()||this.isLoon()?(this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.get(t,(t,s,i)=>{!t&&s&&(s.body=i,s.statusCode=s.status),e(t,s,i)})):this.isQuanX()?(this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>e(t))):this.isNode()&&(this.initGotEnv(t),this.got(t).on("redirect",(t,e)=>{try{if(t.headers["set-cookie"]){const s=t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();s&&this.ckjar.setCookieSync(s,null),e.cookieJar=this.ckjar}}catch(t){this.logErr(t)}}).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>{const{message:s,response:i}=t;e(s,i,i&&i.body)}))}post(t,e=(()=>{})){if(t.body&&t.headers&&!t.headers["Content-Type"]&&(t.headers["Content-Type"]="application/x-www-form-urlencoded"),t.headers&&delete t.headers["Content-Length"],this.isSurge()||this.isLoon())this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.post(t,(t,s,i)=>{!t&&s&&(s.body=i,s.statusCode=s.status),e(t,s,i)});else if(this.isQuanX())t.method="POST",this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>e(t));else if(this.isNode()){this.initGotEnv(t);const{url:s,...i}=t;this.got.post(s,i).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>{const{message:s,response:i}=t;e(s,i,i&&i.body)})}}time(t,e=null){const s=e?new Date(e):new Date;let i={"M+":s.getMonth()+1,"d+":s.getDate(),"H+":s.getHours(),"m+":s.getMinutes(),"s+":s.getSeconds(),"q+":Math.floor((s.getMonth()+3)/3),S:s.getMilliseconds()};/(y+)/.test(t)&&(t=t.replace(RegExp.$1,(s.getFullYear()+"").substr(4-RegExp.$1.length)));for(let e in i)new RegExp("("+e+")").test(t)&&(t=t.replace(RegExp.$1,1==RegExp.$1.length?i[e]:("00"+i[e]).substr((""+i[e]).length)));return t}msg(e=t,s="",i="",r){const o=t=>{if(!t)return t;if("string"==typeof t)return this.isLoon()?t:this.isQuanX()?{"open-url":t}:this.isSurge()?{url:t}:void 0;if("object"==typeof t){if(this.isLoon()){let e=t.openUrl||t.url||t["open-url"],s=t.mediaUrl||t["media-url"];return{openUrl:e,mediaUrl:s}}if(this.isQuanX()){let e=t["open-url"]||t.url||t.openUrl,s=t["media-url"]||t.mediaUrl;return{"open-url":e,"media-url":s}}if(this.isSurge()){let e=t.url||t.openUrl||t["open-url"];return{url:e}}}};if(this.isMute||(this.isSurge()||this.isLoon()?$notification.post(e,s,i,o(r)):this.isQuanX()&&$notify(e,s,i,o(r))),!this.isMuteLog){let t=["","==============📣系统通知📣=============="];t.push(e),s&&t.push(s),i&&t.push(i),console.log(t.join("\n")),this.logs=this.logs.concat(t)}}log(...t){t.length>0&&(this.logs=[...this.logs,...t]),console.log(t.join(this.logSeparator))}logErr(t,e){const s=!this.isSurge()&&!this.isQuanX()&&!this.isLoon();s?this.log("",`❗️${this.name}, 错误!`,t.stack):this.log("",`❗️${this.name}, 错误!`,t)}wait(t){return new Promise(e=>setTimeout(e,t))}done(t={}){const e=(new Date).getTime(),s=(e-this.startTime)/1e3;this.log("",`🔔${this.name}, 结束! 🕛 ${s} 秒`),this.log(),(this.isSurge()||this.isQuanX()||this.isLoon())&&$done(t)}}(t,e)}
