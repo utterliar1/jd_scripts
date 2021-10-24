@@ -1,27 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*
 '''
-项目名称: JD-Script / jd_qmkmb_help 
+项目名称: JD-Script / jd_hyj 
 Author: Curtin
-功能：全民开红包-助力  入口：京豆app-领券中心-锦鲤红包
-Date: 2021/10/24 下午4:48
+功能：环游记-好友助力，默认按顺序助力，每个号6次助力机会
+Date: 2021/10/24 下午6:52
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
-cron: 0 0,23 * * *
-new Env('全民开红包-助力');
+cron: 0 0,23 * 10-11 *
+new Env('环游记-好友助力');
 '''
 
-# 是否按ck顺序助力, true: 按顺序助力 false：按指定用户助力，默认true
-qmkhb_isOrder="true"
-# 助力名单(当qmkhb_isOrder="false" 才生效), ENV 环境设置 export qmkhb_help="Curtinlv&用户2&用户3"
-qmkhb_help = ["Curtinlv", "用户2", "用户3"]
-#是否开启通知，Ture：发送通知，False：不发送
-isNotice=True
+
 # UA 可自定义你的, 默认随机生成UA。
 UserAgent = ''
 
 import os, re, sys
-import random, time
+import random
 try:
     import requests
 except Exception as e:
@@ -192,168 +187,82 @@ class getJDCookie(object):
 
 getCk = getJDCookie()
 getCk.getCookie()
-if "qmkhb_isOrder" in os.environ:
-    if len(os.environ["qmkhb_isOrder"]) > 1:
-        qmkhb_isOrder = os.environ["qmkhb_isOrder"]
-if "qmkhb_help" in os.environ:
-    if len(os.environ["qmkhb_help"]) > 1:
-        qmkhb_help = os.environ["qmkhb_help"]
-        if '&' in qmkhb_help:
-            qmkhb_help = qmkhb_help.split('&')
-        print("已获取并使用Env环境 qmkhb_help:", qmkhb_help)
-if not isinstance(qmkhb_help, list):
-    qmkhb_help = qmkhb_help.split(" ")
 
-
-
-## 获取通知服务
-class msg(object):
-    def __init__(self, m):
-        self.str_msg = m
-        self.message()
-    def message(self):
-        global msg_info
-        print(self.str_msg)
-        try:
-            msg_info = "{}\n{}".format(msg_info, self.str_msg)
-        except:
-            msg_info = "{}".format(self.str_msg)
-        sys.stdout.flush()
-    def getsendNotify(self, a=0):
-        if a == 0:
-            a += 1
-        try:
-            url = 'https://gitee.com/curtinlv/Public/raw/master/sendNotify.py'
-            response = requests.get(url)
-            if 'curtinlv' in response.text:
-                with open('sendNotify.py', "w+", encoding="utf-8") as f:
-                    f.write(response.text)
-            else:
-                if a < 5:
-                    a += 1
-                    return self.getsendNotify(a)
-                else:
-                    pass
-        except:
-            if a < 5:
-                a += 1
-                return self.getsendNotify(a)
-            else:
-                pass
-    def main(self):
-        global send
-        cur_path = os.path.abspath(os.path.dirname(__file__))
-        sys.path.append(cur_path)
-        if os.path.exists(cur_path + "/sendNotify.py"):
-            try:
-                from sendNotify import send
-            except:
-                self.getsendNotify()
-                try:
-                    from sendNotify import send
-                except:
-                    print("加载通知服务失败~")
-        else:
-            self.getsendNotify()
-            try:
-                from sendNotify import send
-            except:
-                print("加载通知服务失败~")
-        ###################
-msg("").main()
-##############
 
 def buildHeaders(ck):
     headers = {
         'Accept': 'application/json, text/plain, */*',
-        'Origin': 'https://happy.m.jd.com',
+        'Origin': 'https://wbbny.m.jd.com',
         'Accept-Encoding': 'gzip, deflate, br',
         'Cookie': ck,
         'Content-Type': 'application/x-www-form-urlencoded',
         'Host': 'api.m.jd.com',
         'Connection': 'keep-alive',
         'User-Agent': userAgent(),
-        'Referer': '',
+        # 'Referer': f'https://wbbny.m.jd.com/babelDiy/Zeus/2vVU4E7JLH9gKYfLQ5EVW6eN2P7B/index.html?babelChannel=jdappsyfc&shareType=taskHelp&inviteId=ZXASTT028Z1_cl4-8INRW9rJrQH-3oUxd6t1GFjRWn6u7zB55awQ&mpin=&from=sc&lng=113&lat=23&sid=&un_area=',
+        'Referer': f'https://wbbny.m.jd.com/babelDiy/Zeus/2vVU4E7JLH9gKYfLQ5EVW6eN2P7B/index.html?babelChannel=jdappsyfc&shareType=taskHelp&inviteId=ZXASTT028Z1_cl4-8INRW9rJrQH-3oUxd6t1GFjRWn6u7zB55awQ&mpin=RnFsl2daPGGLzNTMDSugzOUmYgysBguS0mhHAIPkgjc&from=sc&lng=113.367454&lat=23.112787&sid=4d0c87024e75822e2940d31c251c1b0w&un_area=1_2901_55567_0',
         'Accept-Language': 'zh-cn'
     }
     return headers
 
-def getrid(ck):
+def getHomeData(ck):
     try:
-        url = f'https://api.m.jd.com/api?appid=jinlihongbao&functionId=h5activityIndex&loginType=2&client=jinlihongbao&t={round(time.time() * 1000)}&clientVersion=10.2.2&osVersion=-1'
-        body = 'body=%7B%22isjdapp%22%3A1%7D'
-        resp = requests.post(url=url, headers=buildHeaders(ck), data=body).json()
-        rid = resp['data']['result']['redpacketInfo']['id']
-        packetTotalSum = resp['data']['result']['redpacketInfo']['packetTotalSum']
-        return rid, packetTotalSum
-    except Exception as e:
-        print(e)
-        return '374536093', None
-
-def friendhelp(ck, rid, nickname):
-    try:
-        t = round(time.time() * 1000)
-        url = f'https://api.m.jd.com/api?appid=jinlihongbao&functionId=jinli_h5assist&loginType=2&client=jinlihongbao&t={t}&clientVersion=10.2.0&osVersion=-1'
-        body = f'body=%7B%22redPacketId%22:%22{rid}%22,%22followShop%22:1,%20%22random%22:%20%22%22,%20%22log%22:%20%22%22,%20%22sceneid%22:%20%22JLHBhPageh5%22%7D'
+        url = 'https://api.m.jd.com/client.action?functionId=travel_getHomeData'
+        body = 'functionId=travel_getHomeData&body={"inviteId":""}&client=wh5&clientVersion=1.0.0'
         resp = requests.post(url=url, headers=buildHeaders(ck), data=body, timeout=10).json()
-        result = resp['data']['result']['statusDesc']
-        print(f"\t└😆用户【{nickname}】{result}")
-    except Exception as e:
-        print(e)
+        secretp = resp['data']['result']['homeMainInfo']['secretp']
+        return secretp
+    except:
+        return None
+
+def getinviteId(ck):
+    try:
+        url = 'https://api.m.jd.com/client.action?functionId=travel_getTaskDetail'
+        body = 'functionId=travel_getTaskDetail&body={}&client=wh5&clientVersion=1.0.0'
+        resp = requests.post(url=url, headers=buildHeaders(ck), data=body).json()
+        return resp['data']['result']['inviteId']
+    except:
+        return 'ZXASTT018v_53RR4Y9lHfIBub1AFjRWn6u7zB55awQ'
+
+
+
+def friendsHelp(ck, inviteId, secretp, nickname):
+    try:
+        url = 'https://api.m.jd.com/client.action?functionId=travel_collectScore'
+        body = 'functionId=travel_collectScore&body={"ss":"%7B%5C%22extraData%5C%22:%7B%5C%22log%5C%22:%5C%22%5C%22,%5C%22sceneid%5C%22:%5C%22HYGJZYh5%5C%22%7D,%5C%22secretp%5C%22:%5C%22'+ secretp + '%5C%22,%5C%22random%5C%22:%5C%22%5C%22%7D","inviteId":"' + inviteId + '"}&client=wh5&clientVersion=1.0.0'
+        resp = requests.post(url=url, headers=buildHeaders(ck), data=body, timeout=10).json()
+        isSuccess = resp['data']['success']
+        result = resp['data']['bizMsg']
+        bizCode = resp['data']['bizCode']
+
+        if isSuccess:
+            print(f"\t└😆用户【{nickname}】{result}")
+        else:
+            print(f"\t└😯用户【{nickname}】{result}")
+        if bizCode == -201:
+            print(f"\t└👌用户【{nickname}】助力任务已完成。")
+            return True
+        else:
+            return False
+    except:
+        pass
+
 def start():
     try:
-        scriptName = '### 全民开红包-助力 ###'
+        scriptName = '### 环游记-好友助力 ###'
         print(scriptName)
         cookiesList, userNameList, pinNameList = getCk.iscookie()
-        if qmkhb_isOrder == "true":
-            for ck, user in zip(cookiesList, userNameList):
-                print(f"### ☺️开始助力 {user}")
-                try:
-                    rid, total = getrid(ck)
-                except Exception as e:
-                    print(e)
+        for c,masterName in zip(cookiesList,userNameList):
+            print(f"### ☺️开始助力 {masterName}")
+            sharecode = getinviteId(c)
+            for ck,nickname in zip(cookiesList,userNameList):
+                if nickname == masterName:
+                    print(f"\t└😓{masterName} 不能助力自己，跳过~")
                     continue
-                for k, nickname in zip(cookiesList, userNameList):
-                    if nickname == user:
-                        print(f"\t└😓{user} 不能助力自己，跳过~")
-                        continue
-                    friendhelp(k, rid, nickname)
-            msg("### 👌统计：")
-            for i,u in zip(cookiesList,userNameList):
-                rid, total = getrid(i)
-                msg(f"账户🧧[{u}]:本场收益红包:{total}")
-            msg("\n【活动入口】：京豆app-领券中心-锦鲤红包。")
-        elif qmkhb_isOrder == "false":
-            if not qmkhb_help:
-                print("您未配置助力的账号，\n助力账号名称：可填用户名 或 pin的值不要; \nenv 设置 export qmkhb_help=\"Curtinlv&用户2\"  多账号&分隔\n本次退出。")
-                sys.exit(0)
-            msg("### 👌统计：")
-            for ckname in qmkhb_help:
-                try:
-                    ckNum = userNameList.index(ckname)
-                except Exception as e:
-                    try:
-                        ckNum = pinNameList.index(unquote(ckname))
-                    except:
-                        msg(f"请检查被助力账号【{ckname}】名称是否正确？提示：助力名字可填pt_pin的值、也可以填账号名。")
-                        continue
-                masterName = userNameList[ckNum]
-                rid, total = getrid(cookiesList[ckNum])
-                print(f"### ☺️开始助力 {masterName}")
-                for ck, nickname in zip(cookiesList, userNameList):
-                    if nickname == masterName:
-                        print(f"\t└😓{masterName} 不能助力自己，跳过~")
-                        continue
-                    friendhelp(ck, rid, nickname)
-                rid, total = getrid(cookiesList[ckNum])
-                msg(f"账户🧧[{masterName}]:本场收益红包:{total}")
-            msg("\n【活动入口】：京豆app-领券中心-锦鲤红包。")
-        else:
-            print("请检查qmkhb_isOrder 变量参数是否正确填写。")
-        if isNotice:
-            send(scriptName, msg_info)
+                if friendsHelp(ck, sharecode, getHomeData(ck), nickname):
+                    break
     except Exception as e:
-        print("start",e)
+        print(e)
 
 if __name__ == '__main__':
     start()
