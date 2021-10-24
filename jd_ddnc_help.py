@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*
 '''
-项目名称: JD-Script / jd_ccfxj_help 
+项目名称: JD-Script / jd_ddnc_help_list 
 Author: Curtin
-功能：城城分现金助力 活动入口：15.0:/￥WAAD60EE92byb0%，☃そ點①點ひ领哯唫！
-Date: 2021/10/20 下午8:59
+功能：东东农场-仅助力使用
+Date: 2021/10/23 下午4:15
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
-说明：仅测试使用，目前只助力，需要手动领取提现。
 cron: 0 0 * * *
-new Env('城城分现金助力-助力.py');
+new Env('东东农场-助力');
 '''
-## 助力账号名称：可填用户名 或 pin的值不要; env 设置 export ccfxj_help="Curtinlv&用户2"  多账号&分隔
-ccfxj_help=["Curtinlv", ]
+# 是否按ck顺序助力, true: 按顺序助力 false：按指定用户助力，默认true
+ddnc_isOrder="true"
+# 东东农场助力名单(当ddnc_isOrder="false" 才生效), ENV 环境设置 export ddnc_help_list="Curtinlv&用户2&用户3"
+ddnc_help_list = ["Curtinlv", "用户2", "用户3"]
 #是否开启通知，Ture：发送通知，False：不发送
 isNotice=True
-# UA 可自定义你的，注意格式: 【 jdapp;iPhone;10.0.4;14.2;9fb54498b32e17dfc5717744b5eaecda8366223c;network/wifi;ADID/2CF597D0-10D8-4DF8-C5A2-61FD79AC8035;model/iPhone11,1;addressid/7785283669;appBuild/167707;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/null;supportJDSHWK/1 】
+# UA 可自定义你的, 默认随机生成UA。
 UserAgent = ''
 
 import os, re, sys
@@ -23,22 +24,33 @@ import random
 try:
     import requests
 except Exception as e:
-    print(e, "\n缺少requests 模块，请执行命令安装：python3 -m pip install requests")
+    print(e, "\n缺少requests 模块，请执行命令安装：pip3 install requests")
     exit(3)
 from urllib.parse import unquote
 # requests.packages.urllib3.disable_warnings()
 pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
-uuid = ''.join(random.sample('123456789abcdef123456789abcdef123456789abcdef123456789abcdef', 40))
-addressid = ''.join(random.sample('1234567898647', 10))
-iosVer = ''.join(random.sample(["14.5.1", "14.4", "14.3", "14.2", "14.1", "14.0.1", "13.7", "13.1.2", "13.1.1"], 1))
-iosV = iosVer.replace('.', '_')
-iPhone = ''.join(random.sample(["8", "9", "10", "11", "12", "13"], 1))
-ADID = ''.join(random.sample('0987654321ABCDEF', 8)) + '-' + ''.join(
-    random.sample('0987654321ABCDEF', 4)) + '-' + ''.join(random.sample('0987654321ABCDEF', 4)) + '-' + ''.join(
-    random.sample('0987654321ABCDEF', 4)) + '-' + ''.join(random.sample('0987654321ABCDEF', 12))
-###
 
 
+def userAgent():
+    """
+    随机生成一个UA
+    jdapp;iPhone;10.0.4;14.2;9fb54498b32e17dfc5717744b5eaecda8366223c;network/wifi;ADID/2CF597D0-10D8-4DF8-C5A2-61FD79AC8035;model/iPhone11,1;addressid/7785283669;appBuild/167707;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/null;supportJDSHWK/1
+    :return: ua
+    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.15(0x18000f29) NetType/WIFI Language/zh_CN'
+
+    """
+    uuid = ''.join(random.sample('123456789abcdef123456789abcdef123456789abcdef123456789abcdef', 40))
+    addressid = ''.join(random.sample('1234567898647', 10))
+    iosVer = ''.join(random.sample(["14.5.1", "14.4", "14.3", "14.2", "14.1", "14.0.1", "13.7", "13.1.2", "13.1.1"], 1))
+    iosV = iosVer.replace('.', '_')
+    iPhone = ''.join(random.sample(["8", "9", "10", "11", "12", "13"], 1))
+    ADID = ''.join(random.sample('0987654321ABCDEF', 8)) + '-' + ''.join(
+        random.sample('0987654321ABCDEF', 4)) + '-' + ''.join(random.sample('0987654321ABCDEF', 4)) + '-' + ''.join(
+        random.sample('0987654321ABCDEF', 4)) + '-' + ''.join(random.sample('0987654321ABCDEF', 12))
+    if not UserAgent:
+        return f'jdapp;iPhone;10.0.4;{iosVer};{uuid};network/wifi;ADID/{ADID};model/iPhone{iPhone},1;addressid/{addressid};appBuild/167707;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS {iosV} like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/null;supportJDSHWK/1'
+    else:
+        return UserAgent
 class getJDCookie(object):
     # 适配各种平台环境ck
 
@@ -177,26 +189,18 @@ class getJDCookie(object):
 
 getCk = getJDCookie()
 getCk.getCookie()
+if "ddnc_isOrder" in os.environ:
+    if len(os.environ["ddnc_isOrder"]) > 1:
+        ddnc_isOrder = os.environ["ddnc_isOrder"]
+if "ddnc_help_list" in os.environ:
+    if len(os.environ["ddnc_help_list"]) > 1:
+        ddnc_help_list = os.environ["ddnc_help_list"]
+        if '&' in ddnc_help_list:
+            ddnc_help_list = ddnc_help_list.split('&')
+        print("已获取并使用Env环境 ddnc_help_list:", ddnc_help_list)
+if not isinstance(ddnc_help_list, list):
+    ddnc_help_list = ddnc_help_list.split(" ")
 
-if "ccfxj_help" in os.environ:
-    if len(os.environ["ccfxj_help"]) > 1:
-        ccfxj_help = os.environ["ccfxj_help"]
-        if '&' in ccfxj_help:
-            ccfxj_help = ccfxj_help.split('&')
-        print("已获取并使用Env环境 ccfxj_help:", ccfxj_help)
-if not isinstance(ccfxj_help, list):
-    ccfxj_help = ccfxj_help.split(" ")
-
-def userAgent():
-    """
-    随机生成一个UA
-    jdapp;iPhone;10.0.4;14.2;9fb54498b32e17dfc5717744b5eaecda8366223c;network/wifi;ADID/2CF597D0-10D8-4DF8-C5A2-61FD79AC8035;model/iPhone11,1;addressid/7785283669;appBuild/167707;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/null;supportJDSHWK/1
-    :return: ua
-    """
-    if not UserAgent:
-        return f'jdapp;iPhone;10.0.4;{iosVer};{uuid};network/wifi;ADID/{ADID};model/iPhone{iPhone},1;addressid/{addressid};appBuild/167707;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS {iosV} like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/null;supportJDSHWK/1'
-    else:
-        return UserAgent
 
 ## 获取通知服务
 class msg(object):
@@ -255,69 +259,104 @@ class msg(object):
 msg("").main()
 ##############
 
-def buid_header(ck):
+def buildHeaders(ck):
     headers = {
-        'Accept': 'application/json, text/plain, */*',
-        'Origin': 'https://bunearth.m.jd.com',
-        'Accept-Encoding': 'gzip, deflate, br',
         'Cookie': ck,
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Host': 'api.m.jd.com',
+        'content-type': 'application/json',
         'Connection': 'keep-alive',
-        'User-Agent': userAgent(),
-        'Referer': 'https://bunearth.m.jd.com/babelDiy/Zeus/x4pWW6pvDwW7DjxMmBbnzoub8J/index.html?inviteId=&encryptedPin=&lng=113.&lat=23.&sid=&un_area=',
-        'Accept-Language': 'zh-cn'
+        'Referer': '',
+        'Accept-Encoding': 'gzip,compress,br,deflate',
+        'Host': 'api.m.jd.com',
+        'User-Agent': userAgent()
     }
     return headers
 
-def getInviteId(ck):
-    url = 'https://api.m.jd.com/client.action'
-    body = 'functionId=city_getHomeData&body={"lbsCity":"19","realLbsCity":"1601","inviteId":"","headImg":"","userName":"","taskChannel":"1"}&client=wh5&clientVersion=1.0.0&uuid=' + uuid
-    resp = requests.post(url=url, headers=buid_header(ck), data=body, timeout=30).json()
-    userActBaseInfo = resp['data']['result']['userActBaseInfo']
-    inviteId = userActBaseInfo['inviteId']
-    poolMoney = userActBaseInfo['poolMoney']
-    msg(f"当前助力池：{poolMoney} 元")
-    return inviteId, poolMoney
+def awardInviteFriendForFarm(ck):
+    url = f'https://api.m.jd.com/client.action?functionId=awardInviteFriendForFarm&body=%7B%7D&appid=wh5'
+    response = requests.get(url=url, headers=buildHeaders(ck), timeout=10).json()
+    print(response)
+def getShareCode(ck):
+    url = f'https://api.m.jd.com/client.action?functionId=initForFarm&body=%7B%22shareCode%22%3A%22%22%2C%22imageUrl%22%3A%22%22%2C%22nickName%22%3A%22%22%2C%22version%22%3A14%2C%22channel%22%3A2%2C%22babelChannel%22%3A3%7D&appid=wh5'
+    response = requests.get(url=url, headers=buildHeaders(ck), timeout=10).json()
+    return response['farmUserPro']['shareCode']
 
-def zhuli(ck, inviteId, user):
-    url = 'https://api.m.jd.com/client.action'
-    body = 'functionId=city_getHomeData&body={"lbsCity":"19","realLbsCity":"1601","inviteId":"' + inviteId + '","headImg":"","userName":"","taskChannel":"1"}&client=wh5&clientVersion=1.0.0&uuid=' + uuid
-    resp = requests.post(url=url, headers=buid_header(ck), data=body, timeout=30).json()
+def ddnc_help(ck, nickname, shareCode, masterName):
     try:
-        m = resp['data']['result']['toasts'][0]['msg']
-        print(f"{user}--{m}")
-    except:
-        print(f"{user}--助力失败")
+        url = f'https://api.m.jd.com/client.action?functionId=initForFarm&body=%7B%22shareCode%22%3A%22{shareCode}%22%2C%22imageUrl%22%3A%22%22%2C%22nickName%22%3A%22%22%2C%22version%22%3A14%2C%22channel%22%3A2%2C%22babelChannel%22%3A3%7D&appid=wh5'
+        response = requests.get(url=url, headers=buildHeaders(ck), timeout=10).json()
+        # print(response['farmUserPro'])
+        # print("\n")
+        # print(response['helpResult'])
+        # print("\n")
+        # masterUserName = response['helpResult']['masterUserInfo']['nickName']
+        help_result = response['helpResult']['code']
+        if help_result == "0":
+            print(f"\t└👌{nickname} 助力成功～")
+        elif help_result == "8":
+            print(f"\t└😆{nickname} 已没有助力机会~  ")
+        elif help_result == "10":
+            msg(f"\t└☺️ {masterName} 今天好友助力已满～")
+            # awardInviteFriendForFarm(ck)
+            return True
+        else:
+            print(f"\t└😄 {nickname} 助力 {masterName} ")
 
+        return False
+    except Exception as e:
+        print(f"{nickname} 助力失败～", e)
+        return False
 
 def start():
-    scriptName = '### 城城分现金-助力 ###'
-    print(scriptName)
-    global cookiesList, userNameList, pinNameList, ckNum
-    cookiesList, userNameList, pinNameList = getCk.iscookie()
-    if not  ccfxj_help:
-        print("您未配置助力的账号，\n助力账号名称：可填用户名 或 pin的值不要; \nenv 设置 export ccfxj_help=\"Curtinlv&用户2\"  多账号&分隔\n本次退出。")
-        sys.exit(0)
-    for ckname in ccfxj_help:
-        try:
-            ckNum = userNameList.index(ckname)
-        except Exception as e:
-            try:
-                ckNum = pinNameList.index(unquote(ckname))
-            except:
-                print(f"请检查被助力账号【{ckname}】名称是否正确？提示：助力名字可填pt_pin的值、也可以填账号名。")
-                continue
-        userName = userNameList[ckNum]
-        invid, poolMoney = getInviteId(cookiesList[ckNum])
-        msg(f"### 本次助力车头：{userName}")
-        for ck,user in zip(cookiesList,userNameList):
-            zhuli(ck, invid, user)
-
-    invid, poolMoney = getInviteId(cookiesList[ckNum])
-    msg("\n***************\n城城分现金入口：\n15.0:/￥WAAD60EE92byb0%，☃そ點①點ひ领哯唫！")
-    if isNotice:
-        send(scriptName, msg_info)
+    try:
+        scriptName = '### 东东农场-助力 ###'
+        print(scriptName)
+        global cookiesList, userNameList, pinNameList, ckNum
+        cookiesList, userNameList, pinNameList = getCk.iscookie()
+        if ddnc_isOrder == "true":
+            for ck,user in zip(cookiesList,userNameList):
+                msg(f"开始助力 {user}")
+                try:
+                    shareCode = getShareCode(ck)
+                except Exception as e:
+                    print(e)
+                    continue
+                for ck, nickname in zip(cookiesList, userNameList):
+                    if nickname == user:
+                        print(f"\t└😓{user} 不能助力自己，跳过~")
+                        continue
+                    result = ddnc_help(ck, nickname, shareCode, user)
+                    if result:
+                        break
+        elif ddnc_isOrder == "false":
+            if not ddnc_help_list:
+                print("您未配置助力的账号，\n助力账号名称：可填用户名 或 pin的值不要; \nenv 设置 export ddnc_help_list=\"Curtinlv&用户2\"  多账号&分隔\n本次退出。")
+                sys.exit(0)
+            for ckname in ddnc_help_list:
+                try:
+                    ckNum = userNameList.index(ckname)
+                except Exception as e:
+                    try:
+                        ckNum = pinNameList.index(unquote(ckname))
+                    except:
+                        msg(f"请检查被助力账号【{ckname}】名称是否正确？提示：助力名字可填pt_pin的值、也可以填账号名。")
+                        continue
+                masterName = userNameList[ckNum]
+                shareCode = getShareCode(cookiesList[ckNum])
+                msg(f"开始助力 {masterName}")
+                for ck, nickname in zip(cookiesList, userNameList):
+                    if nickname == masterName:
+                        print(f"\t└😓{masterName} 不能助力自己，跳过~")
+                        continue
+                    result = ddnc_help(ck, nickname, shareCode, masterName)
+                    if result:
+                        break
+        else:
+            print("请检查ddnc_isOrder 变量参数是否正确填写。")
+        if isNotice:
+            send(scriptName, msg_info)
+    except Exception as e:
+        print(e)
 
 if __name__ == '__main__':
     start()
+

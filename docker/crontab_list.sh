@@ -5,6 +5,12 @@
 
 ##############短期活动##############
 
+# 电竞预言家 (11.6 结束)
+13 1,11 * * * node /scripts/jd_lol.js >> /scripts/logs/jd_lol.log 2>&1
+
+# 京东手机狂欢城 (11.13 结束)
+6 0-18/6 * 10-11 * node /scripts/jd_carnivalguacity.js >> /scripts/logs/jd_carnivalguacity.log 2>&1
+
 # 环游记
 13 0,6-23/2 * 10-11 * node /scripts/jd_hyj.js >> /scripts/logs/jd_hyj.log 2>&1
 
@@ -28,9 +34,6 @@
 
 # 京东小魔方 (9.29 24.00 结束)
 13 0,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
-
-# 蚊子腿豆子 (9.21-10.16 10月16号应该可以参与瓜分)
-3 6,18 1-16,21-30 9,10 * node /scripts/jd_decompression.js >> /scripts/logs/jd_decompression.log 2>&1
 
 # 芥么赚豪礼
 22 1,13 * * * node /scripts/jd_genz.js >> /scripts/logs/jd_genz.log 2>&1
