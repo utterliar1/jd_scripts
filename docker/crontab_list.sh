@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 发财大赢家之翻翻乐 (没看什么时候结束)
+20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
+
 # 电竞预言家 (11.6 结束)
 13 1,11 * * * node /scripts/jd_lol.js >> /scripts/logs/jd_lol.log 2>&1
 
