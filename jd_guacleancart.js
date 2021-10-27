@@ -6,29 +6,30 @@
 需要算法支持
 默认：不执行 如需要请添加环境变量
 gua_cleancart_Run="true"
-
+gua_cleancart_SignUrl="" # 算法url
 
 ——————————————
-@&@ 固定
-|-|账号之间隔开
-英文大小写请填清楚
-优先匹配账号
-定义不清空的[商品]名称支持模糊匹配
+1.@&@ 前面加数字 指定账号pin
+如果有中文请填写中文
+2.|-| 账号之间隔开
+3.英文大小写请填清楚
+4.优先匹配账号再匹配*
+5.定义不清空的[商品]名称支持模糊匹配
+6.pin@&@ 👉 指定账号(后面添加商品 前面账号[pin] *表示所有账号
+7.|-| 👉 账号之间隔开
 ——————————————
-2@&@ 👉 指定账号(后面添加商品 前面账号顺序[数字] *表示所有账号
+
+商品名称规则
+——————gua_cleancart_products————————
+pin2@&@商品1,商品2👉该pin这几个商品名不清空
+pin5@&@👉该pin全清
+pin3@&@不清空👉该pin不清空
+*@&@不清空👉所有账号不请客
+*@&@👉所有账号清空
+
+优先匹配账号再匹配*
 |-| 👉 账号之间隔开
-——————————————
-商品规则
-5@&@ 👉 表示账号5清空所有的商品
-4@&@不清空 👉 表示账号4不清空商品
-2@&@商品1,商品2,商品3 👉 表示账号2不清空商品1、商品2和商品3
-*@&@商品4,商品5,商品6 👉 表示所有账号不清空商品4、商品5和商品6
-*@&@不清空 👉 表示所有账号不清空购物车
-——————————————
-gua_cleancart_products="2@&@商品1,商品2|-|5@&@|-|*@&@不清空"
-gua_cleancart_products="2@&@商品1,商品2*@&@不清空"
-gua_cleancart_products="2@&@*@&@不清空"
-gua_cleancart_products="*@&@不清空"
+有填帐号pin则*不适配
 ——————————————
 如果有不清空的一定要加上"*@&@不清空"
 防止没指定的账号购物车全清空
@@ -96,11 +97,11 @@ for (let i in productsArr) {
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       console.log(`\n\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-      if(cleancartProductsAll[$.index]){
-        $.cleancartProductsArr = cleancartProductsAll[""+$.index]
+      if(cleancartProductsAll[$.UserName]){
+        $.cleancartProductsArr = cleancartProductsAll[$.UserName]
       }else if(cleancartProductsAll["*"]){
         $.cleancartProductsArr = cleancartProductsAll["*"]
-      }else $.cleancartProductsArr = []
+      }else $.cleancartProductsArr = false
       console.log($.cleancartProductsArr)
       await run();
     }
@@ -214,8 +215,9 @@ async function run(){
 }
 function toSDS(name){
   let res = true
+  if($.cleancartProductsArr === false) return false
   for(let t of $.cleancartProductsArr || []){
-    if(name.indexOf(t) > -1 || t == '不清空'){
+    if(t && name.indexOf(t) > -1 || t == '不清空'){
       res = false
       break
     }
@@ -256,7 +258,7 @@ function jdSign(fn,body) {
     const fs = require('fs');
     if (fs.existsSync('./gua_encryption_sign.js')) {
       const encryptionSign = require('./gua_encryption_sign');
-      sign = encryptionSign.getSign("cartClearQuery", signBody)
+      sign = encryptionSign.getSign(fn, body)
     }else{
       flag = true
     }
