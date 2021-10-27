@@ -1,27 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*
 '''
-项目名称: JD-Script / jd_qmkmb_help 
+项目名称: JD-Script / jd_ddmc_help 
 Author: Curtin
-功能：全民开红包-助力  入口：京豆app-领券中心-锦鲤红包
-Date: 2021/10/24 下午4:48
+功能：东东萌宠-助力
+Date: 2021/10/25 下午9:30
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
-cron: 0 0,23 * * *
-new Env('全民开红包-助力');
+cron: 1 0,23 * * *
+new Env('东东萌宠-助力');
 '''
 
 # 是否按ck顺序助力, true: 按顺序助力 false：按指定用户助力，默认true
-qmkhb_isOrder="true"
-# 助力名单(当qmkhb_isOrder="false" 才生效), ENV 环境设置 export qmkhb_help="Curtinlv&用户2&用户3"
-qmkhb_help = ["Curtinlv", "用户2", "用户3"]
+ddmc_isOrder="true"
+# 助力名单(当ddmc_isOrder="false" 才生效), ENV 环境设置 export ddmc_help="Curtinlv&用户2&用户3"
+ddmc_help = ["Curtinlv", "用户x", "用户3"]
 #是否开启通知，Ture：发送通知，False：不发送
 isNotice=True
 # UA 可自定义你的, 默认随机生成UA。
 UserAgent = ''
 
 import os, re, sys
-import random, time
+import random
 try:
     import requests
 except Exception as e:
@@ -32,7 +32,7 @@ from urllib.parse import unquote
 
 # requests.packages.urllib3.disable_warnings()
 pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
-
+host_api = 'https://api.m.jd.com/client.action'
 ###
 def userAgent():
     """
@@ -192,17 +192,17 @@ class getJDCookie(object):
 
 getCk = getJDCookie()
 getCk.getCookie()
-if "qmkhb_isOrder" in os.environ:
-    if len(os.environ["qmkhb_isOrder"]) > 1:
-        qmkhb_isOrder = os.environ["qmkhb_isOrder"]
-if "qmkhb_help" in os.environ:
-    if len(os.environ["qmkhb_help"]) > 1:
-        qmkhb_help = os.environ["qmkhb_help"]
-        if '&' in qmkhb_help:
-            qmkhb_help = qmkhb_help.split('&')
-        print("已获取并使用Env环境 qmkhb_help:", qmkhb_help)
-if not isinstance(qmkhb_help, list):
-    qmkhb_help = qmkhb_help.split(" ")
+if "ddmc_isOrder" in os.environ:
+    if len(os.environ["ddmc_isOrder"]) > 1:
+        ddmc_isOrder = os.environ["ddmc_isOrder"]
+if "ddmc_help" in os.environ:
+    if len(os.environ["ddmc_help"]) > 1:
+        ddmc_help = os.environ["ddmc_help"]
+        if '&' in ddmc_help:
+            ddmc_help = ddmc_help.split('&')
+        print("已获取并使用Env环境 ddmc_help:", ddmc_help)
+if not isinstance(ddmc_help, list):
+    ddmc_help = ddmc_help.split(" ")
 
 
 
@@ -265,70 +265,77 @@ msg("").main()
 
 def buildHeaders(ck):
     headers = {
-        'Accept': 'application/json, text/plain, */*',
-        'Origin': 'https://happy.m.jd.com',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Cookie': ck,
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Host': 'api.m.jd.com',
+        'request-from': 'native',
         'Connection': 'keep-alive',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Origin': 'https://h5.m.jd.com',
         'User-Agent': userAgent(),
-        'Referer': '',
-        'Accept-Language': 'zh-cn'
+        'Cookie': ck,
+        'Host': 'api.m.jd.com',
+        'Referer': 'https://h5.m.jd.com/babelDiy/Zeus/WiXHzdNRVxmQQdEpLo4Z4yvsiFy/index.html?',
+        'Accept-Language': 'zh-cn',
+        'Accept': 'application/json, text/plain, */*'
     }
     return headers
 
-def getrid(ck):
+def getShareCode(ck):
     try:
-        url = f'https://api.m.jd.com/api?appid=jinlihongbao&functionId=h5activityIndex&loginType=2&client=jinlihongbao&t={round(time.time() * 1000)}&clientVersion=10.2.2&osVersion=-1'
-        body = 'body=%7B%22isjdapp%22%3A1%7D'
-        resp = requests.post(url=url, headers=buildHeaders(ck), data=body).json()
-        rid = resp['data']['result']['redpacketInfo']['id']
-        packetTotalSum = resp['data']['result']['redpacketInfo']['packetTotalSum']
-        return rid, packetTotalSum
-    except Exception as e:
-        print(e)
-        return '374536093', None
+        body = 'functionId=initPetTown&body={"version":1}&client=wh5&clientVersion=1.0.0'
+        resp = requests.post(url=host_api, headers=buildHeaders(ck), data=body, timeout=10).json()
+        return resp['result']['shareCode']
+    except:
+        return 'MTE1NDAxNzgwMDAwMDAwNDM4ODc1MjU='
 
-def friendhelp(ck, rid, nickname):
+def getHelpAddedBonus(ck):
     try:
-        t = round(time.time() * 1000)
-        url = f'https://api.m.jd.com/api?appid=jinlihongbao&functionId=jinli_h5assist&loginType=2&client=jinlihongbao&t={t}&clientVersion=10.2.0&osVersion=-1'
-        body = f'body=%7B%22redPacketId%22:%22{rid}%22,%22followShop%22:1,%20%22random%22:%20%22%22,%20%22log%22:%20%22%22,%20%22sceneid%22:%20%22JLHBhPageh5%22%7D'
-        resp = requests.post(url=url, headers=buildHeaders(ck), data=body, timeout=10).json()
-        result = resp['data']['result']['statusDesc']
-        print(f"\t└😆用户【{nickname}】{result}")
-    except Exception as e:
-        print(e)
+        body='functionId=getHelpAddedBonus&body={}&client=wh5&clientVersion=1.0.0'
+        resp = requests.post(url=host_api, headers=buildHeaders(ck), data=body, timeout=10).json()
+        if resp['resultCode'] == '0':
+            msg(f"\t\t└👌领取额外奖励：{resp['result']['reward']}g, 当前：{resp['result']['foodAmount']}g")
+        else:
+            msg(f"\t\t└👌领取额外奖励：{resp['message']}")
+    except:
+        pass
+
+def ddmc(ck, shareCode, user):
+    try:
+        body = 'functionId=slaveHelp&body={"shareCode":"' + shareCode + '"}&client=wh5&clientVersion=1.0.0'
+        resp = requests.post(url=host_api, headers=buildHeaders(ck), data=body, timeout=10).json()
+        if resp['resultCode'] == '0':
+            if resp['result']['helpStatus'] == 0:
+                print(f"\t└[{user}] 助力结果：{resp['message']}")
+            if resp['result']['helpStatus'] == 2:
+                return True
+            else:
+                return False
+        else:
+            return False
+    except:
+        pass
+
 def start():
     try:
-        scriptName = '### 全民开红包-助力 ###'
+        scriptName = '### 东东萌宠-助力 ###'
         print(scriptName)
         cookiesList, userNameList, pinNameList = getCk.iscookie()
-        if qmkhb_isOrder == "true":
-            for ck, user in zip(cookiesList, userNameList):
-                print(f"### ☺️开始助力 {user}")
-                try:
-                    rid, total = getrid(ck)
-                except Exception as e:
-                    print(e)
-                    continue
-                for k, nickname in zip(cookiesList, userNameList):
-                    if nickname == user:
+        if ddmc_isOrder == "true":
+            for ck, master in zip(cookiesList, userNameList):
+                print(f"### ☺️开始助力 {master}")
+                sharecode = getShareCode(ck)
+                for c, user in zip(cookiesList, userNameList):
+                    if master == user:
                         print(f"\t└😓{user} 不能助力自己，跳过~")
                         continue
-                    friendhelp(k, rid, nickname)
-            msg("### 👌统计：")
-            for i,u in zip(cookiesList,userNameList):
-                rid, total = getrid(i)
-                msg(f"账户🧧[{u}]:本场收益红包:{total}")
-            msg("\n【活动入口】：京豆app-领券中心-锦鲤红包。")
-        elif qmkhb_isOrder == "false":
-            if not qmkhb_help:
+                    if ddmc(c, sharecode,user):
+                        msg(f"☺️[{master}]已完成助力~")
+                        getHelpAddedBonus(ck)
+                        break
+        elif ddmc_isOrder == "false":
+            if not ddmc_help:
                 print("您未配置助力的账号，\n助力账号名称：可填用户名 或 pin的值不要; \nenv 设置 export qmkhb_help=\"Curtinlv&用户2\"  多账号&分隔\n本次退出。")
                 sys.exit(0)
-            msg("### 👌统计：")
-            for ckname in qmkhb_help:
+            for ckname in ddmc_help:
                 try:
                     ckNum = userNameList.index(ckname)
                 except Exception as e:
@@ -337,25 +344,23 @@ def start():
                     except:
                         msg(f"请检查被助力账号【{ckname}】名称是否正确？提示：助力名字可填pt_pin的值、也可以填账号名。")
                         continue
-                masterName = userNameList[ckNum]
-                rid, total = getrid(cookiesList[ckNum])
-                print(f"### ☺️开始助力 {masterName}")
-                for ck, nickname in zip(cookiesList, userNameList):
-                    if nickname == masterName:
-                        print(f"\t└😓{masterName} 不能助力自己，跳过~")
+                master = userNameList[ckNum]
+                sharecode = getShareCode(cookiesList[ckNum])
+                print(f"### ☺️开始助力 {master}")
+                for c, user in zip(cookiesList, userNameList):
+                    if master == user:
+                        print(f"\t└😓{user} 不能助力自己，跳过~")
                         continue
-                    friendhelp(ck, rid, nickname)
-                rid, total = getrid(cookiesList[ckNum])
-                msg(f"账户🧧[{masterName}]:本场收益红包:{total}")
-            msg("\n【活动入口】：京豆app-领券中心-锦鲤红包。")
-        else:
-            print("请检查qmkhb_isOrder 变量参数是否正确填写。")
+                    if ddmc(c, sharecode, user):
+                        msg(f"☺️[{master}]已完成助力~")
+                        getHelpAddedBonus(cookiesList[ckNum])
+                        break
         if isNotice:
             send(scriptName, msg_info)
         else:
             print("\n", scriptName, "\n", msg_info)
     except Exception as e:
-        print("start",e)
+        print(e)
 
 if __name__ == '__main__':
     start()
