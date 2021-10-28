@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 1111红包助力
+1 0,12,18 * * * node /scripts/jd_1111RedEnvelope.js >> /scripts/logs/jd_1111RedEnvelope.log 2>&1
+
 # 发财大赢家之翻翻乐 (没看什么时候结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 
