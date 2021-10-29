@@ -5,9 +5,6 @@
 
 ##############短期活动##############
 
-# 1111红包助力
-1 0,12,18 * * * node /scripts/jd_1111RedEnvelope.js >> /scripts/logs/jd_1111RedEnvelope.log 2>&1
-
 # 发财大赢家之翻翻乐 (没看什么时候结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 
@@ -15,7 +12,7 @@
 13 1,11 * * * node /scripts/jd_lol.js >> /scripts/logs/jd_lol.log 2>&1
 
 # 京东手机狂欢城 (11.13 结束)
-6 0-18/6 * 10-11 * node /scripts/jd_carnivalguacity.js >> /scripts/logs/jd_carnivalguacity.log 2>&1
+6 0-18/6 * 10-11 * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
 
 # 环游记
 13 0,6-23/2 * 10-11 * node /scripts/jd_hyj.js >> /scripts/logs/jd_hyj.log 2>&1
@@ -30,7 +27,7 @@
 2 0,9 * 10-11 * node /scripts/jd_fission.js >> /scripts/logs/jd_fission.log 2>&1
 
 # 城城领现金
-3 0,5,9,13,17,22 * 10 * node /scripts/jd_guacity.js >> /scripts/logs/jd_guacity.log 2>&1
+3 0,5,9,13,17,22 * 10 * node /scripts/jd_city.js >> /scripts/logs/jd_city.log 2>&1
 
 # 集魔方 (京东APP - 新品 - 集魔方)
 25 0,13 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
@@ -94,9 +91,8 @@
 # 领券中心签到
 17 0 * * * node /scripts/jd_ccSign.js >> /scripts/logs/jd_ccSign.log 2>&1
 # 东东世界
-17 1,15 * * * node /scripts/jd_guaddworld.js >> /scripts/logs/jd_guaddworld.log 2>&1
+17 1,15 * * * node /scripts/jd_ddworld.js >> /scripts/logs/jd_ddworld.log 2>&1
 # 东东世界兑换
-3 0,17 * * * node /scripts/jd_guaddworld_exchange.js >> /scripts/logs/jd_guaddworld_exchange.log 2>&1
 # 京喜购物返红包助力
 # 宠汪汪跑验证码
 # 宠汪汪兑换
@@ -104,7 +100,7 @@
 13 6,18 * * * node /scripts/jd_dwapp.js >> /scripts/logs/jd_dwapp.log 2>&1
 # 取关主播
 # 升级赚京豆
-9 9 * * * node /scripts/jd_guaMMdou.js >> /scripts/logs/jd_guaMMdou.log 2>&1
+9 9 * * * node /scripts/jd_sjzjd.js >> /scripts/logs/jd_sjzjd.log 2>&1
 # 点点券
 # 京喜签到
 6 1,9 * * * node /scripts/jd_jxsign.js >> /scripts/logs/jd_jxsign.log 2>&1
