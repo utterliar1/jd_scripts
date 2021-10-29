@@ -25,11 +25,11 @@ jobs:
         cp -f ./Aaron/jd_*.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
-        echo "========= 开始下载smiek2221的脚本 ========="
-        git clone https://github.com/smiek2221/scripts.git ./smiek2221
-        rm -r ./smiek2221/USER_AGENTS.js
-        cp -f ./smiek2221/*_*.js ./
-        rm -rf ./smiek2221
+        #echo "========= 开始下载smiek2221的脚本 ========="
+        #git clone https://github.com/smiek2221/scripts.git ./smiek2221
+        #rm -r ./smiek2221/USER_AGENTS.js
+        #cp -f ./smiek2221/*_*.js ./
+        #rm -rf ./smiek2221
         echo "========= 开始下载passby的脚本 ========="
         git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
         cp -f ./JDDJ/jddj_*.js ./
@@ -73,7 +73,7 @@ jobs:
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
         rm -rf ./JDHelloWorld
-        rm ./jd_ddworld.js
+        rm ./jd_ddWorld.js
         echo "========= 开始下载单文件脚本 ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
@@ -87,7 +87,7 @@ jobs:
         rename -f 's/^js_/jd_js/' *
         rename -f 's/^jd_fan/jd_wxFans/' *
         rename -f 's/^jx_/jd_jx/' *
-        rename -f 's/^gua_/jd_gua/' *
+        #rename -f 's/^gua_/jd_gua/' *
         rename -f 's/^star_/jd_star/' *
         rename -f 's/^jddj/jd_dj/' *
         echo "========= 开始合并cron定时文件 ========="
@@ -95,14 +95,14 @@ jobs:
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 修改cron名称及临时屏蔽 ========="
-        sed -i 's/ddwj/guaddgame/g' ./docker/crontab_list.sh
-        sed -i 's/ddworld/guaddworld/g' ./docker/crontab_list.sh
-        sed -i 's/sjzjd/guaMMdou/g' ./docker/crontab_list.sh
+        #sed -i 's/ddwj/guaddgame/g' ./docker/crontab_list.sh
+        #sed -i 's/ddworld/guaddworld/g' ./docker/crontab_list.sh
+        #sed -i 's/sjzjd/guaMMdou/g' ./docker/crontab_list.sh
         sed -i 's/superBrand/productZ4Brand/g' ./docker/crontab_list.sh
         sed -i 's/jxqd/jxsign/g' ./docker/crontab_list.sh
         sed -i 's/jd_joy.js/jd_joy_new.js/g' ./docker/crontab_list.sh
         sed -i 's/zqfl/getUp/g' ./docker/crontab_list.sh
-        sed -i 's/city/guacity/g' ./docker/crontab_list.sh
+        #sed -i 's/city/guacity/g' ./docker/crontab_list.sh
         sed -i '/jd_qqxing\|jd_work_validate\|jd_ddworld_exchange\|jd_work_validate\|daily_egg\|jd_lsj\|jd_joy_run\|cfdtx\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace\|qycl\|cashback\|jd_exchange_joy\|work/d' ./docker/crontab_list.sh
     - name: 'Commit Files'
       id: commit
