@@ -6,8 +6,8 @@
 import {format} from 'date-fns';
 import axios from 'axios';
 import {Md5} from 'ts-md5'
-import USER_AGENT, {requireConfig, wait} from './TS_USER_AGENTS';
-import {getRandomNumberByRange} from "./TS_USER_AGENTS";
+import USER_AGENT, {requireConfig, wait} from '../TS_USER_AGENTS';
+import {getRandomNumberByRange} from "../TS_USER_AGENTS";
 import * as dotenv from 'dotenv';
 
 const CryptoJS = require('crypto-js')
