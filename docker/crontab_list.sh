@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 发财挖宝help助力 (11.30 结束)
+6 1,3,7,11,16,20 * 10-11 * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
+
 # 发财大赢家之翻翻乐 (没看什么时候结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 
