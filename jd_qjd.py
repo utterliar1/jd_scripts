@@ -4,44 +4,31 @@
 '''
 项目名称: JD-Script / jd_qjd
 Author: Curtin
-功能：全民抢京豆（8.6-8.16）：https://h5.m.jd.com/rn/3MQXMdRUTeat9xqBSZDSCCAE9Eqz/index.html?has_native=0
+功能：全民抢京豆（10.29-11.12）：https://h5.m.jd.com/rn/3MQXMdRUTeat9xqBSZDSCCAE9Eqz/index.html?has_native=0
     满160豆需要20人助力，每个用户目前只能助力2次不同的用户。
 Date: 2021/7/3 上午10:02
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
 update: 2021.7.24 14:21
-建议cron: 0 0 * 8 *  python3 jd_qjd.py
-new Env('全民抢京豆 8.6-8.16');
+建议cron: 0 0 * 10,11 *  python3 jd_qjd.py
+new Env('全民抢京豆 10.29-11.12');
 * 修复了助力活动不存在、增加了随机UA（如果未定义ua则启用随机UA）
 * 新增推送
 * 修复0点不能开团
 * 兼容pin为中文转码编码
 '''
-# print("全民抢京豆(7.22-7.31）--活动已结束\nTG交流 https://t.me/topstyle996\nTG频道 https://t.me/TopStyle2021")
+# print("全民抢京豆(10.29-11.12）--活动已结束\nTG交流 https://t.me/topstyle996\nTG频道 https://t.me/TopStyle2021")
 # exit(0)
 #ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
-cookies = ''
-qjd_zlzh = ['Your JD_User', '买买买']
-
-# Env环境设置 通知服务
-# export BARK=''                   # bark服务,苹果商店自行搜索;
-# export SCKEY=''                  # Server酱的SCKEY;
-# export TG_BOT_TOKEN=''           # tg机器人的TG_BOT_TOKEN;
-# export TG_USER_ID=''             # tg机器人的TG_USER_ID;
-# export TG_API_HOST=''            # tg 代理api
-# export TG_PROXY_IP=''            # tg机器人的TG_PROXY_IP;
-# export TG_PROXY_PORT=''          # tg机器人的TG_PROXY_PORT;
-# export DD_BOT_ACCESS_TOKEN=''    # 钉钉机器人的DD_BOT_ACCESS_TOKEN;
-# export DD_BOT_SECRET=''          # 钉钉机器人的DD_BOT_SECRET;
-# export QQ_SKEY=''                # qq机器人的QQ_SKEY;
-# export QQ_MODE=''                # qq机器人的QQ_MODE;
-# export QYWX_AM=''                # 企业微信；http://note.youdao.com/s/HMiudGkb
-# export PUSH_PLUS_TOKEN=''        # 微信推送Plus+ ；
+cookies=''
+qjd_zlzh=['Your JD_User', '买买买']
+#是否开启通知，ture：发送通知，false：不发送 。如关闭通知：export qjd_isNotice="false"
+qjd_isNotice="true"
 
 #####
 
 # 建议调整一下的参数
-# UA 可自定义你的，注意格式: jdapp;iPhone;10.0.4;13.1.1;93b4243eeb1af72d142991d85cba75c66873dca5;network/wifi;ADID/8679C062-A41A-4A25-88F1-50A7A3EEF34A;model/iPhone13,1;addressid/3723896896;appBuild/167707;jdSupportDarkMode/0
+# UA 可自定义你的，默认随机
 UserAgent = ''
 # 限制速度 （秒）
 sleepNum = 0.1
@@ -272,27 +259,29 @@ class getJDCookie(object):
             exit(4)
 getCk = getJDCookie()
 getCk.getCookie()
-# 获取v4环境 特殊处理
-if os.path.exists(v4f):
-    try:
-        with open(v4f, 'r', encoding='utf-8') as f:
-            curenv = locals()
-            for i in f.readlines():
-                r = re.compile(r'^export\s(.*?)=[\'\"]?([\w\.\-@#!&=_,\[\]\{\}\(\)]{1,})+[\'\"]{0,1}$', re.M | re.S | re.I)
-                r = r.findall(i)
-                if len(r) > 0:
-                    for i in r:
-                        if i[0] != 'JD_COOKIE':
-                            curenv[i[0]] = getEnvs(i[1])
-    except:
-        pass
+# # 获取v4环境 特殊处理
+# if os.path.exists(v4f):
+#     try:
+#         with open(v4f, 'r', encoding='utf-8') as f:
+#             curenv = locals()
+#             for i in f.readlines():
+#                 r = re.compile(r'^export\s(.*?)=[\'\"]?([\w\.\-@#!&=_,\[\]\{\}\(\)]{1,})+[\'\"]{0,1}$', re.M | re.S | re.I)
+#                 r = r.findall(i)
+#                 if len(r) > 0:
+#                     for i in r:
+#                         if i[0] != 'JD_COOKIE':
+#                             curenv[i[0]] = getEnvs(i[1])
+#     except:
+#         pass
 
 if "qjd_zlzh" in os.environ:
     if len(os.environ["qjd_zlzh"]) > 1:
         qjd_zlzh = os.environ["qjd_zlzh"]
         qjd_zlzh = qjd_zlzh.replace('[', '').replace(']', '').replace('\'', '').replace(' ', '').split(',')
         print("已获取并使用Env环境 qjd_zlzh:", qjd_zlzh)
-
+if "qjd_isNotice" in os.environ:
+    if len(os.environ["qjd_isNotice"]) > 1:
+        qjd_isNotice = os.environ["qjd_isNotice"]
 
 def userAgent():
     """
@@ -403,7 +392,7 @@ def start():
         print(f"### 开始助力账号【{userNameList[int(ckNum)]}】###")
         groupCode, shareCode, sumBeanNumStr, activityId = getShareCode(cookiesList[ckNum])
         if groupCode == 0:
-            msg(f"## {userNameList[int(ckNum)]}  获取互助码失败。请手动分享后再试~ 或建议早上再跑。")
+            msg(f"## {userNameList[int(ckNum)]}  获取互助码失败。请手动分享后再试~ 。")
             continue
         u = 0
         for i in cookiesList:
@@ -423,7 +412,8 @@ def start():
         msg(f"账号【{i}】已抢京豆: {userCount[i]}")
     msg(f"## 今日累计获得 {beanCount} 京豆")
     try:
-        send(scriptName, msg_info)
+        if qjd_isNotice == "true":
+            send(scriptName, msg_info)
     except:
         pass
 

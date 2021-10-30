@@ -83,6 +83,14 @@ let shareCodesHbSelf: string[] = [], shareCodesHbHw: string[] = [], shareCodesSe
 
     // 扭蛋机
     res = await api('queryservice/GetCardInfo', 'activeid,activekey,channel,jxmc_jstoken,phoneid,sceneid,timestamp')
+    for (let card of res.data.cardinfo) {
+      console.log(`card ${card.cardtype}`, card.currnum, '/', card.neednum)
+      if (card.currnum >= card.neednum) {
+        console.log('可以兑换')
+        // TODO 兑换卡片
+        await sendNotify('牧场卡片可兑换', UserName)
+      }
+    }
     let drawTimes = res.data.times
     if (typeof drawTimes === "undefined") {
       await sendNotify("牧场扭蛋机错误", `账号${i + 1} ${UserName}\n手动建造扭蛋机`)
@@ -92,10 +100,13 @@ let shareCodesHbSelf: string[] = [], shareCodesHbHw: string[] = [], shareCodesSe
       for (let j = 0; j < drawTimes; j++) {
         res = await api('operservice/DrawCard', 'activeid,activekey,channel,jxmc_jstoken,phoneid,sceneid,timestamp')
         if (res.ret === 0) {
-          if (res.data.prizetype === 3)
+          if (res.data.prizetype === 3) {
             console.log('抽奖成功，金币：', res.data.addcoins)
-          else
+          } else if (res.data.prizetype === 1) {
+            console.log('抽奖成功，卡片：', res.data.cardtype)
+          } else {
             console.log('抽奖成功，其他：', res)
+          }
           await wait(4000)
         } else {
           console.log('抽奖失败:', res)
@@ -420,8 +431,7 @@ function makeShareCodesHb(code: string) {
 
 async function getCodes() {
   try {
-    resetHosts()
-    let {data}: any = await axios.get('https://api.jdsharecode.xyz/api/HW_CODES', {timeout: 10000})
+    let {data}: any = await axios.get('https://api.jdsharecode.xyz/api/HW_CODES')
     shareCodesHW = data.jxmc || []
     shareCodesHbHw = data.jxmchb || []
   } catch (e) {
