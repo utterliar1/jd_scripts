@@ -8,9 +8,12 @@ cron: 10 0,7 * * *
 Date: 2021/7/17 下午9:40
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
-update 2021.8.8 12:30
+update 2021.10.31 01:18
 建议cron: 0 0,7,10 * * *  python3 jd_jxgc_tuan.py
 new Env('京喜工厂开团');
+
+2021-10-31：修复活动过期问题。
+
 '''
 #ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
 cookies = ''
@@ -37,7 +40,7 @@ from hashlib import sha256, sha512, md5
 import hmac
 
 appId = 10001
-activeId = 'Xj2_3G-hQ4GRLCsLqIxFeQ%3D%3D'
+activeId = ''
 
 countElectric = {}
 def userAgent():
@@ -248,13 +251,32 @@ def getactiveId():
         "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Mobile Safari/537.36"
     }
     result = requests.get(url, headers, timeout=30).text
-    r = re.compile(r'activeId=(Xj2_.*?),')
+    r = re.compile(r'({"ppmsItemId":\d{1,},"ppms_itemName":"瓜分电力.*?})')
     r = r.findall(result)
+    activeIdList = []
     if len(r) > 0:
-        activeId = r[0]
-        print(f"当前最新activeId【{activeId}】")
-
-
+        for i in r:
+            if '{award}' in i:
+                i = i.replace('{award}','"}')
+            if 'beginTime' in i:
+                i = i.replace('beginTime', 'start')
+                i = i.replace('endTime', 'end')
+                i = i.replace("relateTaskId", "link")
+            activeIdList.append(json.loads(i))
+        for j in activeIdList:
+            if 'start' in j and 'end' in j:
+                t = datetime.datetime.now()
+                startTime = datetime.datetime.strptime(j['start'], '%Y/%m/%d %H:%M:%S')
+                endTime = datetime.datetime.strptime(j['end'], '%Y/%m/%d %H:%M:%S')
+                if t > startTime and t < endTime:
+                    print(f"### 最新瓜分活动【{j['ppms_itemName']}】###")
+                    if 'activeId=' in j['link']:
+                        r = re.compile(r'activeId=(.*?),')
+                        r = r.findall(j['link'])
+                        activeId=r[0]
+                    else:
+                        activeId=j['link']
+                    print(f"当前最新activeId【{activeId}】")
 def get_sign(algo, data, key):
     key = key.encode('utf-8')
     message = data.encode('utf-8')
@@ -322,7 +344,7 @@ def requestAlgo(st, time):
             tk = r['data']['result']['tk']
             algo = r['data']['result']['algo']
             digestmod = re.findall(r'algo\.(\w+)\(', algo)
-            random = re.findall(r'random=\'(.*?)\';', algo)
+            random = re.findall(r'rd=\'(.*?)\';', algo)
             if len(digestmod) > 0 and len(random) > 0:
                 str1 = tk + fingerprint + timestamp + str(appId) + random[0]
                 sign_1 = get_sign(digestmod[0], str1, tk)
@@ -334,7 +356,7 @@ def requestAlgo(st, time):
     except Exception as e:
         print(e)
         return '20210719013616266;5462077388591162;10001;tk01wb2d81c27a8nQWdpRkR2Y3RaL3gQ/jH3eRdiIuTP9vzGiTKpzoHDDPonzXICHw4Lln9KXEa89nFvp4B3WygX4M7y;9e96e2f52fb8db4cb0c555866b123cf00e00a941241a43843e2bd0fd9c2eb144'
-##
+
 ## 获取通知服务
 class msg(object):
     def __init__(self, m):
@@ -392,17 +414,29 @@ class msg(object):
 msg("").main()
 ##############
 
-def getResult(text):
+def getResult(text, a=0):
+    if a == 0:
+        label = 0
+    else:
+        label = a
     try:
         r = re.compile(r'try\s{jsonp.*?\((.*?)\)', re.M | re.S | re.I)
         r = r.findall(text)
         if len(r) > 0:
             return json.loads(r[0])
         else:
-            return text
+            if a < 5:
+                label += 1
+                getResult(text, label)
+            else:
+                return text
     except Exception as e:
         print(e)
-        return text
+        if a < 5:
+            label += 1
+            getResult(text, label)
+        else:
+            return text
 def buildURL(ck, url):
     headers = {
         'Cookie': ck,
@@ -460,10 +494,11 @@ def QueryAllTuan(ck):
 def QueryActiveConfig(ck):
     try:
         _time = stimestamp()
-        url = f'https://m.jingxi.com/dreamfactory/tuan/QueryActiveConfig?activeId={activeId}&tuanId=&_time={_time}&_stk=_time%2CactiveId%2CtuanId&_ste=1&h5st=20210717213423401%3B4316088645437162%3B10001%3Btk01w692e1a35a8nelBVM0N0NEliPUhE8RRHmMdPdJCfVENO%2FE71ZoMM98S4V67ihTo7hDW75aJaU5V2XpU99JrsLPEF%3Bfd20eeaf2e88c127d898c14c6c941e80097a01c7d235c405316a08ab70709e20&_={int(_time) + 4}&sceneval=2&g_login_type=1&callback=jsonpCBKF&g_ty=ls'
+        # url = f'https://m.jingxi.com/dreamfactory/tuan/QueryActiveConfig?activeId={activeId}&tuanId=&_time={_time}&_stk=_time%2CactiveId%2CtuanId&_ste=1&h5st=20210717213423401%3B4316088645437162%3B10001%3Btk01w692e1a35a8nelBVM0N0NEliPUhE8RRHmMdPdJCfVENO%2FE71ZoMM98S4V67ihTo7hDW75aJaU5V2XpU99JrsLPEF%3Bfd20eeaf2e88c127d898c14c6c941e80097a01c7d235c405316a08ab70709e20&_={int(_time) + 4}&sceneval=2&g_login_type=1&callback=jsonpCBKF&g_ty=ls'
+        url = f'https://m.jingxi.com/dreamfactory/tuan/QueryActiveConfig?activeId={activeId}&tuanId=&_time={_time}&_stk=_time%2CactiveId%2CtuanId&_ste=1&h5st=20210717213423401%3B4316088645437162%3B10001%3Btk01w692e1a35a8nelBVM0N0NEliPUhE8RRHmMdPdJCfVENO%2FE71ZoMM98S4V67ihTo7hDW75aJaU5V2XpU99JrsLPEF%3Bfd20eeaf2e88c127d898c14c6c941e80097a01c7d235c405316a08ab70709e20&_={int(_time) + 4}&sceneval=2&g_login_type=1'
         headers, url = buildURL(ck, url)
-        r = requests.get(url, headers=headers, timeout=30, verify=False).text
-        data = getResult(r)
+        data = requests.get(url, headers=headers, timeout=30, verify=False).json()
+        # data = getResult(r)
         tuanId = data['data']['userTuanInfo']['tuanId']
         isOpenTuan = data['data']['userTuanInfo']['isOpenTuan']
         surplusOpenTuanNum = data['data']['userTuanInfo']['surplusOpenTuanNum']
@@ -503,7 +538,9 @@ def CreateTuan(ck):
             url = f'https://m.jingxi.com/dreamfactory/tuan/CreateTuan?activeId={activeId}&isOpenApp=1&_time={_time}&_stk=_time%2CactiveId%2CisOpenApp&_ste=1&h5st=20210717213421615%3B4316088645437162%3B10001%3Btk01w692e1a35a8nelBVM0N0NEliPUhE8RRHmMdPdJCfVENO%2FE71ZoMM98S4V67ihTo7hDW75aJaU5V2XpU99JrsLPEF%3Bfe30749da12b4aab179b7fa95c4f7c20f46fda2cc50228293a47a337f1b3b734&_={int(_time) + 4}&sceneval=2&g_login_type=1&callback=jsonpCBKE&g_ty=ls'
             headers, url = buildURL(ck, url)
             r = requests.get(url, headers=headers, timeout=30, verify=False).text
-            getResult(r)
+            data = getResult(r)
+            if data['ret'] == 10204:
+                print(f"\t{data['msg']}")
             return tuanId, surplusOpenTuanNum
         else:
             return tuanId, surplusOpenTuanNum
@@ -561,7 +598,7 @@ def start():
                 continue
         userName = userNameList[ckNum]
         s = 1
-        for i in range(3):
+        for i in range(6):
             print(f"【{userNameList[ckNum]}】开始第{i+1}次开团")
             tuanId, surplusOpenTuanNum = CreateTuan(cookiesList[ckNum])
             if i+1 == 1:
