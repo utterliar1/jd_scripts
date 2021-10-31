@@ -5,6 +5,15 @@
 
 ##############短期活动##############
 
+# 双11星推官 (11.10 结束)
+2 0,7,15 * * * node /scripts/jd_1111xtg.js >> /scripts/logs/jd_1111xtg.log 2>&1
+
+# 潮玩儿制躁团 (11.14 结束)
+7 9 * 10-11 * node /scripts/jd_zzt.js >> /scripts/logs/jd_zzt.log 2>&1
+
+# 京东超级盒子 (11.11 结束)
+13 3,13 * 10-11 * node /scripts/jd_cjhz.js >> /scripts/logs/jd_cjhz.log 2>&1
+
 # 发财挖宝help助力 (11.30 结束)
 6 1,3,7,11,16,20 * 10-11 * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
 
@@ -20,7 +29,7 @@
 # 环游记
 13 0,6-23/2 * 10-11 * node /scripts/jd_hyj.js >> /scripts/logs/jd_hyj.log 2>&1
 
-# 惊喜大作战
+# 预售福利机
 2 0,2 * 10-11 * node /scripts/jd_ys.js >> /scripts/logs/jd_ys.log 2>&1
 
 # 惊喜大作战
@@ -28,9 +37,6 @@
 
 # 东东超市抢京豆
 2 0,9 * 10-11 * node /scripts/jd_fission.js >> /scripts/logs/jd_fission.log 2>&1
-
-# 城城领现金
-3 0,5,9,13,17,22 * 10 * node /scripts/jd_city.js >> /scripts/logs/jd_city.log 2>&1
 
 # 集魔方 (京东APP - 新品 - 集魔方)
 25 0,13 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
