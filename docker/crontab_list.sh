@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 选品官 (11.13 结束)
+21 2,11 1-13 11 * node /scripts/jd_xpg.js >> /scripts/logs/jd_xpg.log 2>&1
+
 # 双11星推官 (11.10 结束)
 2 0,7,15 * * * node /scripts/jd_1111xtg.js >> /scripts/logs/jd_1111xtg.log 2>&1
 
@@ -13,9 +16,6 @@
 
 # 京东超级盒子 (11.11 结束)
 13 3,13 * 10-11 * node /scripts/jd_cjhz.js >> /scripts/logs/jd_cjhz.log 2>&1
-
-# 发财挖宝help助力 (11.30 结束)
-6 1,3,7,11,16,20 * 10-11 * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
 
 # 发财大赢家之翻翻乐 (没看什么时候结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1

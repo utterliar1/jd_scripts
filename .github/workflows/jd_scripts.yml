@@ -25,11 +25,11 @@ jobs:
         cp -f ./Aaron/jd_*.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
-        #echo "========= 开始下载smiek2221的脚本 ========="
-        #git clone https://github.com/smiek2221/scripts.git ./smiek2221
-        #rm -r ./smiek2221/USER_AGENTS.js
-        #cp -f ./smiek2221/*_*.js ./
-        #rm -rf ./smiek2221
+        echo "========= 开始下载smiek2221的脚本 ========="
+        git clone https://github.com/smiek2221/scripts.git ./smiek2221
+        rm -rf ./smiek2221/USER_AGENTS.js
+        cp -f ./smiek2221/*_*.js ./
+        rm -rf ./smiek2221
         echo "========= 开始下载passby的脚本 ========="
         git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
         cp -f ./JDDJ/jddj_*.js ./
@@ -89,7 +89,7 @@ jobs:
         rename -f 's/^js_/jd_js/' *
         rename -f 's/^jd_fan/jd_wxFans/' *
         rename -f 's/^jx_/jd_jx/' *
-        #rename -f 's/^gua_/jd_gua/' *
+        rename -f 's/^gua_/jd_gua/' *
         rename -f 's/^star_/jd_star/' *
         rename -f 's/^jddj/jd_dj/' *
         echo "========= 开始合并cron定时文件 ========="
