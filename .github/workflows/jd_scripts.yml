@@ -89,7 +89,7 @@ jobs:
         rename -f 's/^js_/jd_js/' *
         rename -f 's/^jd_fan/jd_wxFans/' *
         rename -f 's/^jx_/jd_jx/' *
-        #rename -f 's/^gua_/jd_gua/' *
+        rename -f 's/^gua_/jd_gua/' *
         rename -f 's/^star_/jd_star/' *
         rename -f 's/^jddj/jd_dj/' *
         echo "========= 开始合并cron定时文件 ========="
