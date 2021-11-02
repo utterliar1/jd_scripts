@@ -84,6 +84,7 @@ jobs:
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_mf_exchange.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_cjhz.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zzt.js
+        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_sjjc.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
         rename -f 's/^js_/jd_js/' *
@@ -100,7 +101,9 @@ jobs:
         #sed -i 's/ddwj/guaddgame/g' ./docker/crontab_list.sh
         #sed -i 's/ddworld/guaddworld/g' ./docker/crontab_list.sh
         #sed -i 's/sjzjd/guaMMdou/g' ./docker/crontab_list.sh
-        sed -i 's/superBrand/productZ4Brand/g' ./docker/crontab_list.sh
+        sed -i 's/jd_superBrand/jd_productZ4Brand/g' ./docker/crontab_list.sh
+        sed -i 's/jd_1111productZ4Brand/jd_superBrand/g' ./docker/crontab_list.sh
+        sed -i 's/jd_1111xtg/jd_xtg/g' ./docker/crontab_list.sh
         sed -i 's/jxqd/jxsign/g' ./docker/crontab_list.sh
         sed -i 's/jd_joy.js/jd_joy_new.js/g' ./docker/crontab_list.sh
         sed -i 's/zqfl/getUp/g' ./docker/crontab_list.sh

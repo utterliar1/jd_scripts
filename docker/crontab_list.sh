@@ -5,11 +5,20 @@
 
 ##############短期活动##############
 
+# 手机竞猜 (不知道是什么鬼 、 2021年10月31日20:00:00-2021年11月10日 23:59:59 )
+6 0,7,17 * * * node /scripts/jd_sjjc.js >> /scripts/logs/jd_sjjc.log 2>&1
+
+# 双11特物
+3 9,13,16,19 2-8 11 * node /scripts/jd_1111superBrand.js >> /scripts/logs/jd_1111superBrand.log 2>&1
+
+# 跳跳乐瓜分京豆 (什么时候结束)
+1 0,9,15,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
+
 # 选品官 (11.13 结束)
 21 2,11 1-13 11 * node /scripts/jd_xpg.js >> /scripts/logs/jd_xpg.log 2>&1
 
 # 双11星推官 (11.10 结束)
-2 0,7,15 * * * node /scripts/jd_1111xtg.js >> /scripts/logs/jd_1111xtg.log 2>&1
+2 0,7,15 * * * node /scripts/jd_xtg.js >> /scripts/logs/jd_xtg.log 2>&1
 
 # 潮玩儿制躁团 (11.14 结束)
 7 9 * 10-11 * node /scripts/jd_zzt.js >> /scripts/logs/jd_zzt.log 2>&1
