@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 跳跳乐瓜分京豆 (什么时候结束)
+1 0,9,15,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
+
 # 选品官 (11.13 结束)
 21 2,11 1-13 11 * node /scripts/jd_xpg.js >> /scripts/logs/jd_xpg.log 2>&1
 
