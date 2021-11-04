@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 电器盲盒抽京豆 (11.20?)
+0 1,8 1-20 11 * node /scripts/jd_dqmh.js >> /scripts/logs/jd_dqmh.log 2>&1
+
 # 手机竞猜 (不知道是什么鬼 too)
 1 0,9,19,23 * * * node /scripts/jd_nnfls.js >> /scripts/logs/jd_nnfls.log 2>&1
 
