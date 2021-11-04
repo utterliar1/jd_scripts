@@ -2,7 +2,7 @@
 /**
 芥末签到
 入口：芥末小程序
-cron 11 0,9 * * * jd_zsign.js
+11 0,9 * * * jd_zsign.js
 TG:https://t.me/sheeplost
 */
 const $ = new Env('芥末签到');
