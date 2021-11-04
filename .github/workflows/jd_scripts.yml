@@ -81,7 +81,7 @@ jobs:
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_dwapp.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zsign.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_ttpt.js
-        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_mf_exchange.js
+        #wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_mf_exchange.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_cjhz.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zzt.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_sjjc.js
