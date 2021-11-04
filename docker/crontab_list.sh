@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 电器盲盒抽京豆 (11.20?)
+0 1,8 1-20 11 * node /scripts/jd_dqmh.js >> /scripts/logs/jd_dqmh.log 2>&1
+
 # 手机竞猜 (不知道是什么鬼 too)
 1 0,9,19,23 * * * node /scripts/jd_nnfls.js >> /scripts/logs/jd_nnfls.log 2>&1
 
@@ -37,9 +40,6 @@
 
 # 京东手机狂欢城 (11.13 结束)
 6 0-18/6 * 10-11 * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
-
-# 环游记
-13 0,6-23/2 * 10-11 * node /scripts/jd_hyj.js >> /scripts/logs/jd_hyj.log 2>&1
 
 # 预售福利机
 2 0,2 * 10-11 * node /scripts/jd_ys.js >> /scripts/logs/jd_ys.log 2>&1

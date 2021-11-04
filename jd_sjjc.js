@@ -5,7 +5,7 @@ boxjs：https://raw.githubusercontent.com/Ariszy/Private-Script/master/Ariszy.bo
 
 [task_local]
 #手机竞猜
-0 0 * * * https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_sjjc.js, tag= 手机竞猜
+6 0,7,17 * * * jd_sjjc.js, tag= 手机竞猜
 ================Loon==============
 [Script]
 cron "0 0 * * *" script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_sjjc.js,tag= 手机竞猜

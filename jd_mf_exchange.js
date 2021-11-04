@@ -5,7 +5,7 @@
 ============Quantumultx===============
 [task_local]
 #5魔方兑换
-6 0 * * * jd_mofang_exchange.js, tag=5魔方兑换, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png, enabled=true
+6 0 * * * jd_mf_exchange.js, tag=5魔方兑换, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png, enabled=true
 
 ================Loon==============
 [Script]
