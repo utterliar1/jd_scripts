@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 环游记大富翁 (11.11)
+3 3 1-11 11 * node /scripts/jd_travel_shop.js >> /scripts/logs/jd_travel_shop.log 2>&1
+
 # 电器盲盒抽京豆 (11.30?)
 13 3,10,18 * * * node /scripts/jd_vivo.js >> /scripts/logs/jd_vivo.log 2>&1
 
