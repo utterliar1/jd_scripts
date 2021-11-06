@@ -62,9 +62,6 @@
 # 京东小魔方 (9.29 24.00 结束)
 13 0,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
 
-# 芥么赚豪礼
-22 1,13 * * * node /scripts/jd_genz.js >> /scripts/logs/jd_genz.log 2>&1
-
 # 芥末小程序签到领现金 (12.31结束)
 16 9 * * * node /scripts/jd_zsign.js >> /scripts/logs/jd_zsign.log 2>&1
 
