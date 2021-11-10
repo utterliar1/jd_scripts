@@ -104,7 +104,7 @@ if __name__ == '__main__':
     print("\n打印在控制台的信息:")
     msg("Hello ! ")
     print("Test ")  # 不会记录
-    msg("My name is Curtin. ")
+    # msg("My name is Curtin. ")
 
     # 发送到通知服务（如tg机器人、企业微信等）
     message = msg().message()
