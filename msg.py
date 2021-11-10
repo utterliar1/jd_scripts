@@ -56,10 +56,8 @@ class msg(object):
         if a == 0:
             a += 1
         try:
-            # url = 'https://gitee.com/curtinlv/Public/raw/master/sendNotify.py'
             url = 'https://ghproxy.com/https://raw.githubusercontent.com/curtinlv/JD-Script/main/sendNotify.py'
             response = requests.get(url)
-            print(response.text)
             if 'curtinlv' in response.text:
                 with open('sendNotify.py', "w+", encoding="utf-8") as f:
                     f.write(response.text)
@@ -104,7 +102,7 @@ if __name__ == '__main__':
     print("\n打印在控制台的信息:")
     msg("Hello ! ")
     print("Test ")  # 不会记录
-    # msg("My name is Curtin. ")
+    msg("My name is Curtin. ")
 
     # 发送到通知服务（如tg机器人、企业微信等）
     message = msg().message()
