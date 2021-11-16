@@ -8,35 +8,17 @@
 # 饭粒
 5 0,5,15 * * * node /scripts/jd_fanli.js >> /scripts/logs/jd_fanli.log 2>&1
 
-# 电器盲盒抽京豆 (11.30?)
-13 3,10,18 * * * node /scripts/jd_vivo.js >> /scripts/logs/jd_vivo.log 2>&1
-
 # 电器盲盒抽京豆 (11.20?)
 0 1,8 1-20 11 * node /scripts/jd_dqmh.js >> /scripts/logs/jd_dqmh.log 2>&1
 
-# 手机竞猜 (不知道是什么鬼 too)
+# 牛牛福利 (不知道是什么鬼 too)
 1 0,9,19,23 * * * node /scripts/jd_nnfls.js >> /scripts/logs/jd_nnfls.log 2>&1
-
-# 手机竞猜 (不知道是什么鬼 、 2021年10月31日20:00:00-2021年11月10日 23:59:59 )
-6 0,7,17 * * * node /scripts/jd_sjjc.js >> /scripts/logs/jd_sjjc.log 2>&1
 
 # 跳跳乐瓜分京豆 (什么时候结束)
 1 0,9,15,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 
-# 选品官 (11.13 结束)
-21 2,11 1-13 11 * node /scripts/jd_xpg.js >> /scripts/logs/jd_xpg.log 2>&1
-
-# 潮玩儿制躁团 (11.14 结束)
-7 9 * 10-11 * node /scripts/jd_zzt.js >> /scripts/logs/jd_zzt.log 2>&1
-
-# 京东超级盒子 (11.11 结束)
-13 3,13 * 10-11 * node /scripts/jd_cjhz.js >> /scripts/logs/jd_cjhz.log 2>&1
-
 # 发财大赢家之翻翻乐 (没看什么时候结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
-
-# 电竞预言家 (11.6 结束)
-13 1,11 * * * node /scripts/jd_lol.js >> /scripts/logs/jd_lol.log 2>&1
 
 # 惊喜大作战
 6 1,13 * 10-11 * node /scripts/jd_jxdzz.js >> /scripts/logs/jd_jxdzz.log 2>&1
