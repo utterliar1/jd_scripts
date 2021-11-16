@@ -82,7 +82,6 @@ jobs:
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zsign.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_ttpt.js
         #wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_mf_exchange.js
-        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zzt.js
         wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_sjjc.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
