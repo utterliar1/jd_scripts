@@ -492,8 +492,9 @@ def start():
         sleep(1)
         a += 1
     # 抽奖
-    a = 0
+    a = 1
     shareUuid = '73361f819faf41898ca8b1cf958a3f13'
+    shareuserid4minipg='wqdHuFdMJj0bcG7ysk0r8mwklxRrP5C78lmKjh9Mn4avAmNuF4i+OHS9NlRdtagP'
     for ck, user in zip(cookieList, nameList):
         print(f"##☺️用户{a}【{user}】")
         cookie = buildheaders(ck, shareUuid, shareuserid4minipg)
@@ -508,11 +509,15 @@ def start():
             continue
         sleep(0.3)
         yunMidImageUrl, pin, nickname = getUserInfo(header, pin)
+        header = accessLog(header, pin, shareUuid, shareuserid4minipg, AUTH_C_USER)
         actorUuid, shareTitle = activityContent(header, pin, shareUuid, yunMidImageUrl, nickname)
+        venderIdList, channelList, score1, score2 = checkOpenCard(header, actorUuid, shareUuid, pin)
+        bindWithVender(ck, venderIdList, channelList)
         for i in range(2):
             startDraw(header, actorUuid, pin, user, i)
         if a == 1:
             shareUuid = actorUuid
+            shareuserid4minipg = pin
         a += 1
 
     msg("*"*50)
