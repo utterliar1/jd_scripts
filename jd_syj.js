@@ -52,6 +52,8 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     await $.wait(1000)
     $.authorTuanList = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_zz.json') || [];
   }
+  const temp = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/jd_zz.json') || []
+  $.authorTuanList = [...$.authorTuanList,...temp]
   // await getRandomCode();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {

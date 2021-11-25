@@ -6,14 +6,14 @@ boxjs订阅地址:https://gitee.com/passerby-b/javascript/raw/master/JD/passerby
 TG群:https://t.me/passerbyb2021
 
 [task_local]
-10 0 * * * https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_plantBeans.js
+10 0 * * * jd_dj_plantBeans.js
 
 [Script]
 cron "10 0 * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_plantBeans.js,tag=京东到家鲜豆庄园
 
 */
 
-const $ = new API("jddj_plantBeans");
+const $ = new API("jd_dj_plantBeans");
 let ckPath = './jdCookie.js';//ck路径,环境变量:JDDJ_CKPATH
 
 let cookies = [];
@@ -346,17 +346,13 @@ async function taskLoginUrl(thiscookie) {
                 let ckstr = '';
                 await $.http.get(option).then(async response => {
                     //console.log(response);
-                    let body = JSON.parse(response.body);
-                    if (body.code == 0) {
+                    if (response.body.indexOf('请求成功') > -1) {
                         for (const key in response.headers) {
                             if (key.toLowerCase().indexOf('cookie') > -1) {
                                 ckstr = response.headers[key].toString();
                             }
                         }
                         ckstr += ';deviceid_pdj_jd=' + deviceid;
-                    }
-                    else {
-                        console.log(body.msg);
                     }
                 });
                 resolve(ckstr);

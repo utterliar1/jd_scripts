@@ -20,20 +20,26 @@ jobs:
         shopt -s extglob
         rm -rf !(docker|backup|icon|account.json|Loon|QuantumultX|README.md|jd_half_redrain.js|jd_super_redrain.js)
         shopt -u extglob
+        #echo "========= 开始下载小小的脚本及依赖 ========="
+        #git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
+        #cp -f ./Aaron/jd_*.js ./
+        #cp -rf ./Aaron/utils ./
+        #rm -rf ./Aaron
         echo "========= 开始下载小小的脚本及依赖 ========="
-        git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
-        cp -f ./Aaron/jd_*.js ./
-        cp -rf ./Aaron/utils ./
-        rm -rf ./Aaron
+        git clone https://github.com/Annyoo2021/scripts.git ./Annyoo2021
+        cp -f ./Annyoo2021/jd_*.js ./
+        cp -rf ./Annyoo2021/utils ./
+        cp -rf ./Annyoo2021/function ./
+        rm -rf ./Annyoo2021
         echo "========= 开始下载smiek2221的脚本 ========="
         git clone https://github.com/smiek2221/scripts.git ./smiek2221
         rm -rf ./smiek2221/USER_AGENTS.js
         cp -f ./smiek2221/*_*.js ./
         rm -rf ./smiek2221
-        echo "========= 开始下载passby的脚本 ========="
-        git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
-        cp -f ./JDDJ/jddj_*.js ./
-        rm -rf ./JDDJ
+        #echo "========= 开始下载passby的脚本 ========="
+        #git clone https://github.com/passerby-b/JDDJ.git ./JDDJ
+        #cp -f ./JDDJ/jddj_*.js ./
+        #rm -rf ./JDDJ
         echo "========= 开始下载curtinlv的脚本 ========="
         git clone https://github.com/curtinlv/JD-Script.git ./curtinlv
         find ./curtinlv/ -name "*py" -type f -exec cp {} ./ \;
@@ -78,9 +84,9 @@ jobs:
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
         wget -N https://github.com/jiulan/platypus/raw/main/scripts/jd_shop_sign.js
-        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_dwapp.js
-        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zsign.js
-        wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_ttpt.js
+        #wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_dwapp.js
+        #wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_zsign.js
+        #wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_ttpt.js
         #wget -N https://github.com/Annyoo2021/scripts/raw/main/jd_mf_exchange.js
         echo "========= 开始更改前缀 ========="
         #for i in `ls | grep -e ^gua`; do mv -f $i `echo "jd_"$i`; done
