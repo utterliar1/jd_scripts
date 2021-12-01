@@ -8,32 +8,17 @@
 # 饭粒
 5 0,5,15 * * * node /scripts/jd_fanli.js >> /scripts/logs/jd_fanli.log 2>&1
 
-# 电器盲盒抽京豆 (11.20?)
-0 1,8 1-20 11 * node /scripts/jd_dqmh.js >> /scripts/logs/jd_dqmh.log 2>&1
-
-# 牛牛福利 (不知道是什么鬼 too)
-1 0,9,19,23 * * * node /scripts/jd_nnfls.js >> /scripts/logs/jd_nnfls.log 2>&1
-
 # 跳跳乐瓜分京豆 (什么时候结束)
-1 0,9,15,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
+# 1 0,9,15,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 
 # 发财大赢家之翻翻乐 (没看什么时候结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
-
-# 惊喜大作战
-6 1,13 * 10-11 * node /scripts/jd_jxdzz.js >> /scripts/logs/jd_jxdzz.log 2>&1
-
-# 东东超市抢京豆
-2 0,9 * 10-11 * node /scripts/jd_fission.js >> /scripts/logs/jd_fission.log 2>&1
 
 # 集魔方 (京东APP - 新品 - 集魔方)
 25 0,13 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
 
 # 京东小魔方 (9.29 24.00 结束)
 13 0,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
-
-# 芥末小程序签到领现金 (12.31结束)
-16 9 * * * node /scripts/jd_zsign.js >> /scripts/logs/jd_zsign.log 2>&1
 
 # 京喜领88元红包(9.30结束)
 0 0,12,21 * * * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
