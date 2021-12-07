@@ -11,6 +11,9 @@
 # 跳跳乐瓜分京豆 (什么时候结束)
 # 1 0,9,15,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 
+# 金榜年终奖
+3 1,5 * * * node /scripts/jd_split.js >> /scripts/logs/jd_split.log 2>&1
+
 # 发财大赢家之翻翻乐 (没看什么时候结束)
 20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 
