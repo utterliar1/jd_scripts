@@ -8,6 +8,9 @@
 # 饭粒
 5 0,5,15 * * * node /scripts/jd_fanli.js >> /scripts/logs/jd_fanli.log 2>&1
 
+# 魔方兑换
+11 0,20 * * * node /scripts/jd_mf_exchange.js >> /scripts/logs/jd_mf_exchange.log 2>&1
+
 # 跳跳乐瓜分京豆 (什么时候结束)
 # 1 0,9,15,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 
