@@ -18,6 +18,7 @@ if ($.isNode()) {
 const activityList = [
     {'id':'3ad40f25d3f949b9a7a6f9abf460a27d','endTime':1639584000000},
     {'id':'68cd1c64d3cc4421a992c40d46f0e0d5','endTime':1640015999000},
+    {'id':'572c45d23ce341ceb72391c4555fc96e','endTime':1639583999000},
 ];
 const ruhuiFlag = $.isNode() ? (process.env.RUHUIFLAG ? process.env.RUHUIFLAG : `2`):`2`;//有些粉丝互动需要入会，RUHUIFLAG="1"，自动入会，默认不自动入会
 let hotList = [];//黑号列表，填写pin
