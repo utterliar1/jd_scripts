@@ -81,6 +81,8 @@
 1 0,10 * * * node /scripts/jd_angryKoi.js >> /scripts/logs/jd_angryKoi.log 2>&1
 # 过期京豆兑换喜豆
 22 9 * * * node /scripts/jd_exchangejxbeans.js >> /scripts/logs/jd_exchangejxbeans.log 2>&1
+# 京喜签到-喜豆
+6 3,11 * * * node /scripts/jx_sign_xd.js >> /scripts/logs/jx_sign_xd.log 2>&1
 # 东东世界
 17 1,15 * * * node /scripts/jd_ddworld.js >> /scripts/logs/jd_ddworld.log 2>&1
 # 东东世界兑换
