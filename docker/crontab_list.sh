@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 京东集魔方
+35 2,10 * * * node /scripts/jd_mofang_j.js >> /scripts/logs/jd_mofang_j.log 2>&1
+
 # 京东特价 翻翻乐
 32 0,6-23 * * * node /scripts/jd_jdtj_winner.js >> /scripts/logs/jd_jdtj_winner.log 2>&1
 
