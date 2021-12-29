@@ -102,24 +102,26 @@ async function main() {
     await takeGetRequest('get_exchange');
     for (let i = $.exChangeList.length -1; i >= 0 ; i--) {
         let oneExchange = $.exChangeList[i];
-        console.log(`奖励：${oneExchange.name}，库存：${oneExchange.stock}`);
+        if(Number(oneExchange.id) !== 6 && Number(oneExchange.id) !== 5 && Number(oneExchange.id) !== 1){
+            continue;
+        }
+        //console.log(`奖励：${oneExchange.name}，库存：${oneExchange.stock}`);
         if(exchangeId !== '999' && Number(exchangeId) !== oneExchange.id){
             continue;
         }
         if(userScore >= oneExchange.coins && oneExchange.stock >0 && oneExchange.times_limit !== oneExchange.exchange_total){
-            console.log(`兑换${oneExchange.name}`);
+            console.log(`奖励：${oneExchange.name},去兑换`);
             $.changeId = oneExchange.id;
             await takePostRequest('do_exchange');
             break;
+        }else if(oneExchange.times_limit === oneExchange.exchange_total){
+            console.log(`奖励：${oneExchange.name},没有兑换次数`);
         }else{
             if(oneExchange.stock >0){
                 console.log(`当前积分：${userScore},需要${oneExchange.coins}积分才能兑换${oneExchange.name}`);
             }else{
-                console.log(`兑换${oneExchange.name},库存不足,不能兑换`);
+                console.log(`奖励：${oneExchange.name},库存不足,不能兑换`);
             }
-        }
-        if(oneExchange.times_limit !== oneExchange.exchange_total && exchangeId === '999'){
-            break;
         }
     }
 }
