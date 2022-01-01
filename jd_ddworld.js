@@ -93,10 +93,10 @@ async function main() {
     $.taskList = [];
     await takeGetRequest('get_task');
     await $.wait(2000);
-    await doTask();
-    await $.wait(2000);
-    console.log(`\n`);
-    await takeGetRequest('get_task');
+    // await doTask();
+    // await $.wait(2000);
+    // console.log(`\n`);
+    // await takeGetRequest('get_task');
     let userScore = $.taskInfo.userScore;
     $.exChangeList = []
     await takeGetRequest('get_exchange');
