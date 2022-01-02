@@ -5,9 +5,6 @@
 
 ##############短期活动##############
 
-# 京东集魔方
-35 2,10 * * * node /scripts/jd_mofang_j.js >> /scripts/logs/jd_mofang_j.log 2>&1
-
 # 京东特价 翻翻乐
 32 0,6-23 * * * node /scripts/jd_jdtj_winner.js >> /scripts/logs/jd_jdtj_winner.log 2>&1
 
@@ -19,9 +16,6 @@
 
 # 魔方兑换
 11 0,20 * * * node /scripts/jd_mf_exchange.js >> /scripts/logs/jd_mf_exchange.log 2>&1
-
-# 发现好货 (12.31)
-33 10,16 * 12 * node /scripts/jd_fxhh.js >> /scripts/logs/jd_fxhh.log 2>&1
 
 # 跳跳乐瓜分京豆 (什么时候结束)
 # 1 0,9,15,21 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
@@ -52,8 +46,6 @@
 
 # 众筹许愿池 活动时间：2021-08-01到2021-12-31
 11 1,9 * * * node /scripts/jd_wish.js >> /scripts/logs/jd_wish.log 2>&1
-
-# 星系牧场 #wen
 
 # 特物Z 活动时间：###
 3 13,22 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
