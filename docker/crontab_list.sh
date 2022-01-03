@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 年货签到
+6 1,13,23 * * * node /scripts/jd_nh_sign.js >> /scripts/logs/jd_nh_sign.log 2>&1
+
 # 京东特价 翻翻乐
 32 0,6-23 * * * node /scripts/jd_jdtj_winner.js >> /scripts/logs/jd_jdtj_winner.log 2>&1
 
