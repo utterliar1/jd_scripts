@@ -99,6 +99,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
     .finally(() => $.done())
 
 async function main() {
+    $.unLogin = false
     await superboxSupBoxHomePage({ "taskId": "", "linkId": "Ll3Qb2mhCXSEWxruhv8qIw", "encryptPin": "" })
     console.log(`【京东账号${$.index}】${$.nickName || $.UserName}互助码：${$.encryptPin}`)
     await $.wait(1000);
@@ -112,14 +113,17 @@ async function main() {
             };
             if (["BROWSE_SHOP"].includes($.oneTask.taskType) && $.oneTask.taskFinished === false) {
                 await apTaskDetail({ "taskId": $.oneTask.id, "taskType": $.oneTask.taskType, "channel": 4, "linkId": "Ll3Qb2mhCXSEWxruhv8qIw", "encryptPin": "7pcfSWHrAG9MKu3RKLl127VL5L4aIE1sZ1eRRdphpl8" });
+                if ($.unLogin) return
                 await $.wait(1000)
-                for (let y = 0; y < ($.doList.status.finishNeed - $.doList.status.userFinishedTimes); y++) {
-                    $.startList = $.doList.taskItemList[y];
-                    $.itemName = $.doList.taskItemList[y].itemName;
-                    console.log(`去浏览${$.itemName}`)
-                    await apDoTask({ "taskId": $.allList[i].id, "taskType": $.allList[i].taskType, "channel": 4, "itemId": $.startList.itemId, "linkId": "Ll3Qb2mhCXSEWxruhv8qIw", "encryptPin": "7pcfSWHrAG9MKu3RKLl127VL5L4aIE1sZ1eRRdphpl8" })
-                    await $.wait(1000)
-                }
+                if ($.doList && $.doList.status) {
+                    for (let y = 0; y < ($.doList.status.finishNeed - $.doList.status.userFinishedTimes); y++) {
+                        $.startList = $.doList.taskItemList[y];
+                        $.itemName = $.doList.taskItemList[y].itemName;
+                        console.log(`去浏览${$.itemName}`)
+                        await apDoTask({ "taskId": $.allList[i].id, "taskType": $.allList[i].taskType, "channel": 4, "itemId": $.startList.itemId, "linkId": "Ll3Qb2mhCXSEWxruhv8qIw", "encryptPin": "7pcfSWHrAG9MKu3RKLl127VL5L4aIE1sZ1eRRdphpl8" })
+                        await $.wait(1000)
+                    }
+                } else return
             }
         }
     } else {
@@ -195,7 +199,10 @@ function apTaskDetail(body) {
                         $.doList = data.data
                         //console.log(JSON.stringify($.doList));
                     } else {
-                        console.log(`apTaskDetail错误：${JSON.stringify(data)}\n`);
+                        if (data.errMsg && data.errMsg == "未登录") {
+                            console.log(`账号好像失效了\n`);
+                            $.unLogin = true
+                        } else console.log(`apTaskDetail错误：${JSON.stringify(data)}\n`);
                     }
                 }
             } catch (e) {
