@@ -78,7 +78,7 @@ jobs:
         cp -f ./JDHelloWorld/*_*.js ./
         cp -f ./JDHelloWorld/*_*.ts ./backup/ts/
         rm -rf ./JDHelloWorld
-        rm ./jd_ddWorld.js
+        #rm -f ./jd_ddWorld.js
         echo "========= 开始下载单文件脚本 ========="
         wget -N https://github.com/yangtingxiao/QuantumultX/raw/master/scripts/jd/jd_lotteryMachine.js
         wget -N https://github.com/NobyDa/Script/raw/master/JD-DailyBonus/JD_DailyBonus.js
