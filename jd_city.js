@@ -28,6 +28,9 @@ let UA = '',uuid = '';
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
+    console.log(`失效，暂不执行`)
+    return ;
+
     console.log(`注意：助力第一个CK和脚本内置作者助力码，介意勿跑，等待10秒`);
     let res = [];
     try{res = await getAuthorShareCode('https://raw.githubusercontent.com/lukelucky6/code/main/city.json');}catch (e) {}
