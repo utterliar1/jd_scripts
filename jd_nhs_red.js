@@ -78,7 +78,7 @@ async function takeRequest(ck,UA,userName,actId,code){
     let body = {"platform":4,"unionActId":"31137","actId":actId,"d":code,"unionShareId":"","type":1,"eid":"-1"}
     let bodyInfo = `functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body=${JSON.stringify(body)}&client=apple&clientVersion=8.3.6`;
     let h5st = await getH5st(`https://api.m.jd.com?${bodyInfo}`);
-    let url = `https://api.m.jd.com?functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body=${encodeURIComponent(JSON.stringify(body))}&client=apple&clientVersion=8.3.6`;
+    let url = `https://api.m.jd.com?functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body=${JSON.stringify(body)}&client=apple&clientVersion=8.3.6`;
     url += `&h5st=${h5st}`;
     const headers = {
         "Accept-Language": "zh-cn",
