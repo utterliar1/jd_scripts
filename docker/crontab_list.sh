@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 萌虎摇摇乐
+0 1,10,20 * * * node /scripts/jd_mhyyl.js >> /scripts/logs/jd_mhyyl.log 2>&1
+
 # 通天塔签到共建
 0 0,2 * * * node /scripts/jd_babel_sign.js >> /scripts/logs/jd_babel_sign.log 2>&1
 
