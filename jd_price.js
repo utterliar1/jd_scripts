@@ -66,7 +66,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
       }
       await price()
       if (i != cookiesArr.length - 1) {
-        await $.wait(3000)
+        await $.wait(5000)
         await jstoken();
       }
     }
@@ -112,7 +112,7 @@ async function siteppM_skuOnceApply() {
           if (safeGet(data)) {
             data = JSON.parse(data)
             if (data.flag) {
-              await $.wait(25 * 1000)
+              await $.wait(28 * 1000)
               await siteppM_appliedSuccAmount()
             } else {
               console.log(`保价失败：${data.responseMessage}`)
