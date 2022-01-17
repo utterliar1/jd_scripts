@@ -5,7 +5,7 @@
  * 脚本是否耗时只看args_xh.maxLength的大小
  * 上一作者说了每天最多300个商店，总上限为500个，jd_unsubscribe.js我已更新为批量取关版
  * 请提前取关至少250个商店确保京东试用脚本正常运行
-16 2 * * * jd_try.js
+ * 16 2 * * * jd_try.js
  * @Address: https://github.com/X1a0He/jd_scripts_fixed/blob/main/jd_try_xh.js
  * @LastEditors: X1a0He
  */
@@ -44,7 +44,6 @@ $.innerKeyWords =
         "脚皮", "除臭", "性感", "内裤", "跳蛋",
         "安全套", "龟头", "阴道", "阴部", "手机卡"
     ]
-
 //下面很重要，遇到问题请把下面注释看一遍再来问
 let args_xh = {
     /*
@@ -148,108 +147,103 @@ let args_xh = {
     sendNum: process.env.JD_TRY_SENDNUM * 1 || 50,
 }
 //上面很重要，遇到问题请把上面注释看一遍再来问
-let JD_TRY = true
 !(async() => {
-    console.log('X1a0He留：遇到问题请把脚本内的注释看一遍再来问，谢谢')
+    // console.log('X1a0He留：遇到问题请把脚本内的注释看一遍再来问，谢谢')
     await $.wait(500)
     // 如果你要运行京东试用这个脚本，麻烦你把环境变量 JD_TRY 设置为 true
-    if(JD_TRY = true){
-        await requireConfig()
-        if(!$.cookiesArr[0]){
-            $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
-                "open-url": "https://bean.m.jd.com/"
-            })
-            return
-        }
-        for(let i = 0; i < $.cookiesArr.length; i++){
-            if($.cookiesArr[i]){
-                $.cookie = $.cookiesArr[i];
-                $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
-                $.index = i + 1;
-                $.isLogin = true;
-                $.nickName = '';
-                await totalBean();
-                console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
-                if(!$.isLogin){
-                    $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {
-                        "open-url": "https://bean.m.jd.com/bean/signIndex.action"
-                    });
-                    await $.notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+    await requireConfig()
+    if(!$.cookiesArr[0]){
+        $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
+            "open-url": "https://bean.m.jd.com/"
+        })
+        return
+    }
+    for(let i = 0; i < $.cookiesArr.length; i++){
+        if($.cookiesArr[i]){
+            $.cookie = $.cookiesArr[i];
+            $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
+            $.index = i + 1;
+            $.isLogin = true;
+            $.nickName = '';
+            await totalBean();
+            console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
+            if(!$.isLogin){
+                $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {
+                    "open-url": "https://bean.m.jd.com/bean/signIndex.action"
+                });
+                await $.notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
 
-                    if ($.isNode() && thefs.existsSync(thepath) && notifyTip){
-                        let thenotify = require(thepath);
-                        await thenotify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-                    }
+                if ($.isNode() && thefs.existsSync(thepath) && notifyTip){
+                    let thenotify = require(thepath);
+                    await thenotify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+                }
 
-                    continue
+                continue
+            }
+            $.totalTry = 0
+            $.totalSuccess = 0
+            $.nowTabIdIndex = 0;
+            $.nowPage = 1;
+            $.nowItem = 1;
+            trialActivityIdList = []
+            trialActivityTitleList = []
+            $.isLimit = false;
+            // 获取tabList的，不知道有哪些的把这里的注释解开跑一遍就行了
+            // await try_tabList();
+            // return;
+            $.isForbidden = false
+            $.wrong = false
+            size = 1
+            while(trialActivityIdList.length < args_xh.maxLength && $.isForbidden === false){
+                if($.nowTabIdIndex === args_xh.tabId.length){
+                    console.log(`tabId组已遍历完毕，不再获取商品\n`);
+                    break;
+                } else {
+                    await try_feedsList(args_xh.tabId[$.nowTabIdIndex], $.nowPage)  //获取对应tabId的试用页面
                 }
-                $.totalTry = 0
-                $.totalSuccess = 0
-                $.nowTabIdIndex = 0;
-                $.nowPage = 1;
-                $.nowItem = 1;
-                trialActivityIdList = []
-                trialActivityTitleList = []
-                $.isLimit = false;
-                // 获取tabList的，不知道有哪些的把这里的注释解开跑一遍就行了
-                // await try_tabList();
-                // return;
-                $.isForbidden = false
-                $.wrong = false
-                size = 1
-                while(trialActivityIdList.length < args_xh.maxLength && $.isForbidden === false){
-                    if($.nowTabIdIndex === args_xh.tabId.length){
-                        console.log(`tabId组已遍历完毕，不在获取商品\n`);
-                        break;
-                    } else {
-                        await try_feedsList(args_xh.tabId[$.nowTabIdIndex], $.nowPage)  //获取对应tabId的试用页面
-                    }
-                    if(trialActivityIdList.length < args_xh.maxLength){
-                        console.log(`间隔等待中，请等待 2 秒\n`)
-                        await $.wait(2000);
-                    }
-                }
-                if($.isForbidden === false && $.isLimit === false){
-                    console.log(`稍后将执行试用申请，请等待 2 秒\n`)
+                if(trialActivityIdList.length < args_xh.maxLength){
+                    console.log(`间隔等待中，请等待 2 秒\n`)
                     await $.wait(2000);
-                    for(let i = 0; i < trialActivityIdList.length && $.isLimit === false; i++){
-                        if($.isLimit){
-                            console.log("试用上限")
-                            break
-                        }
-                        await try_apply(trialActivityTitleList[i], trialActivityIdList[i])
-                        console.log(`间隔等待中，请等待 ${args_xh.applyInterval} ms\n`)
-                        await $.wait(args_xh.applyInterval);
-                    }
-                    console.log("试用申请执行完毕...")
-                    // await try_MyTrials(1, 1)    //申请中的商品
-                    $.giveupNum = 0;
-                    $.successNum = 0;
-                    $.getNum = 0;
-                    $.completeNum = 0;
-                    await try_MyTrials(1, 2)    //申请成功的商品
-                    // await try_MyTrials(1, 3)    //申请失败的商品
-                    await showMsg()
                 }
             }
-            if($.isNode()){
-                if($.index % args_xh.sendNum === 0 && notifyMsg != ""){
-                    $.sentNum++;
-                    console.log(`正在进行第 ${$.sentNum} 次发送通知，发送数量：${args_xh.sendNum}`)
-                    await $.notify.sendNotify(`${$.name}`, `${notifyMsg}`)
-                    notifyMsg = "";
+            if($.isForbidden === false && $.isLimit === false){
+                console.log(`稍后将执行试用申请，请等待 2 秒\n`)
+                await $.wait(2000);
+                for(let i = 0; i < trialActivityIdList.length && $.isLimit === false; i++){
+                    if($.isLimit){
+                        console.log("试用上限")
+                        break
+                    }
+                    await try_apply(trialActivityTitleList[i], trialActivityIdList[i])
+                    console.log(`间隔等待中，请等待 ${args_xh.applyInterval} ms\n`)
+                    await $.wait(args_xh.applyInterval);
                 }
+                console.log("试用申请执行完毕...")
+                // await try_MyTrials(1, 1)    //申请中的商品
+                $.giveupNum = 0;
+                $.successNum = 0;
+                $.getNum = 0;
+                $.completeNum = 0;
+                await try_MyTrials(1, 2)    //申请成功的商品
+                // await try_MyTrials(1, 3)    //申请失败的商品
+                await showMsg()
             }
         }
         if($.isNode()){
-            if(($.cookiesArr.length - ($.sentNum * args_xh.sendNum)) < args_xh.sendNum && notifyMsg != ""){
-                console.log(`正在进行最后一次发送通知，发送数量：${($.cookiesArr.length - ($.sentNum * args_xh.sendNum))}`)
+            if($.index % args_xh.sendNum === 0 && notifyMsg != ""){
+                $.sentNum++;
+                console.log(`正在进行第 ${$.sentNum} 次发送通知，发送数量：${args_xh.sendNum}`)
                 await $.notify.sendNotify(`${$.name}`, `${notifyMsg}`)
                 notifyMsg = "";
             }
         }
-    } else {
-        console.log(`\n您未设置运行【京东试用】脚本，结束运行！\n`)
+    }
+    if($.isNode()){
+        if(($.cookiesArr.length - ($.sentNum * args_xh.sendNum)) < args_xh.sendNum && notifyMsg != ""){
+            console.log(`正在进行最后一次发送通知，发送数量：${($.cookiesArr.length - ($.sentNum * args_xh.sendNum))}`)
+            await $.notify.sendNotify(`${$.name}`, `${notifyMsg}`)
+            notifyMsg = "";
+        }
     }
 })().catch((e) => {
     console.error(`❗️ ${$.name} 运行错误！\n${e}`)
@@ -386,6 +380,11 @@ function try_feedsList(tabId, page){
                                             $.isPush = false;
                                             break;
                                         }
+                                        else if(itemTag.tagType === 5){
+                                            args_xh.printLog ? console.log('商品被跳过，该商品是付费试用！') : ''
+                                            $.isPush = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -422,7 +421,7 @@ function try_feedsList(tabId, page){
                         }
                         console.log(`当前试用组长度为：${trialActivityIdList.length}`)
                         args_xh.printLog ? console.log(`${trialActivityIdList}`) : ''
-                        if(page === $.totalPages && $.nowTabIdIndex < args_xh.tabId.length){
+                        if(page >= $.totalPages && $.nowTabIdIndex < args_xh.tabId.length){
                             //这个是因为每一个tab都会有对应的页数，获取完如果还不够的话，就获取下一个tab
                             $.nowTabIdIndex++;
                             $.nowPage = 1;
@@ -591,7 +590,6 @@ async function showMsg(){
         let thenotify = require(thepath);
         await thenotify.sendNotify(`${$.name}`, `${the_msg}`)
     }
-
 
     if(!args_xh.jdNotify || args_xh.jdNotify === 'false'){
         $.msg($.name, ``, message, {

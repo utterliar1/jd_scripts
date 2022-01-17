@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 通天塔签到共建
+0 0,2 * * * node /scripts/jd_babel_sign.js >> /scripts/logs/jd_babel_sign.log 2>&1
+
 # 京东超级盒子
 17 2,15 9-25 1 * node /scripts/jd_cjhz.js >> /scripts/logs/jd_cjhz.log 2>&1
 
