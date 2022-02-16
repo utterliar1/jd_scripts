@@ -2,10 +2,21 @@
 此文件为Node.js专用。其他用户请忽略
  */
 //此处填写京东账号cookie。
+let myCookies = ''
+try {
+  myCookies =require('./config/myCookies.js').myCookies
+} catch (error) {
+  console.log(error)
+}
+
 let CookieJDs = [
+  '',//账号一ck,例:pt_key=XXX;pt_pin=XXX;
 ]
-// 判断环境变量里面是否有京东ck
-if (process.env.JD_COOKIE) {
+if(myCookies){
+  // config/mycookies.js文件里的配置优先,不想用配置文件UNUSE_CONFIG配置true
+  console.log(`从config/myCookies.js文件里获取cookie\n`)
+  CookieJDs = myCookies
+} else if (process.env.JD_COOKIE) {
   if (process.env.JD_COOKIE.indexOf('&') > -1) {
     CookieJDs = process.env.JD_COOKIE.split('&');
   } else if (process.env.JD_COOKIE.indexOf('\n') > -1) {
