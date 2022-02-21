@@ -529,3 +529,4 @@ function injectToRequest(fn,scene = 'cww', ua = '') {
 }
 
 exports.injectToRequest = injectToRequest;
+exports.injectToRequest2 = injectToRequest;

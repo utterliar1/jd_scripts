@@ -14,6 +14,7 @@ const cronMap = {
   'jd_track.js':'X * * * *',// 
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',
+  'jd_bean_box.js':'1 9,12,18 * * *',// 
   'jd_jxgc.js':'30 * * * *',// 
   'jd_jxmc_getCoin.js':'0,30 * * * *',// 
   'jd_yili_cow.js':'0 12 * * *',// 
@@ -141,50 +142,32 @@ const cronMap = {
 }
 //不执行的js文件
 var notList = [
-  // "jd_try.js",//
-  "jd_speed_redpocke.js",//
-  "jd_shop.js",//
-  "jd_jxmc.js",//
-  "jd_beauty.js",//
-  "jd_track.js",//
-  "jd_order_cashback.js",//
-  "jd_Last_Week_income.js",//
-  "jx_nnfls.js",//
-  // "--.js",//
-  "jd_api_test.js",//
-  "jd_bean_sign.js",//
-  "jd_checkCookie.js",//
-  "jd_qq_pasture.js",//
-  "jd_yili_cow.js",//
-  // "jd_jxnc.js",//
-  "jd_carnivalcity.js",//
-  "jd_guacleancart.js",//
-  "jd_all_bean_change.js",//
-  "jd_guaopencard93.js",//
-  "jd_guaopencard94.js",//
-  "jd_guaopencard95.js",//
-  "jd_guaopencard96.js",//
-  "jd_guaopencard97.js",//
-  "jd_guaopencard98.js",//
-  "jd_guaopencard99.js",//
-  "jd_guaopencard100.js",//
-  "jd_guaopencard101.js",//
-  "jd_guaopencard102.js",//
-  "jd_guaopencard103.js",//
-  "jd_guaopencard104.js",//
-  "jd_guaopencard105.js",//
-  "jd_guaopencard106.js",//
-  "jd_guaopencard107.js",//
-// 暂时失效1
+// "jd_bean_sign.js",//
+// "jd_jxnc.js",//
+// "jd_try.js",//
+// "jd_bean_box.js",//
+/********暂时失效********** */
+"jd_speed_redpocke.js",//
+"jd_shop.js",//
+"jd_jxmc.js",//
+"jd_beauty.js",//
+"jd_track.js",//
+"jx_nnfls.js",//
+"jd_fcwb.js",//号黑了
+"jd_family.js",
+"jd_yili_cow.js",//
+"jd_guaopencard107.js",//
+/********暂时失效2********** */
+"jd_city.js",//
 "jd_babel_sign.js",//
 "jd_bookshop.js",//
-"jd_ConvertSuperLink.js",//
 "jd_guanhjRed.js",//
 "jd_half_redrain.js",//
-"jd_jump.js",//
 "jd_newCron.js",//
 "jd_productZ4Brand.js",//
+"jd_jump.js",//
 "jd_reward.js",//
+"jd_ConvertSuperLink.js",//
 "jd_shop_sign.js",//
 "jd_split.js",//
 "jd_super_redrain.js",//
@@ -192,17 +175,17 @@ var notList = [
 "jd_year_bill.js",//
 "jd_xiaolong.js",//
 "jd_wxFans.js",//
-// "jd_bean_box.js",//
-
-// 暂时失效2
-"jd_jdzz.js",//
-"jd_beauty.js",
-"jd_family.js",
-"jd_carnivalcity.js",
+"jd_order_cashback.js",//
+"jd_Last_Week_income.js",//
 "jd_Last_Week_income.js",
-"jd_fcwb.js",//号黑了
-
-// 不需要运行
+"jd_carnivalcity.js",
+/********不需要运行********** */
+"jd_guacleancart.js",//
+"jd_all_bean_change.js",//
+"sign_graphics_validate.js",
+"jd_api_test.js",//
+"jd_checkCookie.js",//
+"jd_qq_pasture.js",//
 "jd_Last_Week_income.js",
 "cleancart_activity.js",
 "jd_cfd_stock.js",
@@ -241,11 +224,9 @@ var notList = [
 "jd_env_copy.js",
 "jd_forceUpdateCron.js",
 "jd_updateCron.js",
-/****************** */
-"sign_graphics_validate.js",
-// 不能跑
-// "jd_dj_bean.js",
-// "jd_dj_getPoints.js",
+/*********不能跑********* */
+"jd_dj_bean.js",
+"jd_dj_getPoints.js",
 "jd_dj_getck.js",
 "jd_dj_fruit_collectWater.js",
 "jd_dj_fruit.js",
