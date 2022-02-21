@@ -386,10 +386,11 @@ function receiveTaskRedpacket(taskType) {
           console.log(JSON.stringify(err));
         } else {
           data = JSON.parse(data);
-          if (data.data.success && data.data.biz_code === 0) {
-            console.log(`红包领取成功，获得${data.data.result.discount}元\n`)
-            $.discount += Number(data.data.result.discount);
-          }
+          console.log(data)
+          // if (data.data.success && data.data.biz_code === 0) {
+          //   console.log(`红包领取成功，获得${data.data.result.discount}元\n`)
+          //   $.discount += Number(data.data.result.discount);
+          // }
         }
       } catch (e) {
         $.logErr(e, resp);

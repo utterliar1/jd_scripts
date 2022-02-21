@@ -65,7 +65,7 @@ const cronMap = {
   'jd_moneyTree.js':'3 */2 * * *',// 摇钱树
   'jd_pet.js':'5 6-18/6 * * *',// 东东萌宠
   'jd_plantBean.js':'1 7-22/2 * * *',// 京东种豆得豆
-  'jd_redPacket.js':'0 0,12,22 * * *',// 京东全民开红包
+  'jd_redPacket.js':'1 1,2,23',// 京东全民开红包
   'jd_shop.js':'30 0 * * * ',// 进店领豆
   // 'jd_speed_redpocke.js':'20 0,22 * * *',//京东极速版天天领红包 活动时间：2021-1-18至2021-3-3
   'jd_speed.js':'0 */3 * * * ',// 京东天天加速
@@ -91,7 +91,7 @@ const cronMap = {
   'jd_crazy_joy.js':'10 7 * * *',// crazyJoy自动每日任务
   'jd_joy_run.js':'10 9-20/2 * * *',// 宠汪汪邀请助力
   'jd_bean_home.js':'33 4 * * *',// 领京豆额外奖励(每日可获得3京豆)
-  'jd_car.js':'59 23 * * *',// 京东汽车(签到满500赛点可兑换500京豆)
+  'jd_car.js':'15 1 * * *',// 京东汽车(签到满500赛点可兑换500京豆)
   'jd_kd.js':'10 0 * * *',// 京东快递签到
   'jd_syj.js':'36 8,18 * * *',// 十元街 10 0,7,23 * * *
   'jd_big_winner.js':'20 * * * *',//省钱大赢家之翻翻乐
@@ -147,7 +147,7 @@ var notList = [
 // "jd_bean_sign.js",//
 // "jd_jxnc.js",//
 // "jd_try.js",//
-// "jd_bean_box.js",//
+// "jd_bean_box.js",//1 0,9,12,18 * * * 领京豆-
 // "jd_babel_sign.js",//
 /********暂时失效********** */
 "jd_speed_redpocke.js",//风控
@@ -159,6 +159,7 @@ var notList = [
 "jd_yili_cow.js",//
 "jd_guaopencard107.js",//
 /********暂时失效2********** */
+"jd_jxScore.js",//
 "jd_track.js",//
 "jd_city.js",//
 "jd_bookshop.js",//

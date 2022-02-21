@@ -40,23 +40,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
         }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = require("axios");
 var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
 var cookie = '', res = '', UserName, index, uuid;
 var shareCodeSelf = [], shareCode = [], shareCodeHW = [];
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, i, times, j, j, _i, _a, t, e_1, i, _b, shareCode_1, code;
-    var _c, _d, _e;
+    var cookiesArr, i, times, j, j, _a, _b, t, e_1_1, e_2;
+    var e_1, _c;
+    var _d, _e;
     return __generator(this, function (_f) {
         switch (_f.label) {
             case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
@@ -65,7 +68,7 @@ var shareCodeSelf = [], shareCode = [], shareCodeHW = [];
                 i = 0;
                 _f.label = 2;
             case 2:
-                if (!(i < cookiesArr.length)) return [3 /*break*/, 25];
+                if (!(i < cookiesArr.length)) return [3 /*break*/, 29];
                 cookie = cookiesArr[i];
                 UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
                 index = i + 1;
@@ -106,102 +109,78 @@ var shareCodeSelf = [], shareCode = [], shareCodeHW = [];
                 j = 0;
                 _f.label = 9;
             case 9:
-                if (!(j < 2)) return [3 /*break*/, 24];
+                if (!(j < 2)) return [3 /*break*/, 28];
                 console.log("Round:".concat(j + 1));
                 return [4 /*yield*/, api('beanTaskList', { "viewChannel": "AppHome" })];
             case 10:
                 res = _f.sent();
                 _f.label = 11;
             case 11:
-                _f.trys.push([11, 20, , 21]);
-                _i = 0, _a = res.data.taskInfos;
+                _f.trys.push([11, 24, , 25]);
                 _f.label = 12;
             case 12:
-                if (!(_i < _a.length)) return [3 /*break*/, 19];
-                t = _a[_i];
-                if (!(t.status === 1)) return [3 /*break*/, 18];
+                _f.trys.push([12, 21, 22, 23]);
+                _a = (e_1 = void 0, __values(res.data.taskInfos)), _b = _a.next();
+                _f.label = 13;
+            case 13:
+                if (!!_b.done) return [3 /*break*/, 20];
+                t = _b.value;
+                if (!(t.status === 1)) return [3 /*break*/, 19];
                 console.log(t.taskName);
                 return [4 /*yield*/, api('beanDoTask', {
                         "actionType": t.taskType === 3 ? 0 : 1,
                         "taskToken": t.subTaskVOS[0].taskToken
                     })];
-            case 13:
-                res = _f.sent();
-                ((_c = res.data) === null || _c === void 0 ? void 0 : _c.bizMsg) ? console.log(res.data.bizMsg) : console.log(res);
-                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(t.waitDuration * 1000 || 2000)];
             case 14:
+                res = _f.sent();
+                ((_d = res.data) === null || _d === void 0 ? void 0 : _d.bizMsg) ? console.log(res.data.bizMsg) : console.log(res);
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(t.waitDuration * 1000 || 2000)];
+            case 15:
                 _f.sent();
-                if (!(t.taskType !== 3)) return [3 /*break*/, 16];
+                if (!(t.taskType !== 3)) return [3 /*break*/, 17];
                 return [4 /*yield*/, api('beanDoTask', {
                         "actionType": 0,
                         "taskToken": t.subTaskVOS[0].taskToken
                     })];
-            case 15:
+            case 16:
                 res = _f.sent();
-                if ((_d = res.data) === null || _d === void 0 ? void 0 : _d.bizMsg)
+                if ((_e = res.data) === null || _e === void 0 ? void 0 : _e.bizMsg)
                     console.log(res.data.bizMsg);
-                _f.label = 16;
-            case 16: return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
-            case 17:
-                _f.sent();
-                _f.label = 18;
+                _f.label = 17;
+            case 17: return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
             case 18:
-                _i++;
-                return [3 /*break*/, 12];
-            case 19: return [3 /*break*/, 21];
-            case 20:
-                e_1 = _f.sent();
-                console.log('Error!', e_1);
-                return [3 /*break*/, 21];
-            case 21: return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
-            case 22:
                 _f.sent();
-                _f.label = 23;
-            case 23:
+                _f.label = 19;
+            case 19:
+                _b = _a.next();
+                return [3 /*break*/, 13];
+            case 20: return [3 /*break*/, 23];
+            case 21:
+                e_1_1 = _f.sent();
+                e_1 = { error: e_1_1 };
+                return [3 /*break*/, 23];
+            case 22:
+                try {
+                    if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                }
+                finally { if (e_1) throw e_1.error; }
+                return [7 /*endfinally*/];
+            case 23: return [3 /*break*/, 25];
+            case 24:
+                e_2 = _f.sent();
+                console.log('Error!', e_2);
+                return [3 /*break*/, 25];
+            case 25: return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
+            case 26:
+                _f.sent();
+                _f.label = 27;
+            case 27:
                 j++;
                 return [3 /*break*/, 9];
-            case 24:
+            case 28:
                 i++;
                 return [3 /*break*/, 2];
-            case 25:
-                console.log('内部助力', shareCodeSelf);
-                i = 0;
-                _f.label = 26;
-            case 26:
-                if (!(i < cookiesArr.length)) return [3 /*break*/, 34];
-                if (!(shareCodeHW.length === 0)) return [3 /*break*/, 28];
-                return [4 /*yield*/, getShareCodeHW()];
-            case 27:
-                _f.sent();
-                _f.label = 28;
-            case 28:
-                shareCode = __spreadArray(__spreadArray([], shareCodeSelf, true), shareCodeHW, true);
-                uuid = randomString(40);
-                cookie = cookiesArr[i];
-                UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
-                _b = 0, shareCode_1 = shareCode;
-                _f.label = 29;
-            case 29:
-                if (!(_b < shareCode_1.length)) return [3 /*break*/, 33];
-                code = shareCode_1[_b];
-                console.log("".concat(UserName, " \u53BB\u52A9\u529B ").concat(code.shareCode));
-                return [4 /*yield*/, qjd('signGroupHelp', { "activeType": 2, "groupCode": code.groupCode, "shareCode": code.shareCode, "activeId": code.activeId, "source": "guest" })];
-            case 30:
-                res = _f.sent();
-                console.log((_e = res.data) === null || _e === void 0 ? void 0 : _e.helpToast);
-                if (res.data.respCode === 'SG209')
-                    return [3 /*break*/, 33];
-                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
-            case 31:
-                _f.sent();
-                _f.label = 32;
-            case 32:
-                _b++;
-                return [3 /*break*/, 29];
-            case 33:
-                i++;
-                return [3 /*break*/, 26];
-            case 34: return [2 /*return*/];
+            case 29: return [2 /*return*/];
         }
     });
 }); })();
@@ -210,7 +189,7 @@ function api(fn, body) {
         var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].post("https://api.m.jd.com/client.action?functionId=".concat(fn), "body=".concat(encodeURIComponent(JSON.stringify(body)), "&appid=ld&client=apple&clientVersion=10.0.8&uuid=").concat(uuid, "&openudid=").concat(uuid), {
+                case 0: return [4 /*yield*/, axios_1.default.post("https://api.m.jd.com/client.action?functionId=".concat(fn), "body=".concat(encodeURIComponent(JSON.stringify(body)), "&appid=ld&client=apple&clientVersion=10.0.8&uuid=").concat(uuid, "&openudid=").concat(uuid), {
                         headers: {
                             'Host': 'api.m.jd.com',
                             'content-type': 'application/x-www-form-urlencoded',
@@ -231,10 +210,10 @@ function qjd(fn, body) {
         var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].get("https://api.m.jd.com/client.action?functionId=".concat(fn, "&body=").concat(encodeURIComponent(JSON.stringify(body)), "&appid=ld&client=apple&clientVersion=10.0.8&uuid=").concat(uuid, "&openudid=").concat(uuid), {
+                case 0: return [4 /*yield*/, axios_1.default.get("https://api.m.jd.com/client.action?functionId=".concat(fn, "&body=").concat(encodeURIComponent(JSON.stringify(body)), "&appid=ld&client=apple&clientVersion=10.0.8&uuid=").concat(uuid, "&openudid=").concat(uuid), {
                         headers: {
                             'Host': 'api.m.jd.com',
-                            'User-Agent': TS_USER_AGENTS_1["default"],
+                            'User-Agent': TS_USER_AGENTS_1.default,
                             'Referer': 'https://h5.m.jd.com/rn/3MQXMdRUTeat9xqBSZDSCCAE9Eqz/index.html',
                             'Cookie': cookie
                         }
@@ -263,11 +242,11 @@ function initForTurntableFarm(type) {
                     url = type === 0
                         ? 'https://api.m.jd.com/client.action?functionId=initForTurntableFarm&body=%7B%22version%22%3A4%2C%22channel%22%3A1%7D&appid=wh5'
                         : 'https://api.m.jd.com/client.action?functionId=lotteryForTurntableFarm&body=%7B%22type%22%3A1%2C%22version%22%3A4%2C%22channel%22%3A1%7D&appid=wh5';
-                    return [4 /*yield*/, axios_1["default"].get(url, {
+                    return [4 /*yield*/, axios_1.default.get(url, {
                             headers: {
                                 'Host': 'api.m.jd.com',
                                 'Origin': 'https://h5.m.jd.com',
-                                'User-Agent': TS_USER_AGENTS_1["default"],
+                                'User-Agent': TS_USER_AGENTS_1.default,
                                 'Referer': 'https://h5.m.jd.com/',
                                 'Cookie': cookie
                             }
@@ -281,19 +260,19 @@ function initForTurntableFarm(type) {
 }
 function getShareCodeHW() {
     return __awaiter(this, void 0, void 0, function () {
-        var data, e_2;
+        var data, e_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1["default"].get("https://api.jdsharecode.xyz/api/HW_CODES")];
+                    return [4 /*yield*/, axios_1.default.get("https://api.jdsharecode.xyz/api/HW_CODES")];
                 case 1:
                     data = (_a.sent()).data;
                     console.log('获取HW_CODES成功(api)');
                     shareCodeHW = data['qjd'];
                     return [3 /*break*/, 3];
                 case 2:
-                    e_2 = _a.sent();
+                    e_3 = _a.sent();
                     console.log('获取HW_CODES失败(api)');
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
