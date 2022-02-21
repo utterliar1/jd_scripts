@@ -20,13 +20,10 @@ extra.sh添加
 wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm install
 ```
 # References:
-- [@Annyoo2021](https://github.com/Annyoo2021/scripts.git)
 - [@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)
 - [@smiek](https://github.com/smiek2221/scripts)
 - [@passerby](https://github.com/passerby-b/JDDJ.git)
 - [@NobyDa](https://github.com/NobyDa/Script.git)
-- [@yangtingxiao](https://github.com/yangtingxiao/QuantumultX.git)
 - [@jiulan](https://github.com/jiulan/platypus.git)
 - [@Aaron-lv](https://github.com/Aaron-lv/sync.git)
 - [@curtinlv](https://github.com/curtinlv/JD-Script.git)
-- [@star261](https://github.com/star261/jd.git)

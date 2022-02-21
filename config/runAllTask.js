@@ -15,7 +15,6 @@ const cronMap = {
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',
   'jd_guawealth_island_help.js':'18 0,1,9,14,18 * * *',// 
-  'jd_guawealth_island_help.js':'18 0,1,9,14,18 * * *',// 
   'jd_babel_sign.js':'1 2,6 * * *',// 
   'jd_bean_box.js':'1 9,12,18 * * *',// 
   'jd_jxgc.js':'30 * * * *',// 
@@ -151,16 +150,16 @@ var notList = [
 // "jd_bean_box.js",//
 // "jd_babel_sign.js",//
 /********暂时失效********** */
-"jd_speed_redpocke.js",//
+"jd_speed_redpocke.js",//风控
 "jd_shop.js",//
 "jd_jxmc.js",//
 "jd_beauty.js",//
-"jd_track.js",//
 "jx_nnfls.js",//
 "jd_family.js",
 "jd_yili_cow.js",//
 "jd_guaopencard107.js",//
 /********暂时失效2********** */
+"jd_track.js",//
 "jd_city.js",//
 "jd_bookshop.js",//
 "jd_half_redrain.js",//
@@ -178,7 +177,6 @@ var notList = [
 "jd_wxFans.js",//
 "jd_order_cashback.js",//
 "jd_Last_Week_income.js",//
-"jd_Last_Week_income.js",
 "jd_carnivalcity.js",
 /********不需要运行********** */
 "jd_guacleancart.js",//
