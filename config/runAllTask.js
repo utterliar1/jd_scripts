@@ -14,7 +14,6 @@ const cronMap = {
   'jd_track.js':'X * * * *',// 
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',
-  'jd_guawealth_island_help.js':'18 0,1,9,14,18 * * *',// 
   'jd_babel_sign.js':'1 2,6 * * *',// 
   'jd_bean_box.js':'1 9,12,18 * * *',// 
   'jd_jxgc.js':'30 * * * *',// 
@@ -38,7 +37,7 @@ const cronMap = {
   'jd_ifanli.js':'17 0 * * *',// 
   'jd_IndustryLottery.js':'17 0 * * *',// 
   'jd_jdzz.js':'10 0,4 * * *',// 微信小程序京东赚赚
-  'jd_guawealth_island_help.js':'18 0,1,9,14,18 * * *',// 财富大陆互助
+  'jd_guawealth_island_help.js':'18 1,9,14,18 * * *',// 财富大陆互助
   'jd_guawealth_island.js':'18 6-23/2 * * *',// 财富大陆
   'jd_guaMMdou.js':'9 9 * * *',// 升级赚京豆
   'jd_getUp.js':'30 6 * * *',// 
@@ -469,6 +468,9 @@ function isTheTime(thisFile, date) {
 
 
 function testTime(regStr, now) {
+  if(!regStr){
+    return true
+  } 
   if (regStr == '*') {
     return true
   } else if (isNum(regStr)) {
