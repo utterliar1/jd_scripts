@@ -16,6 +16,7 @@ const cronMap = {
   'jd_jxScore.js':'X * * * *',
   'jd_babel_sign.js':'1 2,6 * * *',// 
   'jd_bean_box.js':'1 9,12,18 * * *',// 
+  'jx_sign.js':'20 1,8 * * *',// 京喜签到
   'jd_jxgc.js':'30 * * * *',// 
   'jd_jxmc_getCoin.js':'0,30 * * * *',// 
   'jd_yili_cow.js':'0 12 * * *',// 

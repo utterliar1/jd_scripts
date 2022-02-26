@@ -1,7 +1,6 @@
-/**
+/*
 过期京豆兑换为喜豆
-33 9 * * * jd_exchangejxbeans.js
-TG频道：https://t.me/sheeplost
+33 10 * * * jd_exchangejxbeans.js
 */
 const $ = new Env('京豆兑换为喜豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -9,7 +8,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '';
-let exjxbeans = false;
+let exjxbeans = true;
 if (process.env.exjxbeans) {
     exjxbeans = process.env.exjxbeans;
 }

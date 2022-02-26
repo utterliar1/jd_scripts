@@ -25,28 +25,23 @@ cron "15 6-18/6 * * *" script-path=jd_pet.js,tag=东东萌宠
 
 */
 const $ = new Env('东东萌宠');
-
-console.log('\n====================Hello World====================\n')
-
 let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, newShareCodes, allMessage = '';
 //助力好友分享码(最多5个,否则后面的助力失败),原因:京东农场每人每天只有四次助力机会
 //此此内容是IOS用户下载脚本到本地使用，填写互助码的地方，同一京东账号的好友互助码请使用@符号隔开。
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
-let shareCodes = ['']
+let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
+  //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
+  'MTAxODcxOTI2NTAwMDAwMDAyNTE5ODU4OQ==@MTEzMzI1MTE4NDAwMDAwMDA1NzY3MDAwOQ==@MTEyNjE4NjQ2MDAwMDAwMDU3NzA1NjMx@MTAxODEyMjkyMDAwMDAwMDM5MzI3ODM1@MTE1NDUyMjEwMDAwMDAwMzUyNDI3Njk=@MTE1NDUyMjEwMDAwMDAwMzgxMjgwNjM=@MTE1NDAxNzYwMDAwMDAwMzk2NjQ2MjE=@MTE1NDQ5MzYwMDAwMDAwMzgwNzQxMTc=@MTAxODc2NTE0NzAwMDAwMDAyMTgwNDcwNw==',
+  //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
+  'MTAxODcxOTI2NTAwMDAwMDAyNTE5ODU4OQ==@MTEzMzI1MTE4NDAwMDAwMDA1NzY3MDAwOQ==@MTEyNjE4NjQ2MDAwMDAwMDU3NzA1NjMx@MTAxODEyMjkyMDAwMDAwMDM5MzI3ODM1@MTE1NDUyMjEwMDAwMDAwMzUyNDI3Njk=@MTE1NDUyMjEwMDAwMDAwMzgxMjgwNjM=@MTE1NDAxNzYwMDAwMDAwMzk2NjQ2MjE=@MTE1NDQ5MzYwMDAwMDAwMzgwNzQxMTc=@MTAxODc2NTE0NzAwMDAwMDAyMTgwNDcwNw==',
+]
 let message = '', subTitle = '', option = {};
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
-
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
 let randomCount = $.isNode() ? 20 : 5;
 !(async () => {
   await requireConfig();
-  if ($.isNode()) {
-    if (process.argv[2]) {
-      cookiesArr = [decodeURIComponent(process.argv[2])];
-      console.log(`收到Cookie：${decodeURIComponent(cookiesArr[0])}`)
-    }
-  }
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
@@ -57,8 +52,17 @@ let randomCount = $.isNode() ? 20 : 5;
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       $.isLogin = true;
-      $.nickName = $.UserName;
+      $.nickName = '';
+      await TotalBean();
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
+      if (!$.isLogin) {
+        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+
+        if ($.isNode()) {
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+        }
+        continue
+      }
       message = '';
       subTitle = '';
       goodsUrl = '';
@@ -72,29 +76,28 @@ let randomCount = $.isNode() ? 20 : 5;
     await notify.sendNotify(`${$.name}`, `${allMessage}`)
   }
 })()
-  .catch((e) => {
-    $.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, "");
-  })
-  .finally(() => {
-    $.done();
-  });
-
+    .catch((e) => {
+      $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+    })
+    .finally(() => {
+      $.done();
+    })
 async function jdPet() {
   try {
     //查询jd宠物信息
     const initPetTownRes = await request('initPetTown');
-    message = `【京东账号${$.index}】${$.nickName}\n`;
+    message = `【京东账号${$.index}】${$.nickName || $.UserName}\n`;
     if (initPetTownRes.code === '0' && initPetTownRes.resultCode === '0' && initPetTownRes.message === 'success') {
       $.petInfo = initPetTownRes.result;
       if ($.petInfo.userStatus === 0) {
-        // $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`, { "open-url": "openapp.jdmoble://" });
+        // $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName || $.UserName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`, { "open-url": "openapp.jdmoble://" });
         await slaveHelp();//助力好友
-        $.log($.name, '', `【提示】京东账号${$.index}${$.nickName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`);
+        $.log($.name, '', `【提示】京东账号${$.index}${$.nickName || $.UserName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`);
         return
       }
       if (!$.petInfo.goodsInfo) {
-        $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName}\n暂未选购新的商品`, {"open-url": "openapp.jdmoble://"});
-        if ($.isNode()) await notify.sendNotify(`${$.name} - ${$.index} - ${$.nickName}`, `【提示】京东账号${$.index}${$.nickName}\n暂未选购新的商品`);
+        $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName || $.UserName}\n暂未选购新的商品`, { "open-url": "openapp.jdmoble://" });
+        if ($.isNode()) await notify.sendNotify(`${$.name} - ${$.index} - ${$.nickName || $.UserName}`, `【提示】京东账号${$.index}${$.nickName || $.UserName}\n暂未选购新的商品`);
         return
       }
       goodsUrl = $.petInfo.goodsInfo && $.petInfo.goodsInfo.goodsUrl;
@@ -105,7 +108,7 @@ async function jdPet() {
         option['open-url'] = "openApp.jdMobile://";
         $.msg($.name, ``, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】${$.petInfo.goodsInfo.goodsName}已可领取\n请去京东APP或微信小程序查看\n点击弹窗即达`, option);
         if ($.isNode()) {
-          await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName}\n${$.petInfo.goodsInfo.goodsName}已可领取`);
+          await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName || $.UserName}\n${$.petInfo.goodsInfo.goodsName}已可领取`);
         }
         return
       } else if ($.petInfo.petStatus === 6) {
@@ -113,21 +116,11 @@ async function jdPet() {
         option['open-url'] = "openApp.jdMobile://";
         $.msg($.name, ``, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】已领取红包,但未继续领养新的物品\n请去京东APP或微信小程序查看\n点击弹窗即达`, option);
         if ($.isNode()) {
-          await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName}\n已领取红包,但未继续领养新的物品`);
+          await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName || $.UserName}\n已领取红包,但未继续领养新的物品`);
         }
         return
       }
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.petInfo.shareCode}\n`);
-      // var _0xodh='jsjiami.com.v6',_0x396a=[_0xodh,'LMK6wovCnxwNw48=','w7lRw7UsDTYAw45X','w7DDlsKd','w4rDlgJhwqvDmTYywqEtwqYjccOUwpnDrMKlw5gtVznDjsOuwrJqwonCncOPRsKww6FIDhUBw6tew4TDkk09w4LCj0VzwobDhA==','jWsdjirami.cDLwotKLmy.MNv6RPqN=='];(function(_0x2d8f05,_0x4b81bb,_0x4d74cb){var _0x32719f=function(_0x2dc776,_0x362d54,_0x2576f4,_0x5845c1,_0x4fbc7a){_0x362d54=_0x362d54>>0x8,_0x4fbc7a='po';var _0x292610='shift',_0x151bd2='push';if(_0x362d54<_0x2dc776){while(--_0x2dc776){_0x5845c1=_0x2d8f05[_0x292610]();if(_0x362d54===_0x2dc776){_0x362d54=_0x5845c1;_0x2576f4=_0x2d8f05[_0x4fbc7a+'p']();}else if(_0x362d54&&_0x2576f4['replace'](/[WdrDLwtKLyMNRPqN=]/g,'')===_0x362d54){_0x2d8f05[_0x151bd2](_0x5845c1);}}_0x2d8f05[_0x151bd2](_0x2d8f05[_0x292610]());}return 0x8edda;};return _0x32719f(++_0x4b81bb,_0x4d74cb)>>_0x4b81bb^_0x4d74cb;}(_0x396a,0xba,0xba00));var _0x8d5b=function(_0x23fcfd,_0x1360ed){_0x23fcfd=~~'0x'['concat'](_0x23fcfd);var _0x190180=_0x396a[_0x23fcfd];if(_0x8d5b['CjCIFQ']===undefined){(function(){var _0x3ca5ac=typeof window!=='undefined'?window:typeof process==='object'&&typeof require==='function'&&typeof global==='object'?global:this;var _0x2c4741='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';_0x3ca5ac['atob']||(_0x3ca5ac['atob']=function(_0x46593a){var _0x367a3c=String(_0x46593a)['replace'](/=+$/,'');for(var _0x1e13bd=0x0,_0x493323,_0xad09bd,_0x54e6b0=0x0,_0x562460='';_0xad09bd=_0x367a3c['charAt'](_0x54e6b0++);~_0xad09bd&&(_0x493323=_0x1e13bd%0x4?_0x493323*0x40+_0xad09bd:_0xad09bd,_0x1e13bd++%0x4)?_0x562460+=String['fromCharCode'](0xff&_0x493323>>(-0x2*_0x1e13bd&0x6)):0x0){_0xad09bd=_0x2c4741['indexOf'](_0xad09bd);}return _0x562460;});}());var _0x5a49a7=function(_0x2c57fa,_0x1360ed){var _0x154d33=[],_0x435b1d=0x0,_0x2d7ebf,_0x164a0d='',_0x4ad657='';_0x2c57fa=atob(_0x2c57fa);for(var _0xeed902=0x0,_0x639c8e=_0x2c57fa['length'];_0xeed902<_0x639c8e;_0xeed902++){_0x4ad657+='%'+('00'+_0x2c57fa['charCodeAt'](_0xeed902)['toString'](0x10))['slice'](-0x2);}_0x2c57fa=decodeURIComponent(_0x4ad657);for(var _0x21a896=0x0;_0x21a896<0x100;_0x21a896++){_0x154d33[_0x21a896]=_0x21a896;}for(_0x21a896=0x0;_0x21a896<0x100;_0x21a896++){_0x435b1d=(_0x435b1d+_0x154d33[_0x21a896]+_0x1360ed['charCodeAt'](_0x21a896%_0x1360ed['length']))%0x100;_0x2d7ebf=_0x154d33[_0x21a896];_0x154d33[_0x21a896]=_0x154d33[_0x435b1d];_0x154d33[_0x435b1d]=_0x2d7ebf;}_0x21a896=0x0;_0x435b1d=0x0;for(var _0xc45ee9=0x0;_0xc45ee9<_0x2c57fa['length'];_0xc45ee9++){_0x21a896=(_0x21a896+0x1)%0x100;_0x435b1d=(_0x435b1d+_0x154d33[_0x21a896])%0x100;_0x2d7ebf=_0x154d33[_0x21a896];_0x154d33[_0x21a896]=_0x154d33[_0x435b1d];_0x154d33[_0x435b1d]=_0x2d7ebf;_0x164a0d+=String['fromCharCode'](_0x2c57fa['charCodeAt'](_0xc45ee9)^_0x154d33[(_0x154d33[_0x21a896]+_0x154d33[_0x435b1d])%0x100]);}return _0x164a0d;};_0x8d5b['hJFNQG']=_0x5a49a7;_0x8d5b['NOxSxd']={};_0x8d5b['CjCIFQ']=!![];}var _0x169d9a=_0x8d5b['NOxSxd'][_0x23fcfd];if(_0x169d9a===undefined){if(_0x8d5b['exSjBF']===undefined){_0x8d5b['exSjBF']=!![];}_0x190180=_0x8d5b['hJFNQG'](_0x190180,_0x1360ed);_0x8d5b['NOxSxd'][_0x23fcfd]=_0x190180;}else{_0x190180=_0x169d9a;}return _0x190180;};$[_0x8d5b('0','9wmU')]({'url':_0x8d5b('1','k*Is')+$[_0x8d5b('2',')U)s')][_0x8d5b('3','!^6A')]});;_0xodh='jsjiami.com.v6';
-      for (let k = 0; k < 5; k++) {
-        try {
-          await runTimes()
-          break
-        } catch (e) {
-        }
-        await $.wait(Math.floor(Math.random() * 10 + 3) * 1000)
-      }
-
       await taskInit();
       if ($.taskInit.resultCode === '9999' || !$.taskInit.result) {
         console.log('初始化任务异常, 请稍后再试');
@@ -143,7 +136,7 @@ async function jdPet() {
       await energyCollect();//收集好感度
       await showMsg();
       console.log('全部任务完成, 如果帮助到您可以点下🌟STAR鼓励我一下, 明天见~');
-    } else if (initPetTownRes.code === '0') {
+    } else if (initPetTownRes.code === '0'){
       console.log(`初始化萌宠失败:  ${initPetTownRes.message}`);
     }
   } catch (e) {
@@ -153,23 +146,6 @@ async function jdPet() {
     $.msg($.name, '', `${errMsg}`)
   }
 }
-
-function runTimes() {
-  return new Promise((resolve, reject) => {
-    $.get({
-      url: `https://api.jdsharecode.xyz/api/runTimes?activityId=pet&sharecode=${$.petInfo.shareCode}`
-    }, (err, resp, data) => {
-      if (err) {
-        console.log('上报失败', err)
-        reject(err)
-      } else {
-        console.log(data)
-        resolve()
-      }
-    })
-  })
-}
-
 // 收取所有好感度
 async function energyCollect() {
   console.log('开始收取任务奖励好感度');
@@ -181,7 +157,6 @@ async function energyCollect() {
     message += `【已获得勋章】${response.result.medalNum}块，还需收集${response.result.needCollectMedalNum}块即可兑换奖品“${$.petInfo.goodsInfo.goodsName}”\n`;
   }
 }
-
 //再次投食
 async function feedPetsAgain() {
   const response = await request('initPetTown');//再次初始化萌宠
@@ -214,7 +189,7 @@ async function feedPetsAgain() {
 
 
 async function doTask() {
-  const {signInit, threeMealInit, firstFeedInit, feedReachInit, inviteFriendsInit, browseShopsInit, taskList} = $.taskInfo;
+  const { signInit, threeMealInit, firstFeedInit, feedReachInit, inviteFriendsInit, browseShopsInit, taskList } = $.taskInfo;
   for (let item of taskList) {
     if ($.taskInfo[item].finished) {
       console.log(`任务 ${item} 已完成`)
@@ -260,14 +235,13 @@ async function doTask() {
     await feedReachInitFun();
   }
 }
-
 // 好友助力信息
 async function masterHelpInit() {
   let res = await request(arguments.callee.name.toString());
   // console.log(`助力信息: ${JSON.stringify(res)}`);
   if (res.code === '0' && res.resultCode === '0') {
     if (res.result.masterHelpPeoples && res.result.masterHelpPeoples.length >= 5) {
-      if (!res.result.addedBonusFlag) {
+      if(!res.result.addedBonusFlag) {
         console.log("开始领取额外奖励");
         let getHelpAddedBonusResult = await request('getHelpAddedBonus');
         if (getHelpAddedBonusResult.resultCode === '0') {
@@ -296,7 +270,6 @@ async function masterHelpInit() {
     }
   }
 }
-
 /**
  * 助力好友, 暂时支持一个好友, 需要拿到shareCode
  * shareCode为你要助力的好友的
@@ -307,7 +280,7 @@ async function slaveHelp() {
   //return
   let helpPeoples = '';
   for (let code of newShareCodes) {
-    console.log(`开始助力京东账号${$.index} - ${$.nickName}的好友: ${code}`);
+    console.log(`开始助力京东账号${$.index} - ${$.nickName || $.UserName}的好友: ${code}`);
     if (!code) continue;
     let response = await request(arguments.callee.name.toString(), {'shareCode': code});
     if (response.code === '0' && response.resultCode === '0') {
@@ -327,13 +300,12 @@ async function slaveHelp() {
     } else {
       console.log(`助力好友结果: ${response.message}`);
     }
-    await $.wait(3000)
+    await $.wait(2000)
   }
   if (helpPeoples && helpPeoples.length > 0) {
     message += `【您助力的好友】${helpPeoples.substr(0, helpPeoples.length - 1)}\n`;
   }
 }
-
 // 遛狗, 每天次数上限10次, 随机给狗粮, 每次遛狗结束需调用getSportReward领取奖励, 才能进行下一次遛狗
 async function petSport() {
   console.log('开始遛弯');
@@ -344,28 +316,25 @@ async function petSport() {
     let response = await request(arguments.callee.name.toString())
     console.log(`第${times}次遛狗完成: ${JSON.stringify(response)}`);
     resultCode = response.resultCode;
-    if (resultCode === 0) {
+    if (resultCode == 0) {
       let sportRevardResult = await request('getSportReward');
       console.log(`领取遛狗奖励完成: ${JSON.stringify(sportRevardResult)}`);
-    } else if (resultCode === 1013) {
-      let sportRevardResult = await request('getSportReward', {"version": 1});
+    } else if (resultCode == 1013) {
+      let sportRevardResult = await request('getSportReward', {"version":1});
       console.log(`领取遛狗奖励完成: ${JSON.stringify(sportRevardResult)}`);
-      if (sportRevardResult.resultCode === 0)
-        resultCode = 0
+      if (sportRevardResult.resultCode == 0) resultCode = 0
     }
     times++;
-  } while (resultCode === 0 && code === 0)
+  } while (resultCode == 0 && code == 0)
   if (times > 1) {
     // message += '【十次遛狗】已完成\n';
   }
 }
-
 // 初始化任务, 可查询任务完成情况
 async function taskInit() {
   console.log('开始任务初始化');
-  $.taskInit = await request(arguments.callee.name.toString(), {"version": 1});
+  $.taskInit = await request(arguments.callee.name.toString(), {"version":1});
 }
-
 // 每日签到, 每天一次
 async function signInitFun() {
   console.log('准备每日签到');
@@ -397,8 +366,8 @@ async function threeMealInitFun() {
 // 浏览指定店铺 任务
 async function browseSingleShopInit(item) {
   console.log(`开始做 ${item.title} 任务， ${item.desc}`);
-  const body = {"index": item['index'], "version": 1, "type": 1};
-  const body2 = {"index": item['index'], "version": 1, "type": 2};
+  const body = {"index": item['index'], "version":1, "type":1};
+  const body2 = {"index": item['index'], "version":1, "type":2};
   const response = await request("getSingleShopReward", body);
   // console.log(`点击进去response::${JSON.stringify(response)}`);
   if (response.code === '0' && response.resultCode === '0') {
@@ -426,7 +395,6 @@ async function browseShopsInitFun() {
   } while (resultCode == 0 && code == 0 && times < 5)
   console.log('浏览店铺任务结束');
 }
-
 // 首次投食 任务
 function firstFeedInitFun() {
   console.log('首次投食任务合并到10次喂食任务中\n');
@@ -468,7 +436,6 @@ async function feedReachInitFun() {
   } while (needFeedTimes > 0 && tryTimes > 0)
   console.log('投食任务结束...\n');
 }
-
 async function showMsg() {
   if ($.isNode() && process.env.PET_NOTIFY_CONTROL) {
     $.ctrTemp = `${process.env.PET_NOTIFY_CONTROL}` === 'false';
@@ -482,19 +449,18 @@ async function showMsg() {
     $.msg($.name, subTitle, message, option);
     if ($.isNode()) {
       allMessage += `${subTitle}\n${message}${$.index !== cookiesArr.length ? '\n\n' : ''}`
-      // await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `${subTitle}\n${message}`);
+      // await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}`, `${subTitle}\n${message}`);
     }
   } else {
     $.log(`\n${message}\n`);
   }
 }
-
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://api.jdsharecode.xyz/api/pet/${randomCount}`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `http://transfer.nz.lu/pet`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${JSON.stringify(err)}`)
+          console.log(JSON.stringify(err))
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
@@ -512,7 +478,6 @@ function readShareCode() {
     resolve()
   })
 }
-
 function shareCodesFormat() {
   return new Promise(async resolve => {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
@@ -534,7 +499,6 @@ function shareCodesFormat() {
     resolve();
   })
 }
-
 function requireConfig() {
   return new Promise(resolve => {
     console.log('开始获取东东萌宠配置文件\n')
@@ -549,8 +513,7 @@ function requireConfig() {
           cookiesArr.push(jdCookieNode[item])
         }
       })
-      if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {
-      };
+      if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
     } else {
       cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
     }
@@ -572,7 +535,48 @@ function requireConfig() {
     resolve()
   })
 }
-
+function TotalBean() {
+  return new Promise(async resolve => {
+    const options = {
+      "url": `https://wq.jd.com/user/info/QueryJDUserInfo?sceneval=2`,
+      "headers": {
+        "Accept": "application/json,text/plain, */*",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "zh-cn",
+        "Connection": "keep-alive",
+        "Cookie": cookie,
+        "Referer": "https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+      }
+    }
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data['retcode'] === 13) {
+              $.isLogin = false; //cookie过期
+              return
+            }
+            if (data['retcode'] === 0 && data.base && data.base.nickname) {
+              $.nickName = data.base.nickname;
+            }
+          } else {
+            console.log(`京东服务器返回空数据`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
 // 请求
 async function request(function_id, body = {}) {
   await $.wait(3000); //歇口气儿, 不然会报操作频繁
@@ -594,7 +598,15 @@ async function request(function_id, body = {}) {
     })
   })
 }
-
+// function taskUrl(function_id, body = {}) {
+//   return {
+//     url: `${JD_API_HOST}?functionId=${function_id}&appid=wh5&loginWQBiz=pet-town&body=${escape(JSON.stringify(body))}`,
+//     headers: {
+//       Cookie: cookie,
+//       UserAgent: $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+//     }
+//   };
+// }
 function taskUrl(function_id, body = {}) {
   body["version"] = 2;
   body["channel"] = 'app';
@@ -609,7 +621,6 @@ function taskUrl(function_id, body = {}) {
     }
   };
 }
-
 function jsonParse(str) {
   if (typeof str == "string") {
     try {
@@ -621,6 +632,5 @@ function jsonParse(str) {
     }
   }
 }
-
 // prettier-ignore
 function Env(t,e){"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);class s{constructor(t){this.env=t}send(t,e="GET"){t="string"==typeof t?{url:t}:t;let s=this.get;return"POST"===e&&(s=this.post),new Promise((e,i)=>{s.call(this,t,(t,s,r)=>{t?i(t):e(s)})})}get(t){return this.send.call(this.env,t)}post(t){return this.send.call(this.env,t,"POST")}}return new class{constructor(t,e){this.name=t,this.http=new s(this),this.data=null,this.dataFile="box.dat",this.logs=[],this.isMute=!1,this.isNeedRewrite=!1,this.logSeparator="\n",this.startTime=(new Date).getTime(),Object.assign(this,e),this.log("",`🔔${this.name}, 开始!`)}isNode(){return"undefined"!=typeof module&&!!module.exports}isQuanX(){return"undefined"!=typeof $task}isSurge(){return"undefined"!=typeof $httpClient&&"undefined"==typeof $loon}isLoon(){return"undefined"!=typeof $loon}toObj(t,e=null){try{return JSON.parse(t)}catch{return e}}toStr(t,e=null){try{return JSON.stringify(t)}catch{return e}}getjson(t,e){let s=e;const i=this.getdata(t);if(i)try{s=JSON.parse(this.getdata(t))}catch{}return s}setjson(t,e){try{return this.setdata(JSON.stringify(t),e)}catch{return!1}}getScript(t){return new Promise(e=>{this.get({url:t},(t,s,i)=>e(i))})}runScript(t,e){return new Promise(s=>{let i=this.getdata("@chavy_boxjs_userCfgs.httpapi");i=i?i.replace(/\n/g,"").trim():i;let r=this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");r=r?1*r:20,r=e&&e.timeout?e.timeout:r;const[o,h]=i.split("@"),n={url:`http://${h}/v1/scripting/evaluate`,body:{script_text:t,mock_type:"cron",timeout:r},headers:{"X-Key":o,Accept:"*/*"}};this.post(n,(t,e,i)=>s(i))}).catch(t=>this.logErr(t))}loaddata(){if(!this.isNode())return{};{this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),i=!s&&this.fs.existsSync(e);if(!s&&!i)return{};{const i=s?t:e;try{return JSON.parse(this.fs.readFileSync(i))}catch(t){return{}}}}}writedata(){if(this.isNode()){this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),i=!s&&this.fs.existsSync(e),r=JSON.stringify(this.data);s?this.fs.writeFileSync(t,r):i?this.fs.writeFileSync(e,r):this.fs.writeFileSync(t,r)}}lodash_get(t,e,s){const i=e.replace(/\[(\d+)\]/g,".$1").split(".");let r=t;for(const t of i)if(r=Object(r)[t],void 0===r)return s;return r}lodash_set(t,e,s){return Object(t)!==t?t:(Array.isArray(e)||(e=e.toString().match(/[^.[\]]+/g)||[]),e.slice(0,-1).reduce((t,s,i)=>Object(t[s])===t[s]?t[s]:t[s]=Math.abs(e[i+1])>>0==+e[i+1]?[]:{},t)[e[e.length-1]]=s,t)}getdata(t){let e=this.getval(t);if(/^@/.test(t)){const[,s,i]=/^@(.*?)\.(.*?)$/.exec(t),r=s?this.getval(s):"";if(r)try{const t=JSON.parse(r);e=t?this.lodash_get(t,i,""):e}catch(t){e=""}}return e}setdata(t,e){let s=!1;if(/^@/.test(e)){const[,i,r]=/^@(.*?)\.(.*?)$/.exec(e),o=this.getval(i),h=i?"null"===o?null:o||"{}":"{}";try{const e=JSON.parse(h);this.lodash_set(e,r,t),s=this.setval(JSON.stringify(e),i)}catch(e){const o={};this.lodash_set(o,r,t),s=this.setval(JSON.stringify(o),i)}}else s=this.setval(t,e);return s}getval(t){return this.isSurge()||this.isLoon()?$persistentStore.read(t):this.isQuanX()?$prefs.valueForKey(t):this.isNode()?(this.data=this.loaddata(),this.data[t]):this.data&&this.data[t]||null}setval(t,e){return this.isSurge()||this.isLoon()?$persistentStore.write(t,e):this.isQuanX()?$prefs.setValueForKey(t,e):this.isNode()?(this.data=this.loaddata(),this.data[e]=t,this.writedata(),!0):this.data&&this.data[e]||null}initGotEnv(t){this.got=this.got?this.got:require("got"),this.cktough=this.cktough?this.cktough:require("tough-cookie"),this.ckjar=this.ckjar?this.ckjar:new this.cktough.CookieJar,t&&(t.headers=t.headers?t.headers:{},void 0===t.headers.Cookie&&void 0===t.cookieJar&&(t.cookieJar=this.ckjar))}get(t,e=(()=>{})){t.headers&&(delete t.headers["Content-Type"],delete t.headers["Content-Length"]),this.isSurge()||this.isLoon()?(this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.get(t,(t,s,i)=>{!t&&s&&(s.body=i,s.statusCode=s.status),e(t,s,i)})):this.isQuanX()?(this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>e(t))):this.isNode()&&(this.initGotEnv(t),this.got(t).on("redirect",(t,e)=>{try{if(t.headers["set-cookie"]){const s=t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();s&&this.ckjar.setCookieSync(s,null),e.cookieJar=this.ckjar}}catch(t){this.logErr(t)}}).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>{const{message:s,response:i}=t;e(s,i,i&&i.body)}))}post(t,e=(()=>{})){if(t.body&&t.headers&&!t.headers["Content-Type"]&&(t.headers["Content-Type"]="application/x-www-form-urlencoded"),t.headers&&delete t.headers["Content-Length"],this.isSurge()||this.isLoon())this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.post(t,(t,s,i)=>{!t&&s&&(s.body=i,s.statusCode=s.status),e(t,s,i)});else if(this.isQuanX())t.method="POST",this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>e(t));else if(this.isNode()){this.initGotEnv(t);const{url:s,...i}=t;this.got.post(s,i).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>{const{message:s,response:i}=t;e(s,i,i&&i.body)})}}time(t,e=null){const s=e?new Date(e):new Date;let i={"M+":s.getMonth()+1,"d+":s.getDate(),"H+":s.getHours(),"m+":s.getMinutes(),"s+":s.getSeconds(),"q+":Math.floor((s.getMonth()+3)/3),S:s.getMilliseconds()};/(y+)/.test(t)&&(t=t.replace(RegExp.$1,(s.getFullYear()+"").substr(4-RegExp.$1.length)));for(let e in i)new RegExp("("+e+")").test(t)&&(t=t.replace(RegExp.$1,1==RegExp.$1.length?i[e]:("00"+i[e]).substr((""+i[e]).length)));return t}msg(e=t,s="",i="",r){const o=t=>{if(!t)return t;if("string"==typeof t)return this.isLoon()?t:this.isQuanX()?{"open-url":t}:this.isSurge()?{url:t}:void 0;if("object"==typeof t){if(this.isLoon()){let e=t.openUrl||t.url||t["open-url"],s=t.mediaUrl||t["media-url"];return{openUrl:e,mediaUrl:s}}if(this.isQuanX()){let e=t["open-url"]||t.url||t.openUrl,s=t["media-url"]||t.mediaUrl;return{"open-url":e,"media-url":s}}if(this.isSurge()){let e=t.url||t.openUrl||t["open-url"];return{url:e}}}};if(this.isMute||(this.isSurge()||this.isLoon()?$notification.post(e,s,i,o(r)):this.isQuanX()&&$notify(e,s,i,o(r))),!this.isMuteLog){let t=["","==============📣系统通知📣=============="];t.push(e),s&&t.push(s),i&&t.push(i),console.log(t.join("\n")),this.logs=this.logs.concat(t)}}log(...t){t.length>0&&(this.logs=[...this.logs,...t]),console.log(t.join(this.logSeparator))}logErr(t,e){const s=!this.isSurge()&&!this.isQuanX()&&!this.isLoon();s?this.log("",`❗️${this.name}, 错误!`,t.stack):this.log("",`❗️${this.name}, 错误!`,t)}wait(t){return new Promise(e=>setTimeout(e,t))}done(t={}){const e=(new Date).getTime(),s=(e-this.startTime)/1e3;this.log("",`🔔${this.name}, 结束! 🕛 ${s} 秒`),this.log(),(this.isSurge()||this.isQuanX()||this.isLoon())&&$done(t)}}(t,e)}

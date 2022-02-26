@@ -40,7 +40,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 var date_fns_1 = require("date-fns");
 var axios_1 = require("axios");
 var sendNotify_1 = require("./sendNotify");
@@ -50,14 +61,15 @@ var START = (0, date_fns_1.getTime)(new Date((0, date_fns_1.format)((0, date_fns
 var cookie = '', res = '', UserName, index, message = '';
 var headers = ["Type", "Used", "Total"];
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, i, flag, page, redNum, total, jx, jxUsed, js, jsUsed, jk, jkUsed, jd, jdUsed, all, allUsed, pt, rows, _i, _a, t;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var cookiesArr, i, flag, page, redNum, total, jx, jxUsed, js, jsUsed, jk, jkUsed, jd, jdUsed, all, allUsed, pt, rows, _a, _b, t;
+    var e_1, _c;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
             case 1:
-                cookiesArr = _b.sent();
+                cookiesArr = _d.sent();
                 i = 0;
-                _b.label = 2;
+                _d.label = 2;
             case 2:
                 if (!(i < cookiesArr.length)) return [3 /*break*/, 10];
                 cookie = cookiesArr[i];
@@ -67,47 +79,56 @@ var headers = ["Type", "Used", "Total"];
                 flag = true, page = 0, redNum = 0, total = 0;
                 jx = 0, jxUsed = 0, js = 0, jsUsed = 0, jk = 0, jkUsed = 0, jd = 0, jdUsed = 0, all = 0, allUsed = 0;
                 pt = new PrettyTable(), rows = [];
-                _b.label = 3;
+                _d.label = 3;
             case 3:
                 if (!1) return [3 /*break*/, 8];
                 if (!flag) return [3 /*break*/, 6];
                 return [4 /*yield*/, api(page)];
             case 4:
-                res = _b.sent();
-                for (_i = 0, _a = res.data.unUseRedInfo.redList; _i < _a.length; _i++) {
-                    t = _a[_i];
-                    if (t.beginTime * 1000 > START) {
-                        redNum++;
-                        total = accAdd(total, t.discount * 1);
-                        if (t.orgLimitStr.indexOf('京喜') > -1) {
-                            jx = accAdd(jx, t.discount * 1);
-                            jxUsed = accAdd(jxUsed, accSub(t.discount * 1, t.balance * 1));
-                        }
-                        else if (t.orgLimitStr.indexOf('极速') > -1) {
-                            js = accAdd(js, t.discount * 1);
-                            jsUsed = accAdd(jsUsed, accSub(t.discount * 1, t.balance * 1));
-                        }
-                        else if (t.orgLimitStr.indexOf('健康') > -1) {
-                            jk = accAdd(jk, t.discount * 1);
-                            jkUsed = accAdd(jkUsed, accSub(t.discount * 1, t.balance * 1));
-                        }
-                        else if (t.orgLimitStr.indexOf('京东商城') > -1) {
-                            jd = accAdd(jd, t.discount * 1);
-                            jdUsed = accAdd(jdUsed, accSub(t.discount * 1, t.balance * 1));
+                res = _d.sent();
+                try {
+                    for (_a = (e_1 = void 0, __values(res.data.unUseRedInfo.redList)), _b = _a.next(); !_b.done; _b = _a.next()) {
+                        t = _b.value;
+                        if (t.beginTime * 1000 > START) {
+                            redNum++;
+                            total = accAdd(total, t.discount * 1);
+                            if (t.orgLimitStr.indexOf('京喜') > -1) {
+                                jx = accAdd(jx, t.discount * 1);
+                                jxUsed = accAdd(jxUsed, accSub(t.discount * 1, t.balance * 1));
+                            }
+                            else if (t.orgLimitStr.indexOf('极速') > -1) {
+                                js = accAdd(js, t.discount * 1);
+                                jsUsed = accAdd(jsUsed, accSub(t.discount * 1, t.balance * 1));
+                            }
+                            else if (t.orgLimitStr.indexOf('健康') > -1) {
+                                jk = accAdd(jk, t.discount * 1);
+                                jkUsed = accAdd(jkUsed, accSub(t.discount * 1, t.balance * 1));
+                            }
+                            else if (t.orgLimitStr.indexOf('京东商城') > -1) {
+                                jd = accAdd(jd, t.discount * 1);
+                                jdUsed = accAdd(jdUsed, accSub(t.discount * 1, t.balance * 1));
+                            }
+                            else {
+                                all = accAdd(all, t.discount * 1);
+                                allUsed = accAdd(allUsed, accSub(t.discount * 1, t.balance * 1));
+                            }
                         }
                         else {
-                            all = accAdd(all, t.discount * 1);
-                            allUsed = accAdd(allUsed, accSub(t.discount * 1, t.balance * 1));
+                            flag = false;
                         }
                     }
-                    else {
-                        flag = false;
+                }
+                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                finally {
+                    try {
+                        if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
                     }
+                    finally { if (e_1) throw e_1.error; }
                 }
                 page++;
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
             case 5:
-                _b.sent();
+                _d.sent();
                 return [3 /*break*/, 7];
             case 6: return [3 /*break*/, 8];
             case 7: return [3 /*break*/, 3];
@@ -129,7 +150,7 @@ var headers = ["Type", "Used", "Total"];
                 rows.push(['Total', '', total]);
                 pt.create(headers, rows);
                 pt.print();
-                _b.label = 9;
+                _d.label = 9;
             case 9:
                 i++;
                 return [3 /*break*/, 2];
@@ -137,8 +158,8 @@ var headers = ["Type", "Used", "Total"];
                 if (!message) return [3 /*break*/, 12];
                 return [4 /*yield*/, (0, sendNotify_1.sendNotify)('每周质量报告', message)];
             case 11:
-                _b.sent();
-                _b.label = 12;
+                _d.sent();
+                _d.label = 12;
             case 12: return [2 /*return*/];
         }
     });
@@ -148,10 +169,10 @@ function api(page) {
         var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].get("https://wq.jd.com/user/info/QueryUserRedEnvelopesV2?type=2&orgFlag=JD_PinGou_New&page=".concat(page, "&cashRedType=1&redBalanceFlag=0&channel=3&_=").concat(Date.now(), "&sceneval=2"), {
+                case 0: return [4 /*yield*/, axios_1.default.get("https://wq.jd.com/user/info/QueryUserRedEnvelopesV2?type=2&orgFlag=JD_PinGou_New&page=".concat(page, "&cashRedType=1&redBalanceFlag=0&channel=3&_=").concat(Date.now(), "&sceneval=2"), {
                         headers: {
                             'authority': 'wq.jd.com',
-                            'user-agent': TS_USER_AGENTS_1["default"],
+                            'user-agent': TS_USER_AGENTS_1.default,
                             'referer': 'https://wqs.jd.com/',
                             'cookie': cookie
                         }
