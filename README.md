@@ -22,7 +22,6 @@ wget https://github.com/utterliar1/jd_scripts/raw/master/package.json && pnpm in
 # References:
 - [@JDHelloWorld](https://github.com/JDHelloWorld/jd_scripts.git)
 - [@smiek](https://github.com/smiek2221/scripts)
-- [@passerby](https://github.com/passerby-b/JDDJ.git)
 - [@NobyDa](https://github.com/NobyDa/Script.git)
 - [@jiulan](https://github.com/jiulan/platypus.git)
 - [@Aaron-lv](https://github.com/Aaron-lv/sync.git)
