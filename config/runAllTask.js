@@ -110,7 +110,7 @@ const cronMap = {
   'jd_joy_reward.js':'0 0-16/8 * * *' ,//宠汪汪积分兑换奖品
   'jd_jump.js':'1 0,11,21 * * *' , //跳跳乐瓜分京豆
   'jd_jxlhb.js':'0 2,12,21 * * *' ,//京喜领88元红包
-  'jd_jxmc.js':'10 12,18 * * *' ,//惊喜牧场
+  'jd_jxmc.js':'10 */5 * * *' ,//惊喜牧场
   'jd_jxmc3.js':'0 */4 * * *' ,//惊喜牧场
   'jd_live.js':'10-50/5 12,13,23 * * *' ,//京东直播
   'jd_live_redrain.js':'0,30 * * * *' ,//超级直播间红包雨
@@ -152,7 +152,7 @@ var notList = [
 /********暂时失效********** */
 "jd_speed_redpocke.js",//风控
 "jd_shop.js",//
-"jd_jxmc.js",//
+"jd_jxmc3.js",//
 "jd_beauty.js",//
 "jx_nnfls.js",//
 "jd_family.js",
