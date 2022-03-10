@@ -150,6 +150,7 @@ var notList = [
 // "jd_bean_box.js",//1 0,9,12,18 * * * 领京豆-
 // "jd_babel_sign.js",//
 /********暂时失效********** */
+"jd_angryKoi.js",//风控
 "jd_speed_redpocke.js",//风控
 "jd_shop.js",//
 "jd_jxmc3.js",//
@@ -351,58 +352,65 @@ function runScript(code, file, startTime) {
     stderr = stderr || ''
     stdout = stdout || ''
     doWriteFile(file, stdout,startTime)
-    if (error) {
-      loggerError(`error: ${file}:${error}`);
-      return;
-    }
-    if (stderr) {
-      loggerError(`stderr: ${file}:${stderr}`);
-    }
     console.log(`stdout: ${stdout}`);
+    if (error) {
+      // loggerError(`error: ${file}:${error}`);
+      loggerAll(`error: ${file}:${error}`);
+    }else if (stderr) {
+      // loggerError(`stderr: ${file}:${stderr}`);
+      loggerAll(`stderr: ${file}:${stderr}`);
+    }
   });
 }
 
 function doWriteFile(file, stdout, startTime) {
   // 写入文件内容（如果文件不存在会创建一个文件）
-
   let endTime = getNowTime();
   let useTime = parseInt((new Date(endTime).getTime()-new Date(startTime).getTime())/1000)+'秒'
-  let dirName = file.substr(0,file.length-3)
+  stdout = '-------------------------------->'+file
+          +'\n用时('+useTime+')  '+startTime+' --> '+endTime
+          +'\n'+stdout
+          +'\n<--------------------------------'+file
+          +'\n\n\n\n';
+  loggerAll(stdout);
 
-  let path = './logs/' + dirName+'/'+ getFileTime() + '.txt'
-  stdout = '用时('+useTime+')  '+startTime+' --> '+endTime+'\n'+stdout
-  fs.exists('logs/'+dirName, (exists) => {
-    if (!exists) {
-      fs.mkdir('logs/'+dirName, (exists) => {
-        console.log('创建目录 logs/'+dirName)
-        //  { 'flag': 'a' } 文件末尾追加内容
-        fs.writeFile(path, stdout, { 'flag': '' }, function (err) {
-          logger(`${endTime} 写入日志文件 ${path} 耗时：${useTime}`)
-        });
-      })
-    }else{
-      //  { 'flag': 'a' } 文件末尾追加内容
-      fs.writeFile(path, stdout, { 'flag': '' }, function (err) {
-        logger(`${endTime} 写入日志文件 ${path} 耗时：${useTime}`)
-      });
-    }
-  })
-
-
+  // let dirName = file.substr(0,file.length-3)
+  // let path = './logs/' + dirName+'/'+ getFileTime() + '.txt'
+  // stdout = '用时('+useTime+')  '+startTime+' --> '+endTime+'\n'+stdout
+  // fs.exists('logs/'+dirName, (exists) => {
+  //   if (!exists) {
+  //     fs.mkdir('logs/'+dirName, (exists) => {
+  //       console.log('创建目录 logs/'+dirName)
+  //       //  { 'flag': 'a' } 文件末尾追加内容
+  //       fs.writeFile(path, stdout, { 'flag': '' }, function (err) {
+  //         logger(`${endTime} 写入日志文件 ${path} 耗时：${useTime}`)
+  //       });
+  //     })
+  //   }else{
+  //     //  { 'flag': 'a' } 文件末尾追加内容
+  //     fs.writeFile(path, stdout, { 'flag': '' }, function (err) {
+  //       logger(`${endTime} 写入日志文件 ${path} 耗时：${useTime}`)
+  //     });
+  //   }
+  // })
 }
 
 function getFileTime(){
   let d = new Date()
-  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}.${d.getHours()}_${d.getMinutes()}_${d.getSeconds()}`
+  return `${d.getFullYear()}-${formatTwo(d.getMonth()+1)}-${formatTwo(d.getDate())}.${formatTwo(d.getHours())}_${formatTwo(d.getMinutes())}_${formatTwo(d.getSeconds())}`
 }
 function getNowTime(){
   let d = new Date()
-  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
+  return `${d.getFullYear()}-${formatTwo(d.getMonth()+1)}-${formatTwo(d.getDate())} ${formatTwo(d.getHours())}:${formatTwo(d.getMinutes())}:${formatTwo(d.getSeconds())}`
 }
 function getNowDate(){
   let d = new Date()
-  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+  return `${d.getFullYear()}-${formatTwo(d.getMonth()+1)}-${formatTwo(d.getDate())}`
 }
+function formatTwo(num){
+  return num<10?'0'+num:num
+}
+
 function logger(info) {
   console.log(info);
   if (!info) {
@@ -425,6 +433,18 @@ function loggerCron(info) {
   }
   let loggerDate = getNowDate()
   fs.writeFile(`logs/3loggerCron${loggerDate}.txt`, '\n' + info, { 'flag': 'a' }, function (err) {
+  });
+}
+function loggerAll(info) {
+  console.log(info);
+  if (!info) {
+    return;
+  }
+  if (typeof info !== 'string') {
+    info = JSON.stringify(info)
+  }
+  let loggerDate = getNowDate()
+  fs.writeFile(`logs/3loggerAll${loggerDate}.txt`, '\n' + info, { 'flag': 'a' }, function (err) {
   });
 }
 
