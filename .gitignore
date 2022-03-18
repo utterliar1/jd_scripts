@@ -17,3 +17,6 @@
 /config/myCookies.js
 /config/runAllTask.js
 /config/shareCodeJSON.md
+/*.json
+/*alidate.txt
+/.env
