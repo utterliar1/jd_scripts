@@ -145,22 +145,14 @@ const cronMap = {
 }
 //不执行的js文件
 var notList = [
+  "jd_deleteCart.js",//不执行
 // "jd_bean_sign.js",//
 // "jd_jxnc.js",//
 // "jd_try.js",//
 // "jd_bean_box.js",//1 0,9,12,18 * * * 领京豆-
-"jd_joy_reward.js",//失效
-"jd_deleteCart.js",//失效
-"jd_ddworld_exchange.js",//失效
+"jd_ddworld_exchange.js",//过期
 "JD_DailyBonus.js",//失效
-"jd_daily_egg.js",//失效
-"jd_car_exchange.js",//失效
-"jd_babel_sign.js",//失效
-"jd_big_winner.js",//失效
-"jd_car.js",//失效
-"jd_zqfl.js",//失效
 /********暂时失效********** */
-"jd_speed_redpocke.js",//风控
 "jd_dns_shop.js",//风控
 "jd_angryKoi.js",//风控
 "jd_shop.js",//
