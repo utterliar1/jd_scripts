@@ -9,6 +9,7 @@ const cronMap = {
   'jd_delCoupon.js':'X * * * *',//删除优惠券🎟（未设定自动运行，删券慎用）
   'jd_unsubscribe.js':'X * * * *',// 取关京东店铺商品 5 23 * * *
   'jd_moneyTree_2.js':'X * * * *',
+  'jd_exchangejxbeans.js':'X * * * *',
   'jd_all_bean_change.js':'X * * * *',
   'jd_guacleancart.js':'X * * * *',//清空购物车
   'jd_track.js':'X * * * *',// 
@@ -148,10 +149,20 @@ var notList = [
 // "jd_jxnc.js",//
 // "jd_try.js",//
 // "jd_bean_box.js",//1 0,9,12,18 * * * 领京豆-
-// "jd_babel_sign.js",//
+"jd_joy_reward.js",//失效
+"jd_deleteCart.js",//失效
+"jd_ddworld_exchange.js",//失效
+"JD_DailyBonus.js",//失效
+"jd_daily_egg.js",//失效
+"jd_car_exchange.js",//失效
+"jd_babel_sign.js",//失效
+"jd_big_winner.js",//失效
+"jd_car.js",//失效
+"jd_zqfl.js",//失效
 /********暂时失效********** */
-"jd_angryKoi.js",//风控
 "jd_speed_redpocke.js",//风控
+"jd_dns_shop.js",//风控
+"jd_angryKoi.js",//风控
 "jd_shop.js",//
 "jd_jxmc3.js",//
 "jd_beauty.js",//

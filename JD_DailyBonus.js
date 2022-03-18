@@ -46,7 +46,7 @@ var Key = ''; //该参数已废弃; 仅用于下游脚本的兼容, 请使用jso
 
 var DualKey = ''; //该参数已废弃; 仅用于下游脚本的兼容, 请使用json串数据  ↓
 
-var OtherKey = ``; //无限账号Cookie json串数据, 请严格按照json格式填写, 具体格式请看以下样例:
+var OtherKey = `[{"cookie":"__jda=122270672.164758499663736456699.1647584996.1647584996.1647584996.1; __jdv=122270672%7Cdirect%7C-%7Cnone%7C-%7C1647584996639; __jdc=122270672; mba_muid=164758499663736456699; shshshfp=69684b45d0298c54055b5f862262f38e; shshshfpa=8d98b4cc-f296-866e-811a-f92a1995d482-1647584996; shshshsID=4df288987c9c2b428069e43b72e3a872_1_1647584996930; shshshfpb=qxMgjkW6TATE4urV4JmW8yQ; 3AB9D23F7A4B3C9B=4VLGL5CR2YQZBZZUU644AQ24J4AUQULE6OFXTIQTEQN7EPLOXW52JH6KIIXRAI6UV2HESEEMHFX4LXWE6OQQSYOUFM; jcap_dvzw_fp=zJ81rx8HSHmGQnwWN4hVVTKP4w7AAftq360ptx6tC0rEp5c71hbf2Ifx3FeouHuTUPPg9A==; TrackerID=NZxGzxsHMhgV7J63YJyGIqVrkQrmvOgcgCEcEISUKU9ncEnNX3BpCYPTEMVmFV6nB38LGVEkznnfjXXBxsRGEAjMQez3XGdkreft4cRlEQOUsZpWbKPDdk4Sx5TSU_VlikKrS_podrWbDdm-yifakQ; pt_key=AAJiNCb_ADAu-AIcykGEWxZaqRyQnQQKcNql4_b3rv0f_I11A6_UTrKrdw-L61sH3bCRj2ZSqnc; pt_pin=jd_709dd3ec1b312; pt_token=96h6z13i; pwdt_id=jd_709dd3ec1b312; sfstoken=tk01mc5b91c23a8sMngzKzErM3gyGWkjets/Wz/up71v3E2dU/se1sa++x0613WmxAkbvAeq416SzRqShDiXj3f0Mp2U; whwswswws=; __jd_ref_cls=MLoginRegister_SMSLoginSuccess; mobilev=html5; __jdb=122270672.2.164758499663736456699|1.1647584996; mba_sid=16475849966436895310435309014.2","jrBody":""}]`; //无限账号Cookie json串数据, 请严格按照json格式填写, 具体格式请看以下样例:
 
 /*以下样例为双账号("cookie"为必须,其他可选), 第一个账号仅包含Cookie, 第二个账号包含Cookie和金融签到Body: 
 

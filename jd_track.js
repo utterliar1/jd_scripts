@@ -39,7 +39,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = require("axios");
 var path = require("path");
 var sendNotify_1 = require("./sendNotify");
@@ -47,13 +58,14 @@ var fs_1 = require("fs");
 var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
 var cookie = '', UserName, index, allMessage = '', res = '', message = '';
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, except, orders, i, _i, _a, order, orderId, orderType, title, t, status_1, carrier, carriageId, account, _b, account_1, acc;
-    var _c, _d;
-    return __generator(this, function (_e) {
-        switch (_e.label) {
+    var cookiesArr, except, orders, i, _a, _b, order, orderId, orderType, title, t, status_1, carrier, carriageId, e_1_1, account, account_1, account_1_1, acc;
+    var e_1, _c, e_2, _d;
+    var _e, _f;
+    return __generator(this, function (_g) {
+        switch (_g.label) {
             case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
             case 1:
-                cookiesArr = _e.sent();
+                cookiesArr = _g.sent();
                 except = (0, TS_USER_AGENTS_1.exceptCookie)(path.basename(__filename));
                 orders = {};
                 if ((0, fs_1.existsSync)('./json')) {
@@ -69,41 +81,44 @@ var cookie = '', UserName, index, allMessage = '', res = '', message = '';
                     (0, fs_1.writeFileSync)('./json/jd_track.json', '{}');
                 }
                 i = 0;
-                _e.label = 2;
+                _g.label = 2;
             case 2:
-                if (!(i < cookiesArr.length)) return [3 /*break*/, 11];
+                if (!(i < cookiesArr.length)) return [3 /*break*/, 15];
                 cookie = cookiesArr[i];
                 UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
                 index = i + 1;
                 console.log("\n\u5F00\u59CB\u3010\u4EAC\u4E1C\u8D26\u53F7".concat(index, "\u3011").concat(UserName, "\n"));
                 if (except.includes(encodeURIComponent(UserName))) {
                     console.log('已设置跳过');
-                    return [3 /*break*/, 10];
+                    return [3 /*break*/, 14];
                 }
                 message = '';
                 return [4 /*yield*/, getOrderList()];
             case 3:
-                res = _e.sent();
+                res = _g.sent();
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
             case 4:
-                _e.sent();
-                _i = 0, _a = res.orderList;
-                _e.label = 5;
+                _g.sent();
+                _g.label = 5;
             case 5:
-                if (!(_i < _a.length)) return [3 /*break*/, 8];
-                order = _a[_i];
+                _g.trys.push([5, 10, 11, 12]);
+                _a = (e_1 = void 0, __values(res.orderList)), _b = _a.next();
+                _g.label = 6;
+            case 6:
+                if (!!_b.done) return [3 /*break*/, 9];
+                order = _b.value;
                 orderId = order.orderId;
                 orderType = order.orderType;
                 title = order.productList[0].title;
-                t = ((_c = order.progressInfo) === null || _c === void 0 ? void 0 : _c.tip) || null;
-                status_1 = ((_d = order.progressInfo) === null || _d === void 0 ? void 0 : _d.content) || null;
+                t = ((_e = order.progressInfo) === null || _e === void 0 ? void 0 : _e.tip) || null;
+                status_1 = ((_f = order.progressInfo) === null || _f === void 0 ? void 0 : _f.content) || null;
                 return [4 /*yield*/, getWuliu(orderId, orderType)];
-            case 6:
-                res = _e.sent();
+            case 7:
+                res = _g.sent();
                 carrier = res.carrier, carriageId = res.carriageId;
                 if (t && status_1) {
                     if (status_1.match(/(?=签收|已取走|已暂存)/))
-                        return [3 /*break*/, 7];
+                        return [3 /*break*/, 8];
                     console.log(title);
                     console.log('\t', t, status_1);
                     console.log();
@@ -119,36 +134,56 @@ var cookie = '', UserName, index, allMessage = '', res = '', message = '';
                         carriageId: carriageId
                     };
                 }
-                _e.label = 7;
-            case 7:
-                _i++;
-                return [3 /*break*/, 5];
+                _g.label = 8;
             case 8:
+                _b = _a.next();
+                return [3 /*break*/, 6];
+            case 9: return [3 /*break*/, 12];
+            case 10:
+                e_1_1 = _g.sent();
+                e_1 = { error: e_1_1 };
+                return [3 /*break*/, 12];
+            case 11:
+                try {
+                    if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                }
+                finally { if (e_1) throw e_1.error; }
+                return [7 /*endfinally*/];
+            case 12:
                 if (message) {
                     message = "<\u4EAC\u4E1C\u8D26\u53F7".concat(i + 1, ">  ").concat(UserName, "\n\n").concat(message);
                     allMessage += message;
                 }
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
-            case 9:
-                _e.sent();
-                _e.label = 10;
-            case 10:
+            case 13:
+                _g.sent();
+                _g.label = 14;
+            case 14:
                 i++;
                 return [3 /*break*/, 2];
-            case 11:
+            case 15:
                 orders = JSON.stringify(orders, null, 2);
                 account = JSON.parse((0, fs_1.readFileSync)('./utils/account.json').toString() || '[]') || [];
-                for (_b = 0, account_1 = account; _b < account_1.length; _b++) {
-                    acc = account_1[_b];
-                    orders = orders.replace(new RegExp(decodeURIComponent(acc['pt_pin']), 'g'), acc['remarks']);
+                try {
+                    for (account_1 = __values(account), account_1_1 = account_1.next(); !account_1_1.done; account_1_1 = account_1.next()) {
+                        acc = account_1_1.value;
+                        orders = orders.replace(new RegExp(decodeURIComponent(acc['pt_pin']), 'g'), acc['remarks']);
+                    }
+                }
+                catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                finally {
+                    try {
+                        if (account_1_1 && !account_1_1.done && (_d = account_1.return)) _d.call(account_1);
+                    }
+                    finally { if (e_2) throw e_2.error; }
                 }
                 (0, fs_1.writeFileSync)('./json/jd_track.json', orders);
-                if (!allMessage) return [3 /*break*/, 13];
+                if (!allMessage) return [3 /*break*/, 17];
                 return [4 /*yield*/, (0, sendNotify_1.sendNotify)('京东快递更新', allMessage)];
-            case 12:
-                _e.sent();
-                _e.label = 13;
-            case 13: return [2 /*return*/];
+            case 16:
+                _g.sent();
+                _g.label = 17;
+            case 17: return [2 /*return*/];
         }
     });
 }); })();
@@ -159,10 +194,10 @@ function getOrderList() {
             switch (_a.label) {
                 case 0:
                     t = Date.now();
-                    return [4 /*yield*/, axios_1["default"].get("https://wq.jd.com/bases/orderlist/list?order_type=2&start_page=1&last_page=0&page_size=10&callersource=mainorder&t=".concat(t, "&sceneval=2&_=").concat(t + 1, "&sceneval=2"), {
+                    return [4 /*yield*/, axios_1.default.get("https://wq.jd.com/bases/orderlist/list?order_type=2&start_page=1&last_page=0&page_size=10&callersource=mainorder&t=".concat(t, "&sceneval=2&_=").concat(t + 1, "&sceneval=2"), {
                             headers: {
                                 'authority': 'wq.jd.com',
-                                'user-agent': TS_USER_AGENTS_1["default"],
+                                'user-agent': TS_USER_AGENTS_1.default,
                                 'referer': 'https://wqs.jd.com/',
                                 'cookie': cookie
                             }
@@ -179,10 +214,10 @@ function getWuliu(orderId, orderType) {
         var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].get("https://wq.jd.com/bases/wuliudetail/dealloglist?deal_id=".concat(orderId, "&orderstate=15&ordertype=").concat(orderType, "&t=").concat(Date.now(), "&sceneval=2"), {
+                case 0: return [4 /*yield*/, axios_1.default.get("https://wq.jd.com/bases/wuliudetail/dealloglist?deal_id=".concat(orderId, "&orderstate=15&ordertype=").concat(orderType, "&t=").concat(Date.now(), "&sceneval=2"), {
                         headers: {
                             'authority': 'wq.jd.com',
-                            'user-agent': TS_USER_AGENTS_1["default"],
+                            'user-agent': TS_USER_AGENTS_1.default,
                             'referer': 'https://wqs.jd.com/',
                             'cookie': cookie
                         }
