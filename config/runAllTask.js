@@ -8,7 +8,9 @@ let taskLog = {}
 const cronMap = {
   'jd_delCoupon.js':'X * * * *',//删除优惠券🎟（未设定自动运行，删券慎用）
   'jd_unsubscribe.js':'X * * * *',// 取关京东店铺商品 5 23 * * *
-  'jd_moneyTree_2.js':'X * * * *',
+  'jd_productZ4Brand.js':'X * * * *',// 
+  'jd_unsubscriLive.js':'X * * * *',// 取关主播
+  'jd_order_cashback.js':'X * * * *',// 下单返红包助力
   'jd_exchangejxbeans.js':'X * * * *',
   'jd_all_bean_change.js':'X * * * *',
   'jd_guacleancart.js':'X * * * *',//清空购物车
@@ -32,7 +34,6 @@ const cronMap = {
   'jd_shop_sign.js':'45 23 * * *',// 
   'jd_sendBeans.js':'6 1,14 * * *',// 
   'jd_reward.js':'3 13,22 * * *',// 
-  'jd_productZ4Brand.js':'3 6,22 * * *',// 
   'jd_ccSign.js':'17 0 * * *',// 
   'jd_mf.js':'13 1,6 * * *',// 
   'jd_guaUnknownTask7.js':'27 8,18 * * *',// 
@@ -145,58 +146,29 @@ const cronMap = {
 }
 //不执行的js文件
 var notList = [
-  "jd_deleteCart.js",//不执行
-// "jd_bean_sign.js",//
-// "jd_jxnc.js",//
-// "jd_try.js",//
-// "jd_bean_box.js",//1 0,9,12,18 * * * 领京豆-
-"jd_ddworld_exchange.js",//过期
-"JD_DailyBonus.js",//失效
-/********暂时失效********** */
-"jd_dns_shop.js",//风控
-"jd_angryKoi.js",//风控
-"jd_shop.js",//
-"jd_jxmc3.js",//
-"jd_beauty.js",//
-"jx_nnfls.js",//
-"jd_family.js",
-"jd_yili_cow.js",//
-"jd_guaopencard107.js",//
+  /********暂时失效********** */
+  "jd_ddworld_exchange.js",//过期
+// "jd_shop.js",//
 /********暂时失效2********** */
-"jd_jxScore.js",//
-"jd_track.js",//
-"jd_city.js",//
-"jd_bookshop.js",//
-"jd_half_redrain.js",//
-"jd_newCron.js",//
-"jd_productZ4Brand.js",//
-"jd_jump.js",//
-"jd_reward.js",//
-"jd_ConvertSuperLink.js",//
-"jd_shop_sign.js",//
-"jd_split.js",//
-"jd_super_redrain.js",//
-"jd_unsubscriLive.js",//
-"jd_year_bill.js",//
-"jd_xiaolong.js",//
-"jd_wxFans.js",//
-"jd_order_cashback.js",//
-"jd_Last_Week_income.js",//
-"jd_carnivalcity.js",
-/********不需要运行********** */
-"jd_guacleancart.js",//
-"jd_all_bean_change.js",//
-"sign_graphics_validate.js",
-"jd_api_test.js",//
-"jd_checkCookie.js",//
-"jd_qq_pasture.js",//
-"jd_Last_Week_income.js",
-"cleancart_activity.js",
+  /********不执行********** */
+  "jd_deleteCart.js",//不执行
+  "jd_jxScore.js",//不执行
+  "jd_jxmc3.js",//
+  "jd_track.js",//
+  "jd_productZ4Brand.js",//已完成
+  "jd_unsubscriLive.js",//取关主播
+  // "jd_order_cashback.js",//下单返红包助力
+  /********不执行********** */
+  /********不需要运行********** */
+  "jd_delCoupon.js",//删除优惠券🎟（未设定自动运行，删券慎用）
+  "jd_unsubscribe.js",//# 取关京东店铺商品
+  "jd_all_bean_change.js",//
+  "jd_checkCookie.js",//
+  "cleancart_activity.js",
 "jd_cfd_stock.js",
 "jd_jxmc_stock.js",
 "jd_jxgc_stock.js",
 "jd_guacleancart.js",//清空购物车
-"jd_unsubscribe.js",//# 取关京东店铺商品
 "JS_USER_AGENTS.js",
 "tencentscf.js",
 "USER_AGENTS.js",
@@ -227,25 +199,8 @@ var notList = [
 "jd_checkCookie.js",
 "jd_env_copy.js",
 "jd_forceUpdateCron.js",
-"jd_updateCron.js",
-/*********不能跑********* */
-"jd_dj_bean.js",
-"jd_dj_getPoints.js",
-"jd_dj_getck.js",
-"jd_dj_fruit_collectWater.js",
-"jd_dj_fruit.js",
-"jd_dj_plantBeans.js",
-"jd_help_cashback.js",
-"jd_help_fortune.js",
-"jd_help_factory.js",
-"jd_help_grapbean.js.js",
-"jd_task_cookie.js",
-"jd_task_fortune.js",
-"jd_task_invokeKey.js",
-"jd_task_invokeKey.js",
-"jd_important_notify.js",
-"jd_delCoupon.js",//删除优惠券🎟（未设定自动运行，删券慎用）
-"jd_ql_repo.js",
+"jd_updateCron.js"
+/*********不跑********* */
 ]
 
 let date = new Date()
