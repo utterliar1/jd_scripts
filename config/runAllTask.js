@@ -12,12 +12,21 @@ const cronMap = {
   'jd_unsubscriLive.js':'X * * * *',// 取关主播
   'jd_order_cashback.js':'X * * * *',// 下单返红包助力
   'jd_exchangejxbeans.js':'X * * * *',
+  'jd_exchange_joy.js':'X * * * *',
   'jd_all_bean_change.js':'X * * * *',
   'jd_guacleancart.js':'X * * * *',//清空购物车
   'jd_track.js':'X * * * *',// 
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',
   'jd_babel_sign.js':'1 2,6 * * *',// 
+  'jd_jxqd.js':'20 1,8 * * *',// 
+  'jd_jxbox.js':'5 6,12 * * *',// 京喜-88红包-宝箱
+  'jd_jxg.js':'1 6,12 * * *',// 边玩边赚-》京小鸽吾悦寄
+  'jd_mofang.js':'1 6,12 * * *',// 
+  'jd_mpdzcar.js':'10 8 * * *',// 头文子J 京东汽车 - 右下角 - 领京豆
+  'jd_mpdzcar_game.js':'10 6,10,12 * * *',// 头文字J 游戏
+  'jd_sjzjd.js':'21 9 * * *',// MM领京豆
+  'jd_wxFansli.js':'5 5,15 * * *',// 饭粒
   'jd_bean_box.js':'1 9,12,18 * * *',// 
   'jx_sign.js':'20 1,8 * * *',// 京喜签到
   'jd_jxgc.js':'30 * * * *',// 
@@ -65,7 +74,7 @@ const cronMap = {
   'jd_joy_feedPets.js':'15 * * * *',// 宠汪汪喂食
   'jd_joy_steal.js':'13 0-21/3 * * *',// 宠汪汪偷好友积分与狗粮 10 0-21/3 * * *  
   'jd_moneyTree.js':'3 */2 * * *',// 摇钱树
-  'jd_pet.js':'5 6-18/6 * * *',// 东东萌宠
+  'jd_pet.js':'5 6,12,18 * * *',// 东东萌宠
   'jd_plantBean.js':'1 7-22/2 * * *',// 京东种豆得豆
   'jd_redPacket.js':'1 1,2,23',// 京东全民开红包
   'jd_shop.js':'30 0 * * * ',// 进店领豆
@@ -76,7 +85,7 @@ const cronMap = {
   'jd_lotteryMachine.js':'11 1 * * *',// 京东抽奖机
   'jd_daily_egg.js':'18 * * * *',// 天天提鹅
   'jd_pigPet.js':'12 */6 * * *',// 金融养猪
-  'jd_necklace.js':'20 0,20 * * *',// 点点券
+  'jd_necklace.js':'20 20 * * *',// 点点券
   'jd_dreamFactory.js':'20 * * * *',// 京喜工厂
   'jd_small_home.js':'16 6,23 * * *',// 东东小窝
   'jd_jdfactory.js':'10 * * * *',// 东东工厂
@@ -85,7 +94,6 @@ const cronMap = {
   'jd_ms.js':'10 6,21 * * *',// 京东秒秒币
   'jd_sgmh.js':'20 8,22 * * *',//闪购盲盒
   'jd_family.js':'1 12,23 * * *',// 京东家庭号(暂不知最佳cron*/20 * * * *) '1 12,23 * * *'
-  'jx_sign.js':'39 7 * * *',// 京喜app签到
   'jd_cash.js':'2 */4 * * *',// 签到领现金
   'jd_jxnc.js':'0 9,12,18 * * *',// 京喜农场 0 9,12,18 * * *
   'jd_bookshop.js':'1 8,12,18 * * *',// 口袋书店
@@ -107,7 +115,6 @@ const cronMap = {
   'jd_gold_creator.js':'13 1,22 * * *' , //金榜创造营
   'jd_health_collect.js':'5-45/20 * * * *' , //东东健康社区收集能量
   'jd_health.js':'13 1,6,7,21,22 * * *' , //东东健康社区
-  'jd_health2.js':'13 1,6,7,21,22 * * *' , //东东健康社区
   'jd_jin_tie.js':'10 0 * * *' ,//领金贴
   'jd_joy_reward.js':'0 0-16/8 * * *' ,//宠汪汪积分兑换奖品
   'jd_jump.js':'1 0,11,21 * * *' , //跳跳乐瓜分京豆
@@ -165,42 +172,126 @@ var notList = [
   "jd_all_bean_change.js",//
   "jd_checkCookie.js",//
   "cleancart_activity.js",
-"jd_cfd_stock.js",
-"jd_jxmc_stock.js",
-"jd_jxgc_stock.js",
-"jd_guacleancart.js",//清空购物车
-"JS_USER_AGENTS.js",
-"tencentscf.js",
-"USER_AGENTS.js",
-"Env.min.js",
-"getJDCookie.js",
-"index.js",
-"jdCookie.js",
-"jd_get_share_code.js",
-"JD_extra_cookie.js",
-"jdDreamFactoryShareCodes.js",//null
-"jdFactoryShareCodes.js",//null
-"jdFruitShareCodes.js",//null
-"jdJxncShareCodes.js",//null
-"jdJxncTokens.js",//null  
-"jdPetShareCodes.js",//null
-"jdPlantBeanShareCodes.js",//null
-"jdSuperMarketShareCodes.js",
-"main.js",//
-"TS_USER_AGENTS.js",//
-"MovementFaker.js",//
-"onlyOneExecute.js",//
-"sendNotify.js",//
-"JDJRValidator_Pure.js",//
-"jd_api_test.js",//
-"smartReplace.js",//
-"ZooFaker_Necklace.js",//
-"jd_getShareCodes.js",
-"jd_checkCookie.js",
-"jd_env_copy.js",
-"jd_forceUpdateCron.js",
-"jd_updateCron.js"
+  "jd_cfd_stock.js",
+  "jd_jxmc_stock.js",
+  "jd_jxgc_stock.js",
+  "jd_guacleancart.js",//清空购物车
+  "JS_USER_AGENTS.js",
+  "tencentscf.js",
+  "USER_AGENTS.js",
+  "Env.min.js",
+  "getJDCookie.js",
+  "index.js",
+  "jdCookie.js",
+  "jd_get_share_code.js",
+  "JD_extra_cookie.js",
+  "jdDreamFactoryShareCodes.js",//null
+  "jdFactoryShareCodes.js",//null
+  "jdFruitShareCodes.js",//null
+  "jdJxncShareCodes.js",//null
+  "jdJxncTokens.js",//null  
+  "jdPetShareCodes.js",//null
+  "jdPlantBeanShareCodes.js",//null
+  "jdSuperMarketShareCodes.js",
+  "main.js",//
+  "TS_USER_AGENTS.js",//
+  "MovementFaker.js",//
+  "onlyOneExecute.js",//
+  "sendNotify.js",//
+  "JDJRValidator_Pure.js",//
+  "jd_api_test.js",//
+  "smartReplace.js",//
+  "ZooFaker_Necklace.js",//
+  "jd_getShareCodes.js",
+  "jd_checkCookie.js",
+  "jd_env_copy.js",
+  "jd_forceUpdateCron.js",
+  "jd_updateCron.js",
 /*********不跑********* */
+// 'gua_MMdou.js',
+'gua_opencard118.js',       
+'gua_opencard119.js',       
+'gua_wealth_island.js',     
+'gua_wealth_island_help.js',
+// 'jd_bean_box.js',
+// 'jd_bean_change.js',
+// 'jd_bean_home.js',
+// 'jd_bean_sign.js',
+// 'jd_blueCoin.js',
+// 'jd_car.js',
+// 'jd_cash.js',
+// 'jd_ccSign.js',
+'jd_cfd.js',
+'jd_cfd_game.js',
+'jd_cfd_help.js',
+'jd_cfd_shell.js',
+// 'jd_club_lottery.js',
+// 'jd_connoisseur.js',
+// 'jd_daily_lottery.js',
+// 'jd_ddnc_farmpark.js',
+'jd_dreamFactory.js',
+// 'jd_dreamFactory2.js',
+'jd_dreamFactory_help.js',
+'jd_dreamFactory_tuan.js',
+// 'jd_dwapp.js',
+// 'jd_exchangejxbeans.js',
+// 'jd_exchange_joy.js',
+// 'jd_foodRunning.js',
+// 'jd_fruit.js',
+// 'jd_fruit_moreTask.js',
+// 'jd_gold_creator.js',
+// 'jd_health.js',
+// 'jd_health_collect.js',
+// 'jd_ifanli.js',
+// 'jd_jdfactory.js',
+'jd_jin_tie.js',
+'jd_joy.js',
+'jd_joy_feedPets.js',
+'jd_joy_park.js',
+'jd_joy_park_task.js',
+'jd_joy_run.js',
+'jd_joy_steal.js',
+// 'jd_jxbox.js',
+// 'jd_jxg.js',
+// 'jd_jxlhb.js',
+// 'jd_jxmc.js',
+// 'jd_jxmc_getCoin.js',
+// 'jd_jxnc.js',
+// 'jd_jxqd.js',
+// 'jd_kd.js',
+// 'jd_live.js',
+// 'jd_lotteryMachine.js',
+// 'jd_market_lottery.js',
+// 'jd_mofang.js',
+// 'jd_mohe.js',
+// 'jd_moneyTree.js',
+// 'jd_mpdzcar.js',
+// 'jd_mpdzcar_game.js',
+// 'jd_ms.js',
+// 'jd_necklace.js',
+// 'jd_nzmh.js',
+// 'jd_order_cashback.js',
+// 'jd_pet.js',
+// 'jd_pigPet.js',
+// 'jd_plantBean.js',
+// 'jd_redPacket.js',
+// 'jd_sendBeans.js',
+// 'jd_sgmh.js',
+// 'jd_shop.js',
+// 'jd_sign_graphics.js',
+// 'jd_sjzjd.js',
+// 'jd_speed.js',
+// 'jd_speed_sign.js',
+'jd_superBrand.js',
+'jd_superMarket.js',
+// 'jd_try.js',
+// 'jd_ttpt.js',
+// 'jd_wish.js',
+// 'jd_wxFansli.js',
+// 'jd_wxFanspai_sign.js',
+// 'jd_wyw.js',
+'jx_box.js',
+'jx_sign.js',
 ]
 
 let date = new Date()
@@ -219,6 +310,7 @@ fs.exists('logs', (exists) => {
 logger('当前运行目录：' + root)
 logger(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
 
+var runAllFileList = []
 var runFileList = []
 var runOneTimeList = []
 var filelist = fs.readdirSync(root)
@@ -231,10 +323,11 @@ for (let i = 0; i < filelist.length; i++) {
     }else{
       runFileList.push(file)
     }
+    runAllFileList.push(file)
   }
 }
 
-
+// console.log(runAllFileList)
 runTask();
 setTimeout(function () {
   runOneTimeTask();
@@ -418,6 +511,9 @@ function isTheTime(thisFile, date) {
   }
   if(h==0&&m==0){
     return true
+  }
+  if(thisFile.indexOf('gua_')==0){
+    cronStr = '0 6,18 * * *'
   }
   cronStr = cronStr || '0 */3 * * *';
   let cronArr = cronStr.split(' ');
