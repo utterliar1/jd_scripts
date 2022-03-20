@@ -18,7 +18,9 @@ const cronMap = {
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',
     // 'jd_signFree.js':'',//🔔极速免费签到, 开始!
-    'jd_mofang_ex.js':'31 8 * * * ',//魔方兑换
+    'jd_zjd_v0.2.js':'15,30,45 0 * * *',//优先助力HW.ts
+    'jd_88hb.js':'5 0,6,16 * * *',//京喜->领88元红包
+    'jd_mofang_ex.js':'31 8 * * *',//魔方兑换
     'jd_mofang_j.js':'13 6,10 * * *',// 京东集魔方
     'jd_jmf.js':'31 2,8 * * *',//🔔京东小魔方, 开始!
     'jd_zjd.js':'10 0,9,12 * * *',//活动入口：赚京豆-瓜分京豆(微信小程序)-赚京豆-瓜分京豆-瓜分京豆
@@ -347,8 +349,8 @@ for (let i = 0; i < filelist.length; i++) {
   }
 }
 
-// console.log(runAllFileList)
 var fileRunLog = {}//任务执行记录
+// console.log(runAllFileList)
 runTask();
 setTimeout(function () {
   runOneTimeTask();

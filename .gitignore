@@ -10,13 +10,10 @@
 /backup
 /JD_DailyBonus.js
 /result.txt
-/config/
-/config/beifen
+/config/testCookie.js
+
 /config/formatCookie.js
 /config/githubCookies.md
-/config/myCookies.js
-/config/runAllTask.js
-/config/shareCodeJSON.md
 /*.json
 /*alidate.txt
 /.env
