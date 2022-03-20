@@ -226,7 +226,7 @@ function runTask() {
   for (let i = 0; i < runFileList.length; i++) {
     const thisFile = runFileList[i];
     let code = 'node ' + thisFile
-    // runScript(code, thisFile, startTime)
+    runScript(code, thisFile, startTime)
     doJsLog += `\n${startTime} 执行脚本: ${code}`
   }
   logger(doJsLog);
