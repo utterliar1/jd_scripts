@@ -4,7 +4,6 @@ const exec = require('child_process').exec;
 const root = path.resolve(__dirname, '../');
 // const root = path.join(__dirname);
 
-let taskLog = {}
 const cronMap = {
   'jd_delCoupon.js':'X * * * *',//删除优惠券🎟（未设定自动运行，删券慎用）
   'jd_unsubscribe.js':'X * * * *',// 取关京东店铺商品 5 23 * * *
@@ -18,8 +17,30 @@ const cronMap = {
   'jd_track.js':'X * * * *',// 
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',
+    // 'jd_signFree.js':'',//🔔极速免费签到, 开始!
+    'jd_zjd.js':'10 0,9,12 * * *',//活动入口：赚京豆-瓜分京豆(微信小程序)-赚京豆-瓜分京豆-瓜分京豆
+    'jd_19_6.js':'59 6,9,14,17,20 * * *',//#极速版抢卷
+    'jd_wsdlb.js':'5 */6 * * *',//🔔柠檬我是大老板农场, 开始! 您忘了种植新的水果，快打开极速版种植吧
+    'jd_fanli.js':'40 0,9,17 * * *',//京东饭粒
+    'jd_fcwb.js':'40 12,16 * * *',//🔔发财挖宝, 开始!
+    'jd_wxj.js':'0 10 * * *',//入口 京东 我的 全民挖现金
+    'jd_jddj_fruit.js':'10 0,3,8,11,17 * * *',// 【收玻璃瓶水滴】
+    'jd_week.js':'26 22 * * 2',// 生活特权～免费领京豆
+    'jd_jintie_wx.js':'10 0,12,22 * * *',// 金贴小程序
+    'jd_sign.js':'48 9,22 * * *',// 京东签到
+    'jd_jddj_bean.js':'35 0,6,12 * * *',//领取鲜豆
+    'jd_mpdzcar_help.js':'10 3 * * *',// 头文字J  京东汽车 - 下方 - 一键签到领京豆
+    'jd_mofang_j.js':'13 6,10 * * *',// 京东集魔方
+    'jd_jddj_plantBeans.js':'20 */6 * * *',// 【庄园签到】
+    'jd_jdzz.js':'10 0 * * * ',// 🔔京东赚赚
+    'jd_tyt.js':'0 1 * * *',// 极速版-推推赚大钱
+    'jd_nnfls.js':'1 0,9,19,23 * * *',// 🔔牛牛福利
+    'jd_jmf.js':'31 2,8 * * *',//🔔京东小魔方, 开始!
+    'jd_jdjrjf.js':'50 8 * * *',//🔔京东金融赚积分, 开始!
   'jd_babel_sign.js':'1 2,6 * * *',// 
   'jd_jxqd.js':'20 1,8 * * *',// 
+  'jd_joy_park_task.js':'0 0,20 * * *',// 
+  // 'jd_joy_park_task.js':'0 0,7,9,17,20 * * *',// 
   'jd_jxbox.js':'5 6,12 * * *',// 京喜-88红包-宝箱
   'jd_jxg.js':'1 6,12 * * *',// 边玩边赚-》京小鸽吾悦寄
   'jd_mofang.js':'1 6,12 * * *',// 
@@ -71,7 +92,7 @@ const cronMap = {
   'jd_connoisseur.js':'11 1,5 * * *',// 内容鉴赏官
   'jd_fruit.js':'5 */3 * * *',// 东东农场
   'jd_joy.js':'15 */3 * * *',// 宠汪汪
-  'jd_joy_feedPets.js':'15 * * * *',// 宠汪汪喂食
+  'jd_joy_feedPets.js':'15 5/* * * *',// 宠汪汪喂食
   'jd_joy_steal.js':'13 0-21/3 * * *',// 宠汪汪偷好友积分与狗粮 10 0-21/3 * * *  
   'jd_moneyTree.js':'3 */2 * * *',// 摇钱树
   'jd_pet.js':'5 6,12,18 * * *',// 东东萌宠
@@ -86,11 +107,12 @@ const cronMap = {
   'jd_daily_egg.js':'18 * * * *',// 天天提鹅
   'jd_pigPet.js':'12 */6 * * *',// 金融养猪
   'jd_necklace.js':'20 20 * * *',// 点点券
-  'jd_dreamFactory.js':'20 * * * *',// 京喜工厂
+  'jd_dreamFactory.js':'0 5,15 * * *',// 京喜工厂
   'jd_small_home.js':'16 6,23 * * *',// 东东小窝
   'jd_jdfactory.js':'10 * * * *',// 东东工厂
   'jd_price.js':'1 23 * * *',//京东保价
-  'jd_beauty.js':'1 6,12,19 * * *',//美丽研究院
+  'jd_beauty.js':'20 0 * * *',//美丽研究院
+  'jd_beauty_ex.js':'20 0 * * *',//美丽研究院
   'jd_ms.js':'10 6,21 * * *',// 京东秒秒币
   'jd_sgmh.js':'20 8,22 * * *',//闪购盲盒
   'jd_family.js':'1 12,23 * * *',// 京东家庭号(暂不知最佳cron*/20 * * * *) '1 12,23 * * *'
@@ -153,20 +175,21 @@ const cronMap = {
 }
 //不执行的js文件
 var notList = [
-  /********暂时失效********** */
-  "jd_ddworld_exchange.js",//过期
-// "jd_shop.js",//
-/********暂时失效2********** */
+  /********失效********** */
+  // "jd_shop.js",//
+  "jd_ddworld_exchange.js",//失效
+  // "jd_order_cashback.js",//下单返红包助力
+/********失效2********** */
   /********不执行********** */
-  "jd_deleteCart.js",//不执行
   "jd_jxScore.js",//不执行
   "jd_jxmc3.js",//
   "jd_track.js",//
   "jd_productZ4Brand.js",//已完成
   "jd_unsubscriLive.js",//取关主播
-  // "jd_order_cashback.js",//下单返红包助力
   /********不执行********** */
   /********不需要运行********** */
+  "jd_deleteCart.js",//删除购物车 不执行
+  "jd_guacleancart.js",//清空购物车 不执行
   "jd_delCoupon.js",//删除优惠券🎟（未设定自动运行，删券慎用）
   "jd_unsubscribe.js",//# 取关京东店铺商品
   "jd_all_bean_change.js",//
@@ -175,7 +198,6 @@ var notList = [
   "jd_cfd_stock.js",
   "jd_jxmc_stock.js",
   "jd_jxgc_stock.js",
-  "jd_guacleancart.js",//清空购物车
   "JS_USER_AGENTS.js",
   "tencentscf.js",
   "USER_AGENTS.js",
@@ -185,13 +207,13 @@ var notList = [
   "jdCookie.js",
   "jd_get_share_code.js",
   "JD_extra_cookie.js",
-  "jdDreamFactoryShareCodes.js",//null
-  "jdFactoryShareCodes.js",//null
-  "jdFruitShareCodes.js",//null
-  "jdJxncShareCodes.js",//null
-  "jdJxncTokens.js",//null  
-  "jdPetShareCodes.js",//null
-  "jdPlantBeanShareCodes.js",//null
+  "jdDreamFactoryShareCodes.js",//
+  "jdFactoryShareCodes.js",//
+  "jdFruitShareCodes.js",//
+  "jdJxncShareCodes.js",//
+  "jdJxncTokens.js",//  
+  "jdPetShareCodes.js",//
+  "jdPlantBeanShareCodes.js",//
   "jdSuperMarketShareCodes.js",
   "main.js",//
   "TS_USER_AGENTS.js",//
@@ -208,11 +230,24 @@ var notList = [
   "jd_forceUpdateCron.js",
   "jd_updateCron.js",
 /*********不跑********* */
-// 'gua_MMdou.js',
-'gua_opencard118.js',       
-'gua_opencard119.js',       
 'gua_wealth_island.js',     
 'gua_wealth_island_help.js',
+'jd_cfd.js',
+'jd_cfd_game.js',
+'jd_cfd_help.js',
+'jd_cfd_shell.js',
+'jd_dreamFactory_help.js',
+'jd_dreamFactory_tuan.js',
+'jd_joy.js',
+'jd_joy_feedPets.js',
+'jd_joy_park.js',
+'jd_joy_run.js',
+'jd_joy_steal.js',
+'jd_superBrand.js',
+'jd_superMarket.js',
+'jx_box.js',
+'jx_sign.js',
+// 'gua_MMdou.js',
 // 'jd_bean_box.js',
 // 'jd_bean_change.js',
 // 'jd_bean_home.js',
@@ -221,18 +256,12 @@ var notList = [
 // 'jd_car.js',
 // 'jd_cash.js',
 // 'jd_ccSign.js',
-'jd_cfd.js',
-'jd_cfd_game.js',
-'jd_cfd_help.js',
-'jd_cfd_shell.js',
 // 'jd_club_lottery.js',
 // 'jd_connoisseur.js',
 // 'jd_daily_lottery.js',
 // 'jd_ddnc_farmpark.js',
-'jd_dreamFactory.js',
+// 'jd_dreamFactory.js',
 // 'jd_dreamFactory2.js',
-'jd_dreamFactory_help.js',
-'jd_dreamFactory_tuan.js',
 // 'jd_dwapp.js',
 // 'jd_exchangejxbeans.js',
 // 'jd_exchange_joy.js',
@@ -244,13 +273,8 @@ var notList = [
 // 'jd_health_collect.js',
 // 'jd_ifanli.js',
 // 'jd_jdfactory.js',
-'jd_jin_tie.js',
-'jd_joy.js',
-'jd_joy_feedPets.js',
-'jd_joy_park.js',
-'jd_joy_park_task.js',
-'jd_joy_run.js',
-'jd_joy_steal.js',
+// 'jd_jin_tie.js',
+// 'jd_joy_park_task.js',
 // 'jd_jxbox.js',
 // 'jd_jxg.js',
 // 'jd_jxlhb.js',
@@ -282,16 +306,12 @@ var notList = [
 // 'jd_sjzjd.js',
 // 'jd_speed.js',
 // 'jd_speed_sign.js',
-'jd_superBrand.js',
-'jd_superMarket.js',
 // 'jd_try.js',
 // 'jd_ttpt.js',
 // 'jd_wish.js',
 // 'jd_wxFansli.js',
 // 'jd_wxFanspai_sign.js',
 // 'jd_wyw.js',
-'jx_box.js',
-'jx_sign.js',
 ]
 
 let date = new Date()
@@ -328,11 +348,12 @@ for (let i = 0; i < filelist.length; i++) {
 }
 
 // console.log(runAllFileList)
+var fileRunLog = {}//任务执行记录
 runTask();
 setTimeout(function () {
   runOneTimeTask();
 }, 3*60*1000);
-setInterval(function () {
+setTimeout(function () {
   runAutoTask();
 }, 30*60*1000);
 
@@ -347,13 +368,78 @@ function runTask() {
   logger('要执行的脚本数量：' + runFileList.length)
   let doJsLog = ''
   let startTime = getNowTime();
+  let date = new Date();
+  let month = formatTwo(date.getMonth()+1);
+  let day = formatTwo(date.getDate());
+  let h = formatTwo(date.getHours());//(0 ~ 23) 
+  let dayKey = month+'_'+day;
+  fileRunLog[dayKey] = {}
+  fileRunLog[dayKey][h]={}
   for (let i = 0; i < runFileList.length; i++) {
     const thisFile = runFileList[i];
+    fileRunLog[dayKey][h][thisFile]=startTime//记录当前小时文件执行的时间
     let code = 'node ' + thisFile
     runScript(code, thisFile, startTime)
     doJsLog += `\n${startTime} 执行脚本: ${code}`
   }
   logger(doJsLog);
+}
+
+
+function runAutoTask() {
+  setInterval(function () {
+    let date = new Date();
+    let month = formatTwo(date.getMonth()+1);
+    let day = formatTwo(date.getDate());
+    let h = formatTwo(date.getHours());//(0 ~ 23)  
+    let m = formatTwo(date.getMinutes());//(0 ~ 59)
+    let s = formatTwo(date.getSeconds());//(0 ~ 59)
+    let dayKey = month+'_'+day;
+    if(h=='00'&&m==='50'&&s=='00'){
+      removeBeforeDateMap(dayKey);
+    }
+    if(!fileRunLog[dayKey]){
+      fileRunLog[dayKey] = {}
+    }
+    if(!fileRunLog[dayKey][h]){
+      fileRunLog[dayKey][h] = {}
+    }
+    if (!fileRunLog[dayKey][h][m]) {
+      fileRunLog[dayKey][h][m] = true//记录这一分钟有没有执行过
+      console.log(`时间${h}:${m}:${s} 查找需要执行的任务...`)
+      let cronLog = ''
+      let doJsLog = ''
+      let startTime = getNowTime();
+      for (let i = 0; i < runFileList.length; i++) {
+        const thisFile = runFileList[i];
+        if(fileRunLog[dayKey][h][thisFile]){
+          continue;
+        }
+        if (isTheTime(thisFile, date)) {
+          let code = 'node ' + thisFile
+          fileRunLog[dayKey][h][thisFile]=startTime//记录当前小时文件执行的时间
+          runScript(code, thisFile, startTime)
+          let cronStr = cronMap[thisFile] || '*****未定义定时任务';
+          cronLog +=`\n${cronStr}@时间${h}:${m}:${s} 定时执行${thisFile}`
+          doJsLog += `\n${startTime} 执行脚本: ${code}`
+        }
+      }
+      logger(doJsLog);
+      loggerCron(cronLog);
+    }
+  }, 1000);
+}
+
+
+
+function removeBeforeDateMap(dayKey) {
+  for (const key in fileRunLog) {
+    if (Object.hasOwnProperty.call(object, key)) {
+        if (key<dayKey) {
+          fileRunLog[key]=undefined
+        }
+    }
+  }
 }
 function runOneTimeTask() {
   logger('只执行一次的脚本数量：' + runOneTimeList.length)
@@ -366,35 +452,6 @@ function runOneTimeTask() {
     doJsLog += `\n${startTime} 执行脚本: ${code}`
   }
   logger(doJsLog);
-}
-
-function runAutoTask() {
-  setInterval(function () {
-    let date = new Date();
-    let s = date.getSeconds();//(0 ~ 59)
-    let m = date.getMinutes();//(0 ~ 59)
-    let h = date.getHours();//(0 ~ 23)  
-    let key = h + '_' + m
-    if (!taskLog[key]) {
-      taskLog[key] = true
-      console.log(`时间${h}:${m}:${s} 查找需要执行的任务...`)
-      let cronLog = ''
-      let doJsLog = ''
-      let startTime = getNowTime();
-      for (let i = 0; i < runFileList.length; i++) {
-        const thisFile = runFileList[i];
-        if (isTheTime(thisFile, date)) {
-          let code = 'node ' + thisFile
-          runScript(code, thisFile, startTime)
-          let cronStr = cronMap[thisFile] || '*****未定义定时任务';
-          cronLog +=`\n${cronStr}@时间${h}:${m}:${s} 定时执行${thisFile}`
-          doJsLog += `\n${startTime} 执行脚本: ${code}`
-        }
-      }
-      logger(doJsLog);
-      loggerCron(cronLog);
-    }
-  }, 1000);
 }
 
 function runScript(code, file, startTime) {
@@ -509,13 +566,10 @@ function isTheTime(thisFile, date) {
   if(cronStr==='X * * * *'){
     return false;
   }
-  if(h==0&&m==0){
-    return true
-  }
   if(thisFile.indexOf('gua_')==0){
     cronStr = '0 6,18 * * *'
   }
-  cronStr = cronStr || '0 */3 * * *';
+  cronStr = cronStr || '0 */6 * * *';
   let cronArr = cronStr.split(' ');
   cronArr.length = 5;
   // let mReg = cronArr[0] || '0';//分钟表达式

@@ -1,17 +1,19 @@
 /*
 领金贴(只做签到以及互助任务里面的部分任务)
-活动入口：京东APP首页-领金贴
+活动入口：京东金融-每日签到=赚奖励
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 
-#领金贴
-cron "50 0 * * *" script-path=https://github.com/wulove/my_scripts/raw/master/jd_jin_tie.js,tag=领金贴
+#京东金融赚积分
+cron "50 8 * * *" script-path=https://github.com/wulove/my_scripts/raw/master/jd_jdjrjf.js,tag=京东金融赚积分
  */
-const $ = new Env('领金贴');
+const $ = new Env('京东金融赚积分');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message, allMessage = '';
+
+const ignoreTaskIdArr = [5192,4591,5128,5041,4690,3370,3371];
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -60,33 +62,24 @@ if ($.isNode()) {
   })
 async function main() {
   try {
-
-    await queryAvailableSubsidyAmount();
-    await userSignInfo();
-    await getProfitSum();
-    await queryMission();
-    await doTask();
-    await queryMission(false);
-    await queryAvailableSubsidyAmount();
+    await queryTasks();
+    await doTasks();
 
   } catch (e) {
     $.logErr(e)
   }
 }
-function queryMission(info = true) {
+function queryTasks() {
   $.taskData = [];
   const body = JSON.stringify({
-    "source": "JD_APP",
-    "apiVersion": "4.0.0",
-    "channel": "scljticon",
-    "channelLv": "scljticon",
-    "others": {
-      "taskCode": "JTPD-new",
-      "token":"",
-      "userOpenId":""
-    }
+    "channelSource": "JRAPP6.0",
+    "page": 1,
+    "pageSize": 20,
+    "channel": "sy",
+    "channelLv": "sy",
+    "taskType": 2
   })
-  const options = taskUrl('channelQueryCenterMissionList', body, 'jrm');
+  const options = taskUrl('queryTasks', body, 'hy');
   return new Promise((resolve) => {
     $.get(options, async (err, resp, data) => {
       try {
@@ -97,25 +90,17 @@ function queryMission(info = true) {
           // console.log(data)
           data = JSON.parse(data);
           if (data.resultCode === 0) {
-            if (data.resultData.code === '000') {
-              if (info) {
-                console.log('互动任务获取成功')
-                $.taskData = data.resultData.data.missionList;
-                $.willTask = $.taskData.filter(t => t.status === -1) || [];
-                $.willingTask = $.taskData.filter(t => t.status === 0) || [];//已领取任务，但未完成
-                $.recevieTask = $.taskData.filter(t => t.status === 1) || [];
-                const doneTask = $.taskData.filter(t => t.status === 2);
-                console.log(`\n总任务数：${$.taskData.length}，剩余未接取任务：${$.willTask.length}，未完成任务：${$.willingTask.length}，已完成任务：${doneTask.length}\n`);
-              } else {
-                if ($.recevieTask && $.recevieTask.length) {
-                  for (let task of $.recevieTask) {
-                    console.log('预计获得：', task.name, task.amount)
-                    await doMission(task, "channelAwardCenterMission")
-                  }
-                }
-              }
+            if (data.resultData.resBusiCode === 0) {
+              console.log('互动任务获取成功')
+              $.taskData = data.resultData.resBusiData;
+              // 过滤不做的任务
+              $.taskData = $.taskData.filter(t => !ignoreTaskIdArr.includes(t.taskId));
+              $.willingTask = $.taskData.filter(t => (t.state === 0 || t.state === -1)) || [];//未完成任务
+              $.recevieTask = $.taskData.filter(t => t.state === 1) || [];
+              const doneTask = $.taskData.filter(t => t.state === -2);
+              console.log(`\n总任务数：${$.taskData.length}，未完成任务：${$.willingTask.length}，已完成任务：${doneTask.length}\n`);
             } else {
-              console.log('获取互动任务失败', data.resultData.msg)
+              console.log('获取互动任务失败', data.resultData.resBusiMsg)
             }
           } else {
             console.log('获取互动任务失败', data.resultMsg)
@@ -130,246 +115,53 @@ function queryMission(info = true) {
   })
 }
 
-//获取签到状态
-function userSignInfo() {
-  const body = JSON.stringify({
-    "apiVersion": "4.0.0",
-    "channel": "scljticon",
-    "channelLv": "scljticon",
-    "source": "JD_APP",
-    "riskDeviceParam": JSON.stringify({
-
-    }),
-    "others": {
-      "shareId":"",
-    }
-  })
-  const options = taskUrl('channelUserSignInfo', body, 'jrm');
-  return new Promise((resolve) => {
-    $.get(options, async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.resultCode === 0) {
-            if (data.resultData.code === '000') {
-              // console.log('邀请码位：', data.resultData.data.shareId)
-              let dayId = data.resultData.data.dayId;
-              let state = data.resultData.data.signDetail[dayId-1].signed;
-              console.log('获取签到状态成功', state ? '今日已签到' : '今日未签到')
-              if (!state) await signInSubsidy()
-            } else {
-              console.log('获取签到状态失败', data.resultData.msg)
-            }
-          } else {
-            console.log('获取签到状态失败', data.resultMsg)
+async function doTasks() {
+  for (let task of $.taskData) {
+    if (task.state === -2) {
+      console.log(`任务${task.taskName}已完成`)
+    } else if (task.state === 1) {
+      console.log(`任务${task.taskName}开始领取奖励`)
+      console.log('预计获得：', task.taskName, task.awards[0].awardNum)
+      await doTask(task, "sendAward");
+      await $.wait(1000);
+    } else if (task.state === 0 || task.state === -1) {
+      if (task.doLink) {
+        if (task.doLink.indexOf('readTime=') !== -1) {
+          console.log(`\n开始领取 【${task.taskName}】任务`);
+          const readTime = parseInt(task.doLink.substr(task.doLink.indexOf('readTime=') + 9));
+          if (task.state === -1) {
+            await doTask(task, "receiveTask")
+            await $.wait(200)
           }
+          await queryMissionReceiveAfterStatus(task.taskId);
+          await $.wait(readTime * 1000 + Math.floor(Math.random()*2000));
+          await finishReadMission(task.taskId, readTime);
+          await $.wait(200);
+          console.log('预计获得：', task.taskName, task.awards[0].awardNum)
+          await doTask(task, "sendAward")
+        } else if (task.doLink.indexOf('juid=') !== -1) {
+          console.log(`\n开始领取 【${task['name']}】任务`)
+          await doTask(task, "channelReceiveCenterMission")
+          const juid = task.doLink.match(/juid=(.*)/)[1]
+          await getJumpInfo(juid);
+          await $.wait(1000 + Math.floor(Math.random()*400))
+          console.log('预计获得：', task.taskName, task.amount)
+          await doTask(task, "channelAwardCenterMission")
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
       }
-    })
-  })
-}
-//签到
-function signInSubsidy() {
-  const body = JSON.stringify({
-    "apiVersion": "4.0.0",
-    "channel": "scljticon",
-    "channelLv": "scljticon",
-    "source": "JD_APP",
-    "riskDeviceParam": JSON.stringify({
-
-    }),
-    "others": {
-      "shareId":"",
-    }
-  })
-  const options = taskUrl('channelSignInSubsidy', body, 'jrm');
-  return new Promise((resolve) => {
-    $.get(options, async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.resultCode === 0) {
-            if (data.resultData.code === '000') {
-              console.log('签到成功, 获得', data.resultData.data.rewardAmount/100, '金贴')
-            } else {
-              console.log('签到失败', data.resultData.msg)
-            }
-          } else {
-            console.log('签到失败', data.resultMsg)
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
-//
-function getProfitSum() {
-  const body = JSON.stringify({
-    "apiVersion": "4.0.0",
-    "channel": "",
-    "channelLv": "scljticon",
-    "source": "jd"
-  })
-  const options = taskUrl('getProfitSum', body, 'jrm');
-  return new Promise((resolve) => {
-    $.get(options, async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.resultCode === 0) {
-            if (data.resultData.success) {
-              if (data.resultData.data.unObtainAmount !== 0) {
-                await jupiterWithdraw();
-              }
-            } else {
-              console.log('getProfitSum', data.resultData.msg)
-            }
-          } else {
-            console.log('getProfitSum', data.resultMsg)
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
-//单单返
-function jupiterWithdraw() {
-  const body = JSON.stringify({
-    "channel": "scljticon",
-    "channelLv": "scljticon",
-    "apiVersion": "1.0.0",
-    "riskDeviceParam": "",
-    "type": 8,
-    "source": "jdjr",
-    "operType": "ttx"
-  })
-  const options = taskUrl('commonWelfareWithdraw', body, 'jrm');
-  return new Promise((resolve) => {
-    $.post(options, async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.resultCode === 0) {
-            if (data.resultData.success) {
-              console.log('获取单单返', data.resultData.data.obtainAmount/100)
-            } else {
-              console.log('单单返失败', data.resultData.msg)
-            }
-          } else {
-            console.log('单单返失败', data.resultMsg)
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
-function queryAvailableSubsidyAmount() {
-  const body = JSON.stringify({
-    "apiVersion": "4.0.0",
-    "channel": "scljticon",
-    "channelLv": "scljticon",
-    "source": "JD_APP",
-    "riskDeviceParam": JSON.stringify({
-
-    })
-  })
-  const options = taskUrl('channelUserSubsidyInfo', body, 'jrm');
-  return new Promise((resolve) => {
-    $.get(options, async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.resultCode === 0) {
-            if (data.resultData.code === '000') {
-              console.log(`当前总金贴：${JSON.stringify(data.resultData.data)}`)
-            } else {
-              console.log('获取当前总金贴失败', data.resultData.msg)
-            }
-          } else {
-            console.log('获取当前总金贴失败', data.resultMsg)
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
-async function doTask() {
-  for (let task of [...$.willTask, ...$.willingTask]) {
-    if (task.doLink.indexOf('readTime=') !== -1) {
-      console.log(`\n开始领取 【${task['name']}】任务`);
-      await doMission(task, "channelReceiveCenterMission")
-      await $.wait(200 + Math.floor(Math.random()*100))
-      await queryMissionReceiveAfterStatus(task['missionId']);
-      const readTime = parseInt(task.doLink.substr(task.doLink.indexOf('readTime=') + 9));
-      await $.wait(1000 * readTime + Math.floor(Math.random()*400))
-      await finishReadMission(task['missionId'], readTime);
-      await $.wait(200 + Math.floor(Math.random()*200));
-      console.log('预计获得：', task.name, task.amount)
-      await doMission(task, "channelAwardCenterMission")
-    } else if (task.doLink.indexOf('juid=') !== -1) {
-      console.log(`\n开始领取 【${task['name']}】任务`)
-      await doMission(task, "channelReceiveCenterMission")
-      const juid = task.doLink.match(/juid=(.*)/)[1]
-      await getJumpInfo(juid);
-      await $.wait(1000 + Math.floor(Math.random()*400))
-      console.log('预计获得：', task.name, task.amount)
-      await doMission(task, "channelAwardCenterMission")
     }
   }
-  /*for (let task of $.willingTask) {
-
-  }*/
 }
 
-function doMission(task, functionId) {
+function doTask(task, functionId) {
   const body = JSON.stringify({
-    "source":"JD_APP",
-    "channel":"scljticon",
-    "channelLv":"scljticon",
-    "apiVersion":"4.0.0",
-    "others":{
-      "missionId":task['missionId'],
-      "taskCode":'JTPD-new',
-      "token":"",
-      "userOpenId":""
-    }
+    "taskId":task.taskId,
+    "taskType": task.taskType,
+    "taskSource": task.taskSource,
+    "channel":"sy",
+    "channelLv":"sy",
   });
-  const options = taskUrl(functionId, body, 'jrm');
+  const options = taskUrl(functionId, body, 'hy');
   return new Promise((resolve) => {
     $.get(options, (err, resp, data) => {
       try {
@@ -379,10 +171,10 @@ function doMission(task, functionId) {
         } else {
           data = JSON.parse(data);
           if (data.resultCode === 0) {
-            if (data.resultData.code === '000') {
+            if (data.resultData.resBusiCode === 0) {
               console.log(functionId, '成功')
             } else {
-              console.log(functionId, data.resultData.msg)
+              console.log(functionId, data.resultData.resBusiMsg)
             }
           } else {
             console.log(functionId, data.resultMsg)
@@ -405,7 +197,7 @@ function queryMissionReceiveAfterStatus(missionId) {
 //完成任务
 function finishReadMission(missionId, readTime) {
   const body = JSON.stringify({missionId, readTime});
-  return doMissionExt('finishReadMission', body)
+  return doMissionExt('finishReadMission', body, 'mission')
 }
 // 跳转
 function getJumpInfo(juid) {
@@ -416,7 +208,7 @@ function getJumpInfo(juid) {
 }
 
 function doMissionExt(functionId, body) {
-  const options = taskUrl(functionId, body);
+  const options = taskUrl(functionId, body, 'mission');
   return new Promise((resolve) => {
     $.get(options, (err, resp, data) => {
       try {
@@ -444,7 +236,7 @@ function doMissionExt(functionId, body) {
   })
 }
 
-function taskUrl(function_id, body, type = 'mission') {
+function taskUrl(function_id, body, type = 'hy') {
   return {
     url: `https://ms.jr.jd.com/gw/generic/${type}/h5/m/${function_id}?reqData=${encodeURIComponent(body)}`,
     headers: {
