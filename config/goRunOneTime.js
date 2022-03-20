@@ -288,4 +288,16 @@ function logger(info) {
   });
 }
 
+function loggerAll(info) {
+  console.log(info);
+  if (!info) {
+    return;
+  }
+  if (typeof info !== 'string') {
+    info = JSON.stringify(info)
+  }
+  let loggerDate = getNowDate()
+  fs.writeFile(`logs/3loggerAll${loggerDate}.txt`, '\n' + info, { 'flag': 'a' }, function (err) {
+  });
+}
 
