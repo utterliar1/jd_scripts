@@ -376,7 +376,7 @@ function runTask() {
   fileRunLog[dayKey][h]={}
   for (let i = 0; i < runFileList.length; i++) {
     const thisFile = runFileList[i];
-    if(cronMap[file]==='X * * * *'){
+    if(cronMap[thisFile]==='X * * * *'){
       continue
     }
     fileRunLog[dayKey][h][thisFile]=startTime//记录当前小时文件执行的时间
