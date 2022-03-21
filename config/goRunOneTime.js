@@ -12,6 +12,7 @@ var noRunList = [
   // "jd_order_cashback.js",//下单返红包助力
 /********失效2********** */
   /********不执行********** */
+  "jd_speed_redpocke.js",//不执行
   "jd_jxScore.js",//不执行
   "jd_jxmc3.js",//
   "jd_track.js",//
@@ -146,35 +147,35 @@ var noRunList = [
 ]
 
 var noRunList2 = [
-  'gua_MMdou.js',          'jd_19_6.js',            'jd_88hb.js',
-  'jd_bean_box.js',        'jd_bean_change.js',     'jd_bean_home.js',
-  'jd_bean_sign.js',       'jd_beauty_ex.js',       'jd_blueCoin.js',
-  'jd_car.js',             'jd_cash.js',            'jd_ccSign.js',
-  'jd_club_lottery.js',    'jd_connoisseur.js',     'jd_daily_lottery.js',
-  'jd_ddnc_farmpark.js',   'jd_dreamFactory.js',    'jd_dwapp.js',
-  'jd_exchangejxbeans.js', 'jd_exchange_joy.js',    'jd_fanli.js',
-  'jd_fcwb.js',            'jd_foodRunning.js',     'jd_fruit.js',
-  'jd_fruit_moreTask.js',  'jd_gold_creator.js',    'jd_health.js',
-  'jd_health_collect.js',  'jd_ifanli.js',          'jd_jddj_bean.js',
-  'jd_jddj_fruit.js',      'jd_jddj_plantBeans.js', 'jd_jdfactory.js',
-  'jd_jdjrjf.js',          'jd_jdzz.js',            'jd_jintie_wx.js',
-  'jd_jin_tie.js',         'jd_jmf.js',             'jd_joy_park_task.js',
-  'jd_jxbox.js',           'jd_jxg.js',             'jd_jxlhb.js',
-  'jd_jxmc.js',            'jd_jxmc_getCoin.js',    'jd_jxnc.js',
-  'jd_jxqd.js',            'jd_kd.js',              'jd_live.js',
-  'jd_lotteryMachine.js',  'jd_market_lottery.js',  'jd_mofang.js',
-  'jd_mofang_ex.js',       'jd_mofang_j.js',        'jd_mohe.js',
-  'jd_moneyTree.js',       'jd_mpdzcar.js',         'jd_mpdzcar_game.js',
-  'jd_mpdzcar_help.js',    'jd_ms.js',              'jd_necklace.js',
-  'jd_nnfls.js',           'jd_nzmh.js',            'jd_order_cashback.js',
-  'jd_pet.js',             'jd_pigPet.js',          'jd_plantBean.js',
-  'jd_redPacket.js',       'jd_sendBeans.js',       'jd_sgmh.js',
-  'jd_shop.js',            'jd_sign.js',            'jd_sign_graphics.js',
-  'jd_sjzjd.js',           'jd_speed.js',           'jd_speed_sign.js',
-  'jd_try.js',             'jd_ttpt.js',            'jd_tyt.js',
-  'jd_week.js',            'jd_wish.js',            'jd_wsdlb.js',
-  'jd_wxFansli.js',        'jd_wxj.js',             'jd_wyw.js',
-  'jd_zjd.js'
+  'gua_MMdou.js',          'jd_19_6.js',           'jd_88hb.js',
+  'jd_bean_box.js',        'jd_bean_change.js',    'jd_bean_home.js',
+  'jd_bean_sign.js',       'jd_beauty_ex.js',      'jd_blueCoin.js',
+  'jd_car.js',             'jd_cash.js',           'jd_ccSign.js',
+  'jd_club_lottery.js',    'jd_connoisseur.js',    'jd_daily_lottery.js',
+  'jd_ddnc_farmpark.js',   'jd_dreamFactory.js',   'jd_dwapp.js',
+  'jd_exchangejxbeans.js', 'jd_exchange_joy.js',   'jd_fan.js',
+  'jd_fanli.js',           'jd_fcwb.js',           'jd_foodRunning.js',
+  'jd_fruit.js',           'jd_fruit_moreTask.js', 'jd_gold_creator.js',
+  'jd_health.js',          'jd_health_collect.js', 'jd_ifanli.js',
+  'jd_jddj_bean.js',       'jd_jddj_fruit.js',     'jd_jddj_plantBeans.js',
+  'jd_jdfactory.js',       'jd_jdjrjf.js',         'jd_jdzz.js',
+  'jd_jintie_wx.js',       'jd_jin_tie.js',        'jd_jmf.js',
+  'jd_joy_park_task.js',   'jd_js_sign.js',        'jd_jxbox.js',
+  'jd_jxg.js',             'jd_jxlhb.js',          'jd_jxmc.js',
+  'jd_jxmc_getCoin.js',    'jd_jxnc.js',           'jd_jxqd.js',
+  'jd_kd.js',              'jd_live.js',           'jd_lotteryMachine.js',
+  'jd_market_lottery.js',  'jd_mofang.js',         'jd_mofang_ex.js',
+  'jd_mofang_j.js',        'jd_mohe.js',           'jd_moneyTree.js',
+  'jd_mpdzcar.js',         'jd_mpdzcar_game.js',   'jd_mpdzcar_help.js',
+  'jd_ms.js',              'jd_necklace.js',       'jd_nnfls.js',
+  'jd_nzmh.js',            'jd_order_cashback.js', 'jd_pet.js',
+  'jd_pigPet.js',          'jd_plantBean.js',      'jd_redPacket.js',
+  'jd_sendBeans.js',       'jd_sgmh.js',           'jd_shop.js',
+  'jd_sign.js',            'jd_sign_graphics.js',  'jd_sjzjd.js',
+  'jd_speed.js',           'jd_speed_sign.js',     'jd_try.js',
+  'jd_ttpt.js',            'jd_tyt.js',            'jd_week.js',
+  'jd_wish.js',            'jd_wsdlb.js',          'jd_wxFansli.js',
+  'jd_wxj.js',             'jd_wyw.js',            'jd_zjd.js'
 ]
 
 noRunList = noRunList.concat(noRunList2)

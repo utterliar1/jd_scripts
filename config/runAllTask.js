@@ -18,6 +18,8 @@ const cronMap = {
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',
     // 'jd_signFree.js':'',//🔔极速免费签到, 开始!
+    'jd_fan.js':'40 0 * * *',//粉丝互动
+    'jd_js_sign.js':'15 3 * * *',//京东极速版签到提现
     'jd_zjd_v0.2.js':'15,30,45 0 * * *',//优先助力HW.ts
     'jd_88hb.js':'5 0,6,16 * * *',//京喜->领88元红包
     'jd_mofang_ex.js':'31 8 * * *',//魔方兑换
@@ -56,7 +58,7 @@ const cronMap = {
   'jd_jxgc.js':'30 * * * *',// 
   'jd_jxmc_getCoin.js':'0,30 * * * *',// 
   'jd_yili_cow.js':'0 12 * * *',// 
-  'jd_wish.js':'11 1,9 * * *',// 
+  'jd_wish.js':'39 0,2 * * *',// 
   'jd_vivo.js':'10 2,9,17 * * *',// 
   'jd_ttpt.js':'0 15 * * *',// 
   'jd_try.js':'0 6 * * *',// 
@@ -101,7 +103,8 @@ const cronMap = {
   'jd_plantBean.js':'1 7-22/2 * * *',// 京东种豆得豆
   'jd_redPacket.js':'1 1,2,23',// 京东全民开红包
   'jd_shop.js':'30 0 * * * ',// 进店领豆
-  // 'jd_speed_redpocke.js':'20 0,22 * * *',//京东极速版天天领红包 活动时间：2021-1-18至2021-3-3
+  'jd_speed_redpocke-new.js':'39 0,22 * * *',//京东极速版天天领红包 活动时间：2021-1-18至2021-3-3
+  'jd_speed_redpocke.js':'49 0,22 * * *',//京东极速版天天领红包 活动时间：2021-1-18至2021-3-3
   'jd_speed.js':'0 */3 * * * ',// 京东天天加速
   'jd_speed_sign.js':'1 1,6 * * *',//京东极速版签到+赚现金任务
   'jd_superMarket.js':'11 */5 * * *',// 东东超市
@@ -184,6 +187,7 @@ var notList = [
 /********失效2********** */
   /********不执行********** */
   "jd_jxScore.js",//不执行
+  "jd_speed_redpocke.js",//不执行
   "jd_jxmc3.js",//
   "jd_track.js",//
   "jd_productZ4Brand.js",//已完成
@@ -191,12 +195,14 @@ var notList = [
   /********不执行********** */
   /********不需要运行********** */
   "jd_deleteCart.js",//删除购物车 不执行
+  "jd_cleancart.js",//删除购物车 不执行
   "jd_guacleancart.js",//清空购物车 不执行
+  "gua_cleancart.js",//清空购物车 不执行
+  "cleancart_activity.js",
   "jd_delCoupon.js",//删除优惠券🎟（未设定自动运行，删券慎用）
   "jd_unsubscribe.js",//# 取关京东店铺商品
   "jd_all_bean_change.js",//
   "jd_checkCookie.js",//
-  "cleancart_activity.js",
   "jd_cfd_stock.js",
   "jd_jxmc_stock.js",
   "jd_jxgc_stock.js",
@@ -332,7 +338,6 @@ fs.exists('logs', (exists) => {
 logger('当前运行目录：' + root)
 logger(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
 
-var runAllFileList = []
 var runFileList = []
 var runOneTimeList = []
 var filelist = fs.readdirSync(root)
@@ -340,24 +345,13 @@ logger('读取目录文件。。。')
 for (let i = 0; i < filelist.length; i++) {
   const file = filelist[i];
   if (file && not(file) && /\.(js)$/.test(file)) {
-    if(cronMap[file]==='X * * * *'){
-      runOneTimeList.push(file)
-    }else{
       runFileList.push(file)
-    }
-    runAllFileList.push(file)
   }
 }
 
 var fileRunLog = {}//任务执行记录
-// console.log(runAllFileList)
+// console.log(runFileList)
 runTask();
-setTimeout(function () {
-  runOneTimeTask();
-}, 3*60*1000);
-setTimeout(function () {
-  runAutoTask();
-}, 30*60*1000);
 
 function not(a) {
   if(a.indexOf('main.')==0){
@@ -367,6 +361,9 @@ function not(a) {
 }
 
 function runTask() {
+  setTimeout(function () {
+    runAutoTask();
+  }, 30*60*1000);
   logger('要执行的脚本数量：' + runFileList.length)
   let doJsLog = ''
   let startTime = getNowTime();
@@ -379,6 +376,9 @@ function runTask() {
   fileRunLog[dayKey][h]={}
   for (let i = 0; i < runFileList.length; i++) {
     const thisFile = runFileList[i];
+    if(cronMap[file]==='X * * * *'){
+      continue
+    }
     fileRunLog[dayKey][h][thisFile]=startTime//记录当前小时文件执行的时间
     let code = 'node ' + thisFile
     runScript(code, thisFile, startTime)
@@ -566,7 +566,7 @@ function isTheTime(thisFile, date) {
   let d = date.getDate()
   let cronStr = cronMap[thisFile]
   if(cronStr==='X * * * *'){
-    return false;
+    return h==0&&m==0;
   }
   if(thisFile.indexOf('gua_')==0){
     cronStr = '0 6,18 * * *'
