@@ -18,6 +18,7 @@ const cronMap = {
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',
     // 'jd_signFree.js':'',//🔔极速免费签到, 开始!
+    'jd_dpqd.js':'15 2,14 * * *',//粉丝互动
     'jd_fan.js':'40 0 * * *',//粉丝互动
     'jd_js_sign.js':'15 3 * * *',//京东极速版签到提现
     'jd_zjd_v0.2.js':'15,30,45 0 * * *',//优先助力HW.ts
@@ -565,9 +566,12 @@ function isTheTime(thisFile, date) {
   let h = date.getHours();//(0 ~ 23)
   let d = date.getDate()
   let cronStr = cronMap[thisFile]
-  if(cronStr==='X * * * *'){
-    return h==0&&m==0;
+  if(h==0&&m==0){
+    return true;
   }
+  // if(cronStr==='X * * * *'){
+  //   return h==0&&m==0;
+  // }
   if(thisFile.indexOf('gua_')==0){
     cronStr = '0 6,18 * * *'
   }
