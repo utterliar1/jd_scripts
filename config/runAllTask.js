@@ -148,7 +148,7 @@ const cronMap = {
   'jd_jump.js':'1 0,11,21 * * *' , //跳跳乐瓜分京豆
   'jd_jxlhb.js':'0 2,12,21 * * *' ,//京喜领88元红包
   'jd_jxmc.js':'10 */5 * * *' ,//惊喜牧场
-  'jd_jxmc3.js':'0 */4 * * *' ,//惊喜牧场
+  'jd_jxmc3.js':'0 */6 * * *' ,//惊喜牧场
   'jd_live.js':'10-50/5 12,13,23 * * *' ,//京东直播
   'jd_live_redrain.js':'0,30 * * * *' ,//超级直播间红包雨
   'jd_market_lottery.js':'4 10 * * *' ,//幸运大转盘
@@ -189,7 +189,7 @@ var notList = [
   /********不执行********** */
   "jd_jxScore.js",//不执行
   "jd_speed_redpocke.js",//不执行
-  "jd_jxmc3.js",//
+  // "jd_jxmc3.js",//
   "jd_track.js",//
   "jd_productZ4Brand.js",//已完成
   "jd_unsubscriLive.js",//取关主播
