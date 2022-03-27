@@ -12,21 +12,23 @@ var noRunList = [
   // "jd_order_cashback.js",//下单返红包助力
 /********失效2********** */
   /********不执行********** */
-  "jd_speed_redpocke.js",//不执行
   "jd_jxScore.js",//不执行
-  "jd_jxmc3.js",//
+  "jd_speed_redpocke.js",//不执行
+  // "jd_jxmc3.js",//
   "jd_track.js",//
   "jd_productZ4Brand.js",//已完成
   "jd_unsubscriLive.js",//取关主播
   /********不执行********** */
   /********不需要运行********** */
   "jd_deleteCart.js",//删除购物车 不执行
+  "jd_cleancart.js",//删除购物车 不执行
   "jd_guacleancart.js",//清空购物车 不执行
+  "gua_cleancart.js",//清空购物车 不执行
+  "cleancart_activity.js",
   "jd_delCoupon.js",//删除优惠券🎟（未设定自动运行，删券慎用）
   "jd_unsubscribe.js",//# 取关京东店铺商品
   "jd_all_bean_change.js",//
   "jd_checkCookie.js",//
-  "cleancart_activity.js",
   "jd_cfd_stock.js",
   "jd_jxmc_stock.js",
   "jd_jxgc_stock.js",
