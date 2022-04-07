@@ -81,7 +81,7 @@ let args_xh = {
      * 已内置对应的 成人类 幼儿类 宠物 老年人类关键词，请勿重复添加
      * 可设置环境变量：JD_TRY_TITLEFILTERS，关键词与关键词之间用@分隔
      * */
-    titleFilters: process.env.JD_TRY_TITLEFILTERS && process.env.JD_TRY_TITLEFILTERS.split('@') || ['流量卡'],
+    titleFilters:  ['中国电信','中国移动','中国联通','上网卡','流量卡'],
     /*
      * 试用价格(中了要花多少钱)，高于这个价格都不会试用，小于等于才会试用，意思就是
      * A商品原价49元，现在试用价1元，如果下面设置为10，那A商品将会被添加到待提交试用组，因为1 < 10
