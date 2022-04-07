@@ -23,13 +23,13 @@ const cronMap = {
   'jd_cfd_shell.js':'X * * * *',
   'jd_jxScore.js':'X * * * *',//
     // 'jd_signFree.js':'',//
+    'jd_dpqd.js':'15 2,14 * * *',//店铺签到
     'jd_cash_wx.js':'16 0,5 * * *',//微信签到领现金
     'jd_xs_zzl.js':'2 6 * * 5',//京东APP --京享会员-京享周周乐
     'jd_joypark.js':'20 */3 * * *',//汪汪乐园养joy
     'jd_tyt1.js':'0 6 * * *',//入口-极速版-推推赚大钱  5元无门槛卷 大概需要50人助力
     'jd_plus.js':'0 12 * * *',//京东PLUS任务
     'jd_m_sign.js':'3 1,11 * * *',//京东通天塔--签到
-    'jd_dpqd.js':'15 2,14 * * *',//粉丝互动
     'jd_fan.js':'40 0 * * *',//粉丝互动
     'jd_fcwb_help.js':'40 6,17 * * *',//发财挖宝助力
     'jd_js_sign.js':'15 3 * * *',//京东极速版签到提现
@@ -194,13 +194,8 @@ const cronMap = {
 //不执行的js文件
 var notList = [
   /********失效********** */
-  // "jd_shop.js",//
   "jd_ddworld_exchange.js",//失效
-  // "jd_order_cashback.js",//下单返红包助力
 /********失效2********** */
-  /********不执行********** */
-  // "jd_speed_redpocke.js",//不执行
-  /********不执行********** */
 ]
 notList = notList.concat(notRunFileList)
 
@@ -233,7 +228,7 @@ for (let i = 0; i < filelist.length; i++) {
 
 var fileRunLog = {}//任务执行记录
 // console.log(runFileList)
-// runTask();
+runTask();
 writeAutoRunFileList(runFileList)
 
 
@@ -241,10 +236,10 @@ function writeAutoRunFileList(runFileList) {
   let fileStr = 'const autoRunFileList = '+ JSON.stringify(runFileList)+';'
   fileStr += '\nmodule.exports.autoRunFileList = autoRunFileList;'
   fileStr = fileStr.replace(/,/g,',\n')
-  console.log(fileStr)
-  // fs.writeFile('config/autoRunFileList.js', fileStr, { 'flag': '' }, function(err) {
-  //   console.log(`生成文件： config/autoRunFileList.js`)
-  // });
+  // console.log(fileStr)
+  fs.writeFile('config/autoRunFileList.js', fileStr, { 'flag': '' }, function(err) {
+    console.log(`生成文件： config/autoRunFileList.js`)
+  });
 }
 
 function not(a) {
