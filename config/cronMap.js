@@ -12,6 +12,7 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // 'jd_signFree.js':'',//
+  'jd_speed_coin.js':'0 2,10,19 * * *',//京东极速版签到+赚现金任务
   'jd_zjb.js':'0 7 * * *',//##入口为极速版 百元生活费 赚金币 邀请好友
   'jd_wyw.js':'0 8 * * *',//玩一玩成就
   'jd_wsdlb.js':'5 */6 * * *',//入口 极速版 赚金币 种水果

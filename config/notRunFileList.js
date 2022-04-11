@@ -1,6 +1,7 @@
 const notRunFileList = [
   /********不执行********** */
   "index.js",//
+  "iOS_Cookie.js",//
   "jd_bean_change_pro.js",//京东资产变动,
   "jd_hbCount.js",//历史红包 
   "jd_jxScore.js",//京享值
