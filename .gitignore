@@ -13,6 +13,7 @@
 /config/testCookie.js
 
 /config/formatCookie.js
+/config/autoRunFileList.js
 /config/githubCookies.md
 /*.json
 /*alidate.txt
