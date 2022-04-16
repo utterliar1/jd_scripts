@@ -12,7 +12,8 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // 'jd_signFree.js':'',//
-  'jd_ljd.js':'21 6,9 * * *',//
+  'jd_fc_winner.js':'40 0-20/4 * * *',//发财大赢家之翻翻乐
+  'jd_ljd.js':'21 6,9 * * *',//APP首页-领京豆-升级赚京豆-发财大赢家之翻翻乐
   'jd_speed_coin.js':'0 2,10,19 * * *',//京东极速版签到+赚现金任务
   'jd_zjb.js':'0 7 * * *',//##入口为极速版 百元生活费 赚金币 邀请好友
   'jd_wyw.js':'0 8 * * *',//玩一玩成就

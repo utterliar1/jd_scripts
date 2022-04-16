@@ -10,6 +10,7 @@ let files =[
 
 var srcDir = 'D:/workspace/github/jd_scripts-1/config';
 var tarDirs = [
+'D:/workspace/github/atyvcn/config',
 'D:/workspace/github/Aaron/config',
 'D:/workspace/github/DovFork/config',
 'D:/workspace/github/helloword/config',
