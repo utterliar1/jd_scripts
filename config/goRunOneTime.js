@@ -56,6 +56,12 @@ function notInFiles(file) {
   if(file.indexOf('main.')==0){
     return false
   }
+  if(file.indexOf('jd_opencard')==0){
+    return false
+  }
+  if(file.indexOf('gua_opencard')==0){
+    return false
+  }
   return !noRunList.includes(file)
 }
 
