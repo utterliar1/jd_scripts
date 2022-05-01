@@ -41,6 +41,7 @@ const notRunFileList = [
   "jdSuperMarketShareCodes.js",
   "main.js",//
   "TS_USER_AGENTS.js",//
+  "TS_USER_AGENTS2.js",//
   "MovementFaker.js",//
   "onlyOneExecute.js",//
   "sendNotify.js",//
