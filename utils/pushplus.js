@@ -35,60 +35,77 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-exports.geth5st = exports.requestAlgo = void 0;
-var axios_1 = require("axios");
-var date_fns_1 = require("date-fns");
-var CryptoJS = require('crypto-js');
-var fp = '', tk = '', genKey = null;
-function requestAlgo(appId, USER_AGENT) {
-    if (USER_AGENT === void 0) { USER_AGENT = 'jdpingou;'; }
-    return __awaiter(this, void 0, void 0, function () {
-        function generateFp() {
-            var e = "0123456789";
-            var a = 13;
-            var i = '';
-            for (; a--;)
-                i += e[Math.random() * e.length | 0];
-            return (i + Date.now()).slice(0, 16);
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
         }
-        var data;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+exports.__esModule = true;
+exports.pushplus = void 0;
+var axios_1 = require("axios");
+var fs_1 = require("fs");
+var account = [];
+try {
+    account = JSON.parse((0, fs_1.readFileSync)("./utils/account.json").toString());
+}
+catch (e) {
+    console.log('utils/account.json load failed');
+}
+function pushplus(title, content, template) {
+    if (template === void 0) { template = 'html'; }
+    return __awaiter(this, void 0, void 0, function () {
+        var token, account_1, account_1_1, user, data;
+        var e_1, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    fp = generateFp();
-                    return [4 /*yield*/, axios_1["default"].post("https://cactus.jd.com/request_algo?g_ty=ajax", "{\"version\":\"3.0\",\"fp\":\"".concat(fp, "\",\"appId\":\"").concat(appId, "\",\"timestamp\":").concat(Date.now(), ",\"platform\":\"web\",\"expandParams\":\"\"}"), {
+                    try {
+                        for (account_1 = __values(account), account_1_1 = account_1.next(); !account_1_1.done; account_1_1 = account_1.next()) {
+                            user = account_1_1.value;
+                            if (content.includes(decodeURIComponent(user.pt_pin)) && user.pushplus) {
+                                token = user.pushplus;
+                                break;
+                            }
+                        }
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (account_1_1 && !account_1_1.done && (_a = account_1["return"])) _a.call(account_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
+                    if (!token) {
+                        console.log('no pushplus token');
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, axios_1["default"].post('https://www.pushplus.plus/send', {
+                            token: token,
+                            title: title,
+                            content: content,
+                            template: template
+                        }, {
                             headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                                "Accept-Encoding": "gzip, deflate, br",
-                                "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-                                'host': 'cactus.jd.com',
-                                'Referer': 'https://cactus.jd.com',
-                                'User-Agent': USER_AGENT
+                                'Content-Type': 'application/json'
                             }
                         })];
                 case 1:
-                    data = (_a.sent()).data;
-                    tk = data.data.result.tk;
-                    genKey = new Function("return ".concat(data.data.result.algo))();
-                    return [2 /*return*/, { fp: fp, tk: tk, genKey: genKey }];
+                    data = (_b.sent()).data;
+                    if (data.code === 200) {
+                        console.log('pushplus发送成功');
+                    }
+                    else {
+                        console.log('pushplus发送失败', JSON.stringify(data));
+                    }
+                    return [2 /*return*/];
             }
         });
     });
 }
-exports.requestAlgo = requestAlgo;
-function geth5st(t, appId) {
-    var a = '';
-    t.forEach(function (_a) {
-        var key = _a.key, value = _a.value;
-        a += "".concat(key, ":").concat(value, "&");
-    });
-    a = a.slice(0, -1);
-    var time = Date.now();
-    var timestamp = (0, date_fns_1.format)(time, "yyyyMMddHHmmssSSS");
-    var hash1 = genKey(tk, fp.toString(), timestamp.toString(), appId.toString(), CryptoJS).toString(CryptoJS.enc.Hex);
-    var hash2 = CryptoJS.HmacSHA256(a, hash1).toString();
-    return encodeURIComponent(["".concat(timestamp.toString()), "".concat(fp.toString()), "".concat(appId.toString()), "".concat(tk), "".concat(hash2), "3.0", "".concat(time.toString())].join(";"));
-}
-exports.geth5st = geth5st;
+exports.pushplus = pushplus;
