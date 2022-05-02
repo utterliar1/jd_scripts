@@ -42,6 +42,7 @@ const notRunFileList = [
   "main.js",//
   "TS_USER_AGENTS.js",//
   "TS_USER_AGENTS2.js",//
+  "TS_USER_AGENTS_jxmc3.js",//
   "MovementFaker.js",//
   "onlyOneExecute.js",//
   "sendNotify.js",//

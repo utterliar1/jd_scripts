@@ -5,7 +5,7 @@
 var axios = require("axios");
 // var Md5 = require("ts-md5");
 var sendNotify = require("./sendNotify");
-var {requireConfig, getBeanShareCode, getFarmShareCode, wait, requestAlgo, h5st, o2s, randomWord, getshareCodeHW}  = require("./TS_USER_AGENTS");
+var {requireConfig, getBeanShareCode, getFarmShareCode, wait, requestAlgo, h5st, o2s, randomWord, getshareCodeHW}  = require("./TS_USER_AGENTS_jxmc3");
 
 const token = require('./utils/jd_jxmc.js').token
 
