@@ -178,6 +178,16 @@ function runScript(code, file, startTime) {
     stderr = stderr || ''
     stdout = stdout || ''
     doWriteFile(file, stdout, startTime)
+   
+    // 写入文件内容（如果文件不存在会创建一个文件）
+    let endTime = getNowTime();
+    let useTime = parseInt((new Date(endTime).getTime() - new Date(startTime).getTime()) / 1000) + '秒';
+    allStr = '-------------------------------->' + file
+      + '\n用时(' + useTime + ')  ' + startTime + ' --> ' + endTime
+      + '\n' + stdout
+      + '\n<--------------------------------' + file
+      + '\n\n\n\n';
+    loggerAll(allStr);
     if (error) {
       loggerError(`error: ${file}:${error}`);
       return;
@@ -306,6 +316,19 @@ function isTheTime(thisFile, date) {
   return testTime(cronArr[0], m)
     && testTime(cronArr[1], h)
     && testTime(cronArr[2], d)
+}
+
+function loggerAll(info) {
+  // console.log(info);
+  if (!info) {
+    return;
+  }
+  if (typeof info !== 'string') {
+    info = JSON.stringify(info)
+  }
+  let loggerDate = getNowDate()
+  fs.writeFile(`logs/3loggerAll${loggerDate}.txt`, '\n' + info, { 'flag': 'a' }, function (err) {
+  });
 }
 
 
