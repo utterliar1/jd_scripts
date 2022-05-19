@@ -12,6 +12,10 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // 'jd_signFree.js':'',//
+  'jd_mnyyn.js':'33 5 1-30 5 *',//
+  'jd_xgyl_wx.js':'3 7 * * *',//小鸽有礼-活动入口：微信小程序-京小哥助手
+  'jd_qmqjd.js':'10 7 * * *',//领京豆额外奖励&抢京豆
+  'jd_ddly.js':'40 7 * * *',//东东农场->东东乐园(点大风车
   'jd_speed_happy_dig.js':'2 0,1,18 * * *',//极速版-挖宝 助力，挖宝，任务，提现
   'jd_fc_winner.js':'40 0-20/4 * * *',//发财大赢家之翻翻乐
   'jd_speed_redpocket.js':'0 0,6 * * *',//极速版-领红包
@@ -136,7 +140,7 @@ const cronMap = {
   'jd_dreamFactory.js': '0 5,15 * * *',// 京喜工厂
   'jd_small_home.js': '16 6,23 * * *',// 东东小窝
   'jd_jdfactory.js': '10 * * * *',// 东东工厂
-  'jd_price.js': '1 23 * * *',//京东保价
+  'jd_price.js': '39 20 * * *',//京东保价
   'jd_beauty.js': '20 0 * * *',//美丽研究院
   'jd_beauty_ex.js': '20 0 * * *',//美丽研究院
   'jd_ms.js': '10 6,21 * * *',// 京东秒秒币
@@ -153,7 +157,7 @@ const cronMap = {
   'jd_kd.js': '10 0 * * *',// 京东快递签到
   'jd_syj.js': '36 8,18 * * *',// 十元街 10 0,7,23 * * *
   'jd_big_winner.js': '20 * * * *',//省钱大赢家之翻翻乐
-  'jd_cfd.js': '5 * * * *',//京喜财富岛
+  'jd_cfd.js': '5 */3 * * *',//京喜财富岛
   'jd_cfd_loop.js': '5 */4 * * *',//
   'jd_cfd_mooncake.js': '5 * * * *',//
   'jd_cfd_stock.js': '5 */6 * * *',//
