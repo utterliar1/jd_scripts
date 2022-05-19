@@ -12,6 +12,9 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // 'jd_signFree.js':'',//
+  'jd_wechat_zz.js':'30 9 * * *',//赚赚
+  'jd_joymanor_task.js':'11 1,15 * * *',//APP首页下拉-JOY庄园
+  'jd_bean_info.js':'12 12 * * *',//
   'jd_sign_graphics1.js':'10 8 * * *',//
   'jd_mnyyn.js':'33 5 1-30 5 *',//
   'jd_xgyl_wx.js':'3 7 * * *',//小鸽有礼-活动入口：微信小程序-京小哥助手

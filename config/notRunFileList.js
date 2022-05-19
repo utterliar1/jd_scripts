@@ -10,6 +10,7 @@ const notRunFileList = [
   "jd_unsubscriLive.js",//取关主播
   /********不执行********** */
   /********不需要运行********** */
+  "TS_JDHelloWorld.js",//
   "share_code.js",//
   "lwxq.js",//
   "jdMsLogs.js",//
