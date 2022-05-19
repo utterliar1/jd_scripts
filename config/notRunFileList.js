@@ -10,8 +10,14 @@ const notRunFileList = [
   "jd_unsubscriLive.js",//取关主播
   /********不执行********** */
   /********不需要运行********** */
+  "share_code.js",//
+  "lwxq.js",//
+  "jdMsLogs.js",//
+  "jdJxncTokens.js",//
+  "JDJRValidator.js",//
   "JDJRValidator_Aaron.js",//js 解码图片
   "JDJRValidator_Smiek.js",//
+  "JDJRValidator_Pure.js",//
   "JDSignValidator.js",//
   "sign_graphics_validate.js",//
   "JDJRSignValidator.js",//历史红包
@@ -50,7 +56,6 @@ const notRunFileList = [
   "MovementFaker.js",//
   "onlyOneExecute.js",//
   "sendNotify.js",//
-  "JDJRValidator_Pure.js",//
   "jd_api_test.js",//
   "smartReplace.js",//
   "ZooFaker_Necklace.js",//
