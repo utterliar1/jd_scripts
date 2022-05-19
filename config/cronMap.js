@@ -12,6 +12,7 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // 'jd_signFree.js':'',//
+  'jd_sign_graphics1.js':'10 8 * * *',//
   'jd_mnyyn.js':'33 5 1-30 5 *',//
   'jd_xgyl_wx.js':'3 7 * * *',//小鸽有礼-活动入口：微信小程序-京小哥助手
   'jd_qmqjd.js':'10 7 * * *',//领京豆额外奖励&抢京豆

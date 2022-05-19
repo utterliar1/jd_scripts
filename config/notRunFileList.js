@@ -10,6 +10,10 @@ const notRunFileList = [
   "jd_unsubscriLive.js",//取关主播
   /********不执行********** */
   /********不需要运行********** */
+  "JDJRValidator_Aaron.js",//js 解码图片
+  "JDJRValidator_Smiek.js",//
+  "JDSignValidator.js",//
+  "sign_graphics_validate.js",//
   "JDJRSignValidator.js",//历史红包
   "jd_deleteCart.js",//删除购物车 不执行
   "jd_cleancart.js",//删除购物车 不执行
