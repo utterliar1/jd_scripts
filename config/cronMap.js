@@ -82,7 +82,7 @@ const cronMap = {
   'jd_wxFansli.js': '5 5,15 * * *',// 饭粒
   'jd_bean_box.js': '1 9,12,18 * * *',// 
   'jx_sign.js': '20 1,8 * * *',// 京喜签到
-  'jd_jxgc.js': '30 * * * *',// 
+  'jd_jxgc.js': '30 */6 * * *',// 
   'jd_jxmc_getCoin.js': '0,30 * * * *',// 
   'jd_yili_cow.js': '0 12 * * *',// 
   'jd_wish.js': '39 0,2 * * *',// 
@@ -91,7 +91,7 @@ const cronMap = {
   'jd_try.js': '0 6 * * *',// 
   'jd_try_notify.js': '22 9 * * *',// 京东试用待领取通知
   'jx_box.js': '5 6,12 * * *',// 
-  'jd_tewu.js': '15 1,15,22 * * *',// 
+  'jd_tewu.js': '15 8,20 * * *',// 京东-下拉
   'jd_sign_graphics.js': '10 6,10 * * *',// 
   'jd_validate_Worker.js': '2 23 * * *',// 
   'jd_shop_sign.js': '45 23 * * *',// 

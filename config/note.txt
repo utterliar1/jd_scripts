@@ -1,0 +1,13 @@
+TS_JDHelloWorld.d.ts                              |   3 +-
+ TS_JDHelloWorld.js                                |   2 +-
+ TS_USER_AGENTS.js                                 |  90 ++-------
+ TS_USER_AGENTS.ts                                 |  40 +---
+ fruit.js                                          |   2 +-
+ fruit.ts                                          |   2 +-
+ jd_bean_aggregation.cjs => jd_bean_aggregation.js |   0
+ jd_checkCookie.js                                 |  79 ++++++--
+ jd_checkCookie.ts                                 |  35 +++-
+ jd_tewu.js                                        | 220 ++++++++++++----------
+ jd_tewu.ts                                        | 143 +++++++-------
+ jd_track.js                                       |  60 +++---
+ jd_track.ts                                       |  85 ++++-----
