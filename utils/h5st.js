@@ -35,6 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 exports.__esModule = true;
 exports.H5ST = void 0;
 var axios_1 = require("axios");
@@ -92,10 +103,21 @@ var H5ST = /** @class */ (function () {
         return algo[this.enc](str, tk);
     };
     H5ST.prototype.__genH5st = function (body) {
+        var e_1, _a;
         var y = this.__genKey(this.tk, this.fp, this.timestamp, this.appId, CryptoJS).toString(CryptoJS.enc.Hex);
         var s = '';
-        for (var i in body) {
-            i === 'body' ? s += "".concat(i, ":").concat(CryptoJS.SHA256(body[i]).toString(CryptoJS.enc.Hex), "&") : s += "".concat(i, ":").concat(body[i], "&");
+        try {
+            for (var _b = __values(Object.keys(body)), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var key = _c.value;
+                key === 'body' ? s += "".concat(key, ":").concat(CryptoJS.SHA256(body[key]).toString(CryptoJS.enc.Hex), "&") : s += "".concat(key, ":").concat(body[key], "&");
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
         }
         s = s.slice(0, -1);
         s = CryptoJS.HmacSHA256(s, y).toString(CryptoJS.enc.Hex);

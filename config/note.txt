@@ -1,13 +1,24 @@
-TS_JDHelloWorld.d.ts                              |   3 +-
- TS_JDHelloWorld.js                                |   2 +-
- TS_USER_AGENTS.js                                 |  90 ++-------
- TS_USER_AGENTS.ts                                 |  40 +---
- fruit.js                                          |   2 +-
- fruit.ts                                          |   2 +-
- jd_bean_aggregation.cjs => jd_bean_aggregation.js |   0
- jd_checkCookie.js                                 |  79 ++++++--
- jd_checkCookie.ts                                 |  35 +++-
- jd_tewu.js                                        | 220 ++++++++++++----------
- jd_tewu.ts                                        | 143 +++++++-------
- jd_track.js                                       |  60 +++---
- jd_track.ts                                       |  85 ++++-----
+cookie有效********【京东账号1】angrybug******angrybug
+cookie有效********【京东账号2】hzxx9123******hzxx9123
+cookie有效********【京东账号3】风见耀******风见耀
+cookie有效********【京东账号4】galabug******galabug
+cookie有效********【京东账号5】洛松曲平******洛松曲平
+cookie有效********【京东账号6】懒回顾153******懒回顾哈啊哈
+cookie有效********【京东账号7】jokerbug******jokerbug
+cookie有效********【京东账号8】jd_470e79d4d29a1******lulu
+cookie有效********【京东账号9】花花在我心中******花花
+cookie有效********【京东账号10】jd_shis946******jd_shis946
+cookie有效********【京东账号11】vivi-wei******vivi-wei
+cookie有效********【京东账号12】u_e9ft22kk8tbu******fangcan
+cookie有效********【京东账号13】jfstanly******jfstanly
+cookie有效********【京东账号14】qw651254633******qw651254633
+cookie有效********【京东账号15】左晃右摇******左晃右摇_luxing
+cookie有效********【京东账号16】960251810******960251810_ting
+cookie有效********【京东账号17】乌贼骑士******乌贼骑士_tian
+cookie有效********【京东账号18】meidongzhu******meidongzhu
+cookie有效********【京东账号19】jd_o偽ni變壞******jd_o偽ni變壞_pan
+cookie有效********【京东账号20】jd_709dd3ec1b312******jd_709dd3ec1b312_jianchao
+cookie有效********【京东账号21】娜美写给我的信******娜美写给我的信qiang
+cookie有效********【京东账号22】啦啦啦zdl******啦啦啦zdl_qiang2
+cookie有效********【京东账号23】pkl水无痕******pkl水无痕
+cookie有效********【京东账号24】求录取******luoqiang

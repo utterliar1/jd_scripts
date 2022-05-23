@@ -11,10 +11,15 @@ const cronMap = {
   'jd_track.js': 'X * * * *',// 
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
-  // 'jd_signFree.js':'',//
+  // '.js':'',//
+  'jd_speed_wabao.js':' 2 0,1,6 * * *',//极速版-挖宝
+  'jd_joypark_run.js':'20 * * * *',//汪汪乐园-跑步+组队
+  'jd_618cj.js':'10 7 * * *',//618个护抽奖机
+  'jd_qqxing.js':'22 4-22/3 * * *',//活动入口：QQ星儿童牛奶京东自营旗舰店->品牌会员->星系牧场
   'jd_wechat_zz.js':'30 9 * * *',//赚赚
   'jd_joymanor_task.js':'11 1,15 * * *',//APP首页下拉-JOY庄园
   'jd_bean_info.js':'12 12 * * *',//
+  'jd_sign_graphics.js': '10 6,10 * * *',// 
   'jd_sign_graphics1.js':'10 8 * * *',//
   'jd_mnyyn.js':'33 5 1-30 5 *',//
   'jd_xgyl_wx.js':'3 7 * * *',//小鸽有礼-活动入口：微信小程序-京小哥助手
@@ -92,7 +97,6 @@ const cronMap = {
   'jd_try_notify.js': '22 9 * * *',// 京东试用待领取通知
   'jx_box.js': '5 6,12 * * *',// 
   'jd_tewu.js': '15 8,20 * * *',// 京东-下拉
-  'jd_sign_graphics.js': '10 6,10 * * *',// 
   'jd_validate_Worker.js': '2 23 * * *',// 
   'jd_shop_sign.js': '45 23 * * *',// 
   'jd_sendBeans.js': '45 1,12 * * *',// 来客有礼小程序 送豆得豆
