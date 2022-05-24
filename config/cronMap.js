@@ -12,6 +12,8 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // '.js':'',//
+  'jd_fruit_help.js':'20 4 * * *',//京东APP我的-更多工具-东东农场
+  'jd_desire.js':'2 11 * * *',//京东集魔方
   'jd_speed_wabao.js':' 2 0,1,6 * * *',//极速版-挖宝
   'jd_joypark_run.js':'20 * * * *',//汪汪乐园-跑步+组队
   'jd_618cj.js':'10 7 * * *',//618个护抽奖机
