@@ -12,6 +12,11 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // '.js':'',//
+  'jd_618_1.js':'10 8,15,20 * * *',//
+  'jd_618_coin.js':'15 0-23/2 * * *',//
+  'jd_618_hongbao_1.js':'10 20,21,22 * * *',//
+  'jd_618_hongbao_award.js':'5 21 * * *',//
+  'jd_xiaomi.js':'1 15 25-31 * *',//
   'jd_19E.js':'33 6-23/2 * * *',//
   'jd_19E_help.js':'33 6-23/2 * * *',//
   'jd_19E_friend.js':'20 0,8 * * * ',//
