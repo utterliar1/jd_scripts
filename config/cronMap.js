@@ -12,6 +12,11 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // '.js':'',//
+  'jd_19E.js':'33 6-23/2 * * *',//
+  'jd_19E_help.js':'33 6-23/2 * * *',//
+  'jd_19E_friend.js':'20 0,8 * * * ',//
+  'jd_19EPZ_help.js':'33 20 * * *',//热爱奇旅-膨胀助力
+  'jd_618jk.js':'10 7 * * * ',//#健康医疗618抽奖机活动
   'jd_fruit_help.js':'20 4 * * *',//京东APP我的-更多工具-东东农场
   'jd_desire.js':'2 11 * * *',//京东集魔方
   'jd_speed_wabao.js':' 2 0,1,6 * * *',//极速版-挖宝
