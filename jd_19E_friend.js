@@ -1,6 +1,6 @@
 /*
 建议手动先点开一次
-20 0,8 * * * jd_19E_friend.js
+0 8 * * * jd_19E_friend.js
 快速助力、加入队伍、升级，跑一次即可
 */
 
@@ -51,7 +51,7 @@ let groups = []
             await promote_collectAtuoScore() //定时领取
             let res
             //此处修改组队人数 默认前3组队
-            if (i < 3) {
+            if (i < 8) {
                 res = await promote_pk_getHomeData()
                 if (res.data.result.groupInfo.memberList) {
                     let memberCount = res.data.result.groupInfo.memberList.length
