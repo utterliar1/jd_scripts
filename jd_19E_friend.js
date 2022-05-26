@@ -26,7 +26,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
 
 $.shareCodesArr = [];
 let groups = []
-!(async() => {
+!(async () => {
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
@@ -44,32 +44,32 @@ let groups = []
             console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
             //   await shareCodesFormat()
             $.newShareCodes = []
-			await get_secretp()
-			if ($.huobao == false) {
-			console.log(`火爆`); continue;
-			}
+            await get_secretp()
+            if ($.huobao == false) {
+                console.log(`火爆`); continue;
+            }
             await promote_collectAtuoScore() //定时领取
             let res
-			//此处修改组队人数 默认前3组队
-            if (i <= 3 ){
-               res = await promote_pk_getHomeData()
-               if (res.data.result.groupInfo.memberList) {
-                 let memberCount = res.data.result.groupInfo.memberList.length
-                 console.log('当前队伍有', memberCount, '人')
-                 let groupJoinInviteId = ""
-               
-                 if (memberCount < 30) {
-                   groupJoinInviteId = res.data.result.groupInfo.groupJoinInviteId
-                   res = await getEncryptedPinColor()
-                   groups.push({mpin: res.result, groupJoinInviteId: groupJoinInviteId})
-                   console.log('队伍未满:', groupJoinInviteId)
-                 }
-               }
+            //此处修改组队人数 默认前3组队
+            if (i < 3) {
+                res = await promote_pk_getHomeData()
+                if (res.data.result.groupInfo.memberList) {
+                    let memberCount = res.data.result.groupInfo.memberList.length
+                    console.log('当前队伍有', memberCount, '人')
+                    let groupJoinInviteId = ""
+
+                    if (memberCount < 30) {
+                        groupJoinInviteId = res.data.result.groupInfo.groupJoinInviteId
+                        res = await getEncryptedPinColor()
+                        groups.push({ mpin: res.result, groupJoinInviteId: groupJoinInviteId })
+                        console.log('队伍未满:', groupJoinInviteId)
+                    }
+                }
             }
-			try {
-				res = await promote_getTaskDetail()
+            try {
+                res = await promote_getTaskDetail()
                 await promote_sign()
-				do {
+                do {
                     var ret = await promote_raise()
                     await $.wait(1000)
                 } while (ret)
@@ -78,63 +78,68 @@ let groups = []
             }
         }
     }
-	try{
+    try {
         for (let i = 0; i < cookiesArr.length; i++) {
-             if (cookiesArr[i]) {
-                 cookie = cookiesArr[i];
-                 $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-                 $.index = i + 1;
-                 $.isLogin = true;
-                 $.nickName = '';
-                 message = '';
-                 console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);  
-                 await get_secretp() 
-				if ($.huobao == false) {
-				console.log(`火爆`); continue;
-				}
-                 await $.wait(1000)
-                 let res
-				 for (let s = 0; s < inviteId.length; s++) {
-                     console.log(`\n开始助力 【${inviteId[s]}】`)
-                     res = await help(inviteId[s])
-                     if ( res['data']['bizCode'] === 0) {
-                             console.log('助力成功,获得：', parseFloat(res.data.result.acquiredScore), '金币')
-                               if (res.data.result?.redpacket?.value)
-                                 console.log('🧧', parseFloat(res.data.result?.redpacket?.value))
-                                  //console.log('助力结果：'+res.data.bizMsg)
-                     } else if (res.data.bizMsg === '助力次数用完啦~') { console.log(res.data.bizMsg);break}
-                    else if (res.data.bizMsg === '好友人气爆棚，不需要助力啦~') { console.log(res.data.bizMsg)}
-                    else {console.log(res.data.bizMsg)}
-                     await $.wait(1000)
-                 }  
+            if (cookiesArr[i]) {
+                cookie = cookiesArr[i];
+                $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+                $.index = i + 1;
+                $.isLogin = true;
+                $.nickName = '';
+                message = '';
+                console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+                await get_secretp()
+                if ($.huobao == false) {
+                    console.log(`火爆`); continue;
+                }
+                await $.wait(1000)
+                let res,bizCode
+                for (let j = 0; j < inviteId.length; j++) {
+                    console.log(`\n开始助力 【${inviteId[j]}】`)
+                    res = await help(inviteId[j])
+                    bizCode = res['data']['bizCode'];
+                    if (res['data']['bizCode'] === 0) {
+                        console.log('助力成功,获得：', parseFloat(res.data.result.acquiredScore), '金币')
+                        if (res.data.result?.redpacket?.value) console.log('🧧', parseFloat(res.data.result?.redpacket?.value))
+                        //console.log('助力结果：'+res.data.bizMsg)
+                    }else if (bizCode==108) { //无助力
+                        console.log(res.data.bizMsg); break 
+                    }else if (bizCode==-201) {//好友人气爆棚，不需要助力啦~
+                        console.log(res.data.bizMsg);
+                        inviteId.splice(j, 1)
+                        j--
+                        continue
+                    }else { console.log(res.data.bizCode+res.data.bizMsg) }
+                    await $.wait(1000)
+                }
 
-                 res = await promote_pk_getHomeData()
-                 if (res.data.result.groupInfo.memberList) {
-                   let memberCount = res.data.result.groupInfo.memberList.length
-                   if (memberCount === 1) {
-                     for (let group of groups) {
-                       console.log('\n开始加入队伍：', group.groupJoinInviteId)
-                       res = await collectFriendRecordColor(group.mpin)
-                       res = await promote_pk_joinGroup(group.groupJoinInviteId)
-                       await $.wait(3000)
-                       if (res.data.bizCode === 0) {
-                         console.log('加入队伍成功')
-                         break
-                       } else {
-                         console.log(res.data.bizMsg)
-                       }
-                       res = await promote_pk_getHomeData()
-                     }
-                   }
-                   await $.wait(3000)
-                 }
-             }
-       }
-     } catch (e) {
-         $.log(`❌ ${$.name}, 失败! 原因: `, e)
-     }       
+                res = await promote_pk_getHomeData()
+                if (res.data.result.groupInfo.memberList) {
+                    let memberCount = res.data.result.groupInfo.memberList.length
+                    if (memberCount === 1) {
+                        for (let group of groups) {
+                            console.log('\n开始加入队伍：', group.groupJoinInviteId)
+                            res = await collectFriendRecordColor(group.mpin)
+                            res = await promote_pk_joinGroup(group.groupJoinInviteId)
+                            await $.wait(3000)
+                            if (res.data.bizCode === 0) {
+                                console.log('加入队伍成功')
+                                break
+                            } else {
+                                console.log(res.data.bizMsg)
+                            }
+                            res = await promote_pk_getHomeData()
+                        }
+                    }
+                    await $.wait(3000)
+                }
+            }
+        }
+    } catch (e) {
+        $.log(`❌ ${$.name}, 失败! 原因: `, e)
+    }
 })()
-.catch((e) => {
+    .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
     })
     .finally(() => {
