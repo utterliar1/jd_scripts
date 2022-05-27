@@ -1,10 +1,7 @@
 /*
-
 建议手动先点开一次
-33 0,6-23/3 * * * jd_19E_help.js
-
+cron "10 0,6-21/5 * * " jd_19E_help.js, tag:热爱奇旅互助版
 */
-
 const CryptoJS = require("crypto-js");
 const $ = new Env('热爱奇旅互助版-部分加密');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -79,12 +76,12 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
             $.blog_joyytoken = await getToken("50999", "4")
            // cookie = $.ZooFaker.getCookie(cookie + `joyytoken=${appid}${$.joyytoken};`)
             await travel()
-    helpSysInfoArr.push({
+            helpSysInfoArr.push({
                 cookie,
                 pin: $.UserName,
                 UA: $.UA,
                 joyytoken: $.joyytoken,
-               blog_joyytoken: $.blog_joyytoken,
+                blog_joyytoken: $.blog_joyytoken,
                 secretp: $.secretp
             })
         }
@@ -222,28 +219,28 @@ async function travel() {
     } catch (e) {
         console.log(e)
     }
-    if (helpFlag) {
-        try {
-            $.WxUA = getWxUA()
-            const WxHomeData = await doWxApi("getHomeData", { inviteId: "" })
-            $.WxSecretp = WxHomeData?.homeMainInfo?.secretp || $.secretp
-            console.log("\n去做微信小程序任务\n")
-            await doWxTask()
-        } catch (e) {
-            console.log(e)
-        }
+    // if (helpFlag) {
+        // try {
+           // $.WxUA = getWxUA()
+           // const WxHomeData = await doWxApi("getHomeData", { inviteId: "" })
+           // $.WxSecretp = WxHomeData?.homeMainInfo?.secretp || $.secretp
+           // console.log("\n去做微信小程序任务\n")
+           // await doWxTask()
+        // } catch (e) {
+           // console.log(e)
+       // }
 
-        try {
-            console.log("\n去做金融App任务\n")
-            $.sdkToken = "jdd01" + randomUUID({
-                formatData: "X".repeat(103),
-                charArr: [...Array(36).keys()].map(k => k.toString(36).toUpperCase())
-            }) + "0123456"
-            await doJrAppTask()
-        } catch (e) {
-            console.log(e)
-        }
-    }
+        // try {
+            // console.log("\n去做金融App任务\n")
+            // $.sdkToken = "jdd01" + randomUUID({
+                // formatData: "X".repeat(103),
+                // charArr: [...Array(36).keys()].map(k => k.toString(36).toUpperCase())
+            // }) + "0123456"
+            // await doJrAppTask()
+        // } catch (e) {
+            // console.log(e)
+        // }
+    // }
 
     try {
         //await raise(true)

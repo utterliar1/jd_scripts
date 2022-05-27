@@ -233,6 +233,7 @@ function promote_pk_collectPkExpandScore(inviteId) {
                                     resolve(1)
                                     break;
                                 case -19://TA已经获得足够的助力了|不需要助力啦~
+                                case -15://助力已结束|下次早点来吧
                                     console.log(`助力:${data['data']['bizMsg']}`)
                                     resolve(2)
                                     break;
