@@ -105,7 +105,7 @@ let args_xh = {
      * 已内置对应的 成人类 幼儿类 宠物 老年人类关键词，请勿重复添加
      * 可设置环境变量：JD_TRY_TITLEFILTERS，关键词与关键词之间用@分隔
      * */
-    titleFilters:  ['中国电信','中国移动','中国联通','上网卡','流量卡','钢化','手机壳'],
+    titleFilters: process.env.JD_TRY_TITLEFILTERS && process.env.JD_TRY_TITLEFILTERS.split('@') || [],
     /*
      * 试用价格(中了要花多少钱)，高于这个价格都不会试用，小于等于才会试用，意思就是
      * A商品原价49元，现在试用价1元，如果下面设置为10，那A商品将会被添加到待提交试用组，因为1 < 10
@@ -390,7 +390,7 @@ function try_feedsList(tabId, page) {
                 } else {
                     data = JSON.parse(data)
                     let tempKeyword = ``;
-                    if (data.success) {
+                    if (data.data) {
                         $.nowPage === args_xh.totalPages ? $.nowPage = 1 : $.nowPage++;
                         console.log(`第 ${size++} 次获取试用商品成功，tabId:${args_xh.tabId[$.nowTabIdIndex]} 的 第 ${page}/${args_xh.totalPages} 页`)
                         console.log(`获取到商品 ${data.data.feedList.length} 条`)
@@ -567,7 +567,7 @@ function try_MyTrials(page, selected) {
                         if (selected === 2) {
                             if (data.success && data.data) {
                                 for (let item of data.data.list) {
-                                    item.status === 4 || item.text.text.includes('已放弃') ? $.giveupNum += 1 : ''
+                                    item.status === 4 || item.text.text.includes('试用资格已过期') ? $.giveupNum += 1 : ''
                                     item.status === 2 && item.text.text.includes('试用资格将保留') ? $.successNum += 1 : ''
                                     item.status === 2 && item.text.text.includes('请收货后尽快提交报告') ? $.getNum += 1 : ''
                                     item.status === 2 && item.text.text.includes('试用已完成') ? $.completeNum += 1 : ''

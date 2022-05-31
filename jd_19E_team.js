@@ -1,10 +1,10 @@
 /*
 建议手动先点开一次
-cron "1 8,14 * * *" jd_19E_team.js, tag:快速助力、加入队伍、升级，跑一次即可
+cron "1 8,14 * * *" jd_19E_team.js, tag:快速升级，跑一次即可
 */
 
 
-const $ = new Env('热爱奇旅组队升级');
+const $ = new Env('热爱奇旅升级');
 
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
@@ -30,7 +30,7 @@ let groups = []
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    console.log('\n仅组队+升级，快速跑完\n')
+    console.log('\n仅升级，快速跑完\n')
     await getUA()
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
@@ -49,6 +49,7 @@ let groups = []
             }
             await promote_collectAtuoScore() //定时领取
             let res
+            /*
             //此处修改组队人数 默认前6组队
             if (i < 6) {
                 res = await promote_pk_getHomeData()
@@ -64,7 +65,7 @@ let groups = []
                         console.log('队伍未满:', groupJoinInviteId)
                     }
                 }
-            }else break;
+            }*/
             try {
                 res = await promote_getTaskDetail()
                 await promote_sign()
@@ -78,7 +79,7 @@ let groups = []
         }
     }
     try {
-        for (let i = 0; i < cookiesArr.length; i++) {
+        for (let i = 0; i < cookiesArr.length && 0; i++) {
             if (cookiesArr[i]) {
                 cookie = cookiesArr[i];
                 $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
