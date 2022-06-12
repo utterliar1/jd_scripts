@@ -12,6 +12,8 @@ const cronMap = {
   'jd_cfd_shell.js': 'X * * * *',
   'jd_jxScore.js': 'X * * * *',//
   // '.js':'',//
+  'jd_carplay.js':'30 4,16 * * *',//头文字J
+  'jd_618lottery.js':'33 7 * * *',//618天天抽奖
   'jd_superBrandSign.js':'30 6 1-19 6 *',//
   'jd_supermh.js':'0 20 3,17 6 *',//
   'jd_19E_team.js':'1 8,14 * * *',//g:快速助力、加入队伍、升级，跑一次即可
