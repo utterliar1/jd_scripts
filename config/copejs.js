@@ -13,6 +13,7 @@ var tarDirs = [
 'D:/workspace/github/atyvcn/config',
 'D:/workspace/github/Aaron/config',
 'D:/workspace/github/DovFork/config',
+'D:/workspace/github/fearnoManButGod/config',
 'D:/workspace/github/helloword/config',
 'D:/workspace/github/jsbug-master/config',
 'D:/workspace/github/LostInsight/config',
